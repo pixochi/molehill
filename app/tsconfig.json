@@ -20,7 +20,10 @@
     "noUnusedLocals": true,
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "paths": {
+      "app/*": ["app/*"]
+    },
   },
   "exclude": [
     "node_modules",
@@ -31,7 +34,8 @@
     "jest",
     "src/setupTests.ts"
   ],
-  "files": [
-    "types.d.ts"
-]
+  "include": [
+    "src/types.d.ts",
+    "src/**/*"
+  ]
 }

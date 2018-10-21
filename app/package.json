@@ -12,7 +12,9 @@
     "react-router-dom": "^4.3.1",
     "react-scripts-ts": "3.1.0",
     "redux": "^4.0.1",
-    "redux-observable": "^1.0.0"
+    "redux-form": "^7.4.2",
+    "redux-observable": "^1.0.0",
+    "styled-components": "^4.0.2"
   },
   "scripts": {
     "start": "react-scripts-ts start",
@@ -28,6 +30,8 @@
     "@types/react-dom": "^16.0.9",
     "@types/react-redux": "^6.0.9",
     "@types/react-router-dom": "^4.3.1",
+    "@types/react-test-renderer": "^16.0.3",
+    "@types/redux-form": "^7.4.11",
     "typescript": "^3.1.3"
   }
 }
