@@ -1,0 +1,31 @@
+{
+  "name": "typeorm-typegraphql",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "ts-node -r tsconfig-paths/register src/bin/server.ts",
+    "build": "tsc -p .",
+    "dev": "nodemon .",
+    "configure-db": "cd ./src/bin && init-db.cmd"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server-express": "^2.1.0",
+    "express": "^4.16.3",
+    "nodemon": "^1.18.4",
+    "pg": "^7.5.0",
+    "reflect-metadata": "^0.1.12",
+    "ts-node": "^7.0.1",
+    "tsconfig-paths": "^3.6.0",
+    "type-graphql": "^0.14.0",
+    "typedi": "^0.8.0",
+    "typeorm": "^0.2.7",
+    "typeorm-typedi-extensions": "^0.2.1"
+  },
+  "devDependencies": {
+    "typescript": "^3.1.2"
+  }
+}

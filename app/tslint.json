@@ -5,6 +5,11 @@
       "config/**/*.js",
       "node_modules/**/*.ts",
       "coverage/lcov-report/*.js"
-    ]
+    ],
+    "grouped-imports": false,
+    "import-sources-order": "any",
+    "named-imports-order": "any",
+    "ordered-imports": false,
+    "no-shadowed-variable": false
   }
 }

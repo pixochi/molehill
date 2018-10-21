@@ -1,20 +1,18 @@
-import * as React from 'react';
-import './App.css';
+import { ConnectedRouter } from 'connected-react-router'
+import React, {Component} from 'react';
+import { Provider } from 'react-redux'
 
-import logo from './logo.svg';
+import store from './redux/store';
 
-class App extends React.Component {
+import Routes from './routes'
+
+class App extends Component {
   public render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.tsx</code> and save to reload.
-        </p>
-      </div>
+      <Provider store={store}>
+          <Routes />
+      </Provider>
+
     );
   }
 }
