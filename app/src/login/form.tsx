@@ -1,7 +1,9 @@
 import React from 'react'
 import { compose } from 'redux';
-import { Field, Form, InjectedFormProps, reduxForm } from 'redux-form'
+import { Form, InjectedFormProps, reduxForm } from 'redux-form'
 
+import Button from 'app/components/button';
+import FormField from 'app/components/form-elements/form-field';
 import FormInput from 'app/components/form-elements/form-input';
 
 interface IFormData {
@@ -16,12 +18,9 @@ const LoginForm: React.SFC<Props> = props => {
 
   return (
     <Form onSubmit={handleSubmit}>
-      <div>
-        <Field name="email" component={FormInput} type="text" />
-      </div>
-      <div>
-        <Field name="password" component={FormInput} type="password" />
-      </div>
+        <FormField name="email" component={FormInput} placeholder="Email address" />
+        <FormField name="password" component={FormInput} type="password" placeholder="Password" />
+        <Button type="submit" appearance="submit" fullWidth={true} />
     </Form>
   );
 }

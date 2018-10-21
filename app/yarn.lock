@@ -109,6 +109,13 @@
     "@types/react" "*"
     redux "^3.6.0 || ^4.0.0"
 
+"@types/styled-components@^4.0.1":
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/@types/styled-components/-/styled-components-4.0.1.tgz#5eb9a5474dbde3becab2bcc8f04e0b8e8dcf8c06"
+  dependencies:
+    "@types/node" "*"
+    "@types/react" "*"
+
 abab@^1.0.3:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/abab/-/abab-1.0.4.tgz#5faad9c2c07f60dd76770f71cf025b62a63cfd4e"

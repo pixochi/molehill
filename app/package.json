@@ -32,6 +32,7 @@
     "@types/react-router-dom": "^4.3.1",
     "@types/react-test-renderer": "^16.0.3",
     "@types/redux-form": "^7.4.11",
+    "@types/styled-components": "^4.0.1",
     "typescript": "^3.1.3"
   }
 }

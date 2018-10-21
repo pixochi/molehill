@@ -22,7 +22,7 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "paths": {
-      "app/*": ["app/*"]
+      "app/*": ["src/*"]
     },
   },
   "exclude": [
