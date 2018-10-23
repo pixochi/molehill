@@ -6,27 +6,31 @@ import Button from 'app/components/button';
 import FormField from 'app/components/form-elements/form-field';
 import FormInput from 'app/components/form-elements/form-input';
 
-interface IFormData {
+export interface ISignUpFormData {
   email: string;
+  username: string;
   password: string;
+  passwordRepeat: string;
 }
 
-type Props = InjectedFormProps<IFormData>;
+type Props = InjectedFormProps<ISignUpFormData>;
 
-const LoginForm: React.SFC<Props> = props => {
+const SignUpForm: React.SFC<Props> = props => {
   const { handleSubmit } = props;
 
   return (
     <Form onSubmit={handleSubmit}>
         <FormField required name="email" component={FormInput} placeholder="Email address" />
+        <FormField required name="username" component={FormInput} placeholder="Username" />
         <FormField required name="password" component={FormInput} type="password" placeholder="Password" />
-        <Button text="Log in" type="submit" appearance="submit" fullWidth={true} />
+        <FormField required name="passwordRepeat" component={FormInput} type="password" placeholder="Repeat password" />
+        <Button text="Sign up" type="submit" appearance="submit" fullWidth={true} />
     </Form>
   );
 };
 
 export default compose(
   reduxForm({
-    form: 'LOGIN_FORM',
+    form: 'SIGNUP_FORM',
   }),
-)(LoginForm);
+)(SignUpForm);

@@ -8,8 +8,9 @@ const StyledInput = styled.input`
   outline: none;
   border: 1px solid ${props => props.theme.border.default};
   font-size: 16px;
+  width: 100%;
   transition: 0.3s all;
-  
+
   &:focus {
     outline: none;
     border: 1px solid ${props => props.theme.border.focus};
@@ -18,12 +19,17 @@ const StyledInput = styled.input`
 `;
 
 const FormInput: React.SFC<WrappedFieldProps> = (props) => {
+  const {
+    input,
+    ...rest
+  } = props;
 
   return (
     <StyledInput
-      {...props}
+      {...input}
+      {...rest}
     />
   );
-}
+};
 
 export default FormInput;

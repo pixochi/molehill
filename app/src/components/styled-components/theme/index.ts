@@ -23,6 +23,6 @@ const Theme: ITheme = {
   shadow: 'rgba(180,180,180,0.3)',
   submit: '#0be881',
   text: '#333',
-}
+};
 
 export default Theme;

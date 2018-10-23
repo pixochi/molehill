@@ -6,6 +6,7 @@ const Container = styled.div`
   top: 20%;
   left: 50%;
   transform: translateX(-50%);
+  width: 50%;
 `;
 
 const ScreenCenter: React.SFC = (props) => {
@@ -13,7 +14,7 @@ const ScreenCenter: React.SFC = (props) => {
     <Container>
       {props.children}
     </Container>
-  )
-}
+  );
+};
 
 export default ScreenCenter;

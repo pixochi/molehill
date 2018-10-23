@@ -4,19 +4,19 @@ import { styledTS } from './styled-components';
 import { ITheme } from './styled-components/theme';
 
 const getBackgroundColor = (theme: ITheme, appearance?: keyof typeof IButtonAppearance): string => {
-  switch(appearance) {
-    case 'submit': 
+  switch (appearance) {
+    case 'submit':
       return theme.submit;
-    default: 
+    default:
       return 'grey';
   }
 };
 
 const getTextColor = (theme: ITheme, appearance?: keyof typeof IButtonAppearance): string => {
-  switch(appearance) {
-    case 'submit': 
+  switch (appearance) {
+    case 'submit':
       return theme.invertedText;
-    default: 
+    default:
       return 'grey';
   }
 };
@@ -34,6 +34,7 @@ const StyledButton = styledTS<IButtonProps>()<ITheme>(styled.button)`
 
   &:hover {
     box-shadow: 0 2px 2px ${props => props.theme.shadow};
+    filter: brightness(90%);
   }
 `;
 
@@ -42,6 +43,7 @@ enum IButtonAppearance {
 }
 
 interface IButtonProps {
+  text: string;
   appearance?: keyof typeof IButtonAppearance;
   fullWidth?: boolean;
 }
@@ -52,9 +54,9 @@ const Button: React.SFC<Props> = (props) => {
 
   return (
     <StyledButton {...props}>
-      Log in
+      {props.text}
     </StyledButton>
-  )
-}
+  );
+};
 
 export default Button;

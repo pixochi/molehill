@@ -1,5 +1,5 @@
 import React from 'react';
-import { BaseFieldProps, Field, WrappedFieldProps } from 'redux-form'
+import { BaseFieldProps, Field, WrappedFieldProps } from 'redux-form';
 import styled from 'styled-components';
 
 const FieldContainer = styled.div`
@@ -13,9 +13,9 @@ const FormField: React.SFC<Props> = (props) => {
 
   return (
     <FieldContainer>
-      <Field {...props} />
+      <Field {...props}  />
     </FieldContainer>
   );
-}
+};
 
 export default FormField;

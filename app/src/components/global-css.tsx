@@ -1,8 +1,7 @@
-import React from 'react';
-import { css } from 'styled-components';
+import { createGlobalStyle  } from 'styled-components';
+import { ITheme } from './styled-components/theme';
 
-
-const CSS = css`
+const GlobalStyle = createGlobalStyle<ITheme>`
   * {
     box-sizing: border-box;
     margin: 0;
@@ -16,16 +15,12 @@ const CSS = css`
 
   body {
     background-color: ${props => props.theme.background};
+    color: ${props => props.theme.text};
+  }
+
+  a {
+    text-decoration: none;
   }
 `;
 
-const GlobalCSS: React.SFC = () => {
-
-  return (
-    <style>
-      {CSS}
-    </style>
-  );
-}
-
-export default GlobalCSS;
+export default GlobalStyle;

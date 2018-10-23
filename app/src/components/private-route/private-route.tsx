@@ -25,7 +25,7 @@ class PrivateRoute extends React.PureComponent<Props> {
   public render() {
     return (
       <Route {...this.props} render={this.renderRouteComponent} />
-    )
+    );
   }
 
   private renderRouteComponent() {
@@ -39,18 +39,15 @@ class PrivateRoute extends React.PureComponent<Props> {
     return isLoggedIn ? (
       <RouteComponent {...this.props} />
     ) : (
-      <Redirect to={{
-        pathname: redirectTo
-      }} />
+      <Redirect to={redirectTo} />
     );
   }
-
 }
 
 const mapStateToProps = (state: IRootState) => {
   return {
     isLoggedIn: false,
-  }
-}
+  };
+};
 
-export default connect<IStateProps, {}, IPrivateRouteProps, IRootState>(mapStateToProps)(PrivateRoute)
+export default connect<IStateProps, {}, IPrivateRouteProps, IRootState>(mapStateToProps)(PrivateRoute);
