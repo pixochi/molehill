@@ -3,7 +3,22 @@ import {InputType, Field} from 'type-graphql';
 import UserEntity from 'src/entity/user';
 
 @InputType()
-export class UserInput implements Partial<UserEntity> {
+export class SignUpInput implements Partial<UserEntity> {
   @Field()
-  nickname: string;
+  username: string;
+
+  @Field()
+  email: string;
+
+  @Field()
+  password: string;
+}
+
+@InputType()
+export class LoginInput implements Partial<UserEntity> {
+  @Field()
+  email: string;
+
+  @Field()
+  password: string;
 }

@@ -1,5 +1,8 @@
+import gql from 'graphql-tag';
 import React from 'react';
+import {graphql, MutateProps} from 'react-apollo';
 import { Link } from 'react-router-dom';
+import {compose} from 'redux';
 import styled from 'styled-components';
 
 import ScreenCenter from 'app/components/screen-center';
@@ -11,11 +14,16 @@ const FormContainer = styled.div`
   margin-top: 16px;
 `;
 
-const Login: React.SFC = () => {
+type Props = MutateProps;
+
+const Login: React.SFC<Props> = (props) => {
 
   const onSubmit = (values: FormData) => {
-    // tslint:disable-next-line:no-console
-    console.log(values);
+    props.mutate({
+     variables: {
+      loginInput: values,
+     },
+    });
   };
 
   return (
@@ -29,4 +37,14 @@ const Login: React.SFC = () => {
   );
 };
 
-export default Login;
+export default compose(
+  graphql(gql`
+    mutation login($loginInput: LoginInput!) {
+      login(loginInput: $loginInput) {
+        id
+        username
+        email
+      }
+    }
+  `),
+)(Login);

@@ -8,7 +8,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from 'typeorm-typedi-extensions';
 
 import UserEntity from 'src/entity/user';
-import {UserInput} from 'src/graphql/resolvers/user/input';
+import {SignUpInput, LoginInput} from 'src/graphql/resolvers/user/input';
 
 @Resolver((of) => UserEntity)
 export default class UserResolver {
@@ -27,9 +27,19 @@ export default class UserResolver {
     return await this.userRepository.findOne(userId);
   }
 
+  @Mutation((returns) => UserEntity)
+  async login(@Arg('loginInput') loginInput: LoginInput): Promise<UserEntity | undefined> {
+    const foundUser = await this.userRepository.findOne({
+      email: loginInput.email,
+      password: loginInput.password,
+    });
+
+    return foundUser;
+  }
+
   @Mutation(returns => UserEntity)
-  async addUser(@Arg('user') userInput: UserInput): Promise<Partial<UserEntity>> {
-    const savedUser = await this.userRepository.save(userInput);
+  async createUser(@Arg('user') newUser: SignUpInput): Promise<Partial<UserEntity>> {
+    const savedUser = await this.userRepository.save(newUser);
     return savedUser;
   }
 }

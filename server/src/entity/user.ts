@@ -9,6 +9,14 @@ export default class User {
   readonly id: string;
 
   @Field()
+  @Column({unique: true})
+  username: string;
+
+  @Field()
+  @Column({unique: true})
+  email: string;
+
+  @Field()
   @Column()
-  nickname: string;
+  password: string;
 }

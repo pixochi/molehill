@@ -1,7 +1,11 @@
 import { createGlobalStyle  } from 'styled-components';
 import { ITheme } from './styled-components/theme';
 
-const GlobalStyle = createGlobalStyle<ITheme>`
+interface IProps {
+  theme: ITheme;
+}
+
+const GlobalStyle = createGlobalStyle`
   * {
     box-sizing: border-box;
     margin: 0;
@@ -14,7 +18,7 @@ const GlobalStyle = createGlobalStyle<ITheme>`
   }
 
   body {
-    background-color: ${props => props.theme.background};
+    background-color: ${(props: IProps) => props.theme.background};
     color: ${props => props.theme.text};
   }
 

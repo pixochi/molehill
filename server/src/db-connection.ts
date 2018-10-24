@@ -14,7 +14,7 @@ export const initDbConnection = (): Promise<TypeORM.Connection> => (
     port: 5432, // default PostgresQL port
     username: 'node_user',
     password: process.env.PGPASSWORD,
-    database: 'dragonstackdb',
+    database: 'molehilldb',
     synchronize: true,
     logger: 'advanced-console',
     logging: 'all',

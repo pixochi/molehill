@@ -6,10 +6,12 @@ import rootReducer from './root-reducer';
 
 export const history = createBrowserHistory();
 
+const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
 export default createStore(
   connectRouter(history)(rootReducer),
   {},
-  compose(
+  composeEnhancers(
     applyMiddleware(
       routerMiddleware(history),
     ),
