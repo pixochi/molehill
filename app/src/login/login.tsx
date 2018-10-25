@@ -5,8 +5,10 @@ import { Link } from 'react-router-dom';
 import {compose} from 'redux';
 import styled from 'styled-components';
 
+import { s4 } from 'app/components/styled-components/spacing';
+
 import ScreenCenter from 'app/components/screen-center';
-import { Body, Headline } from 'app/components/text';
+import { Body, Headline } from 'app/components/styled-components/text';
 
 import Form from './form';
 
@@ -32,7 +34,7 @@ const Login: React.SFC<Props> = (props) => {
       <FormContainer>
         <Form onSubmit={onSubmit}/>
       </FormContainer>
-      <Body textAlign="center">Don't have an account? <Link to="/signup">Sign up</Link></Body>
+      <Body marginTop={s4} textAlign="center">Don't have an account? <Link to="/signup">Sign up</Link></Body>
     </ScreenCenter>
   );
 };

@@ -4,8 +4,11 @@ import {graphql, MutateProps} from 'react-apollo';
 import { Link } from 'react-router-dom';
 import {compose} from 'redux';
 
+import { s2, s4 } from 'app/components/styled-components/spacing';
+
 import ScreenCenter from 'app/components/screen-center';
-import { Body, Headline } from 'app/components/text';
+import { Base } from 'app/components/styled-components/layout';
+import { Body, Headline } from 'app/components/styled-components/text';
 
 import Form, {ISignUpFormData} from './form';
 
@@ -28,9 +31,13 @@ const SignUp = (props: Props) => {
   return (
     <ScreenCenter>
       <Headline textAlign="center">Molehill</Headline>
-      <Body textAlign="center">Sign up to see what people around you are up to</Body>
-      <Form onSubmit={handleSubmit} />
-      <Body textAlign="center">Do you have an account already? <Link to="/login">Log in</Link></Body>
+      <Base marginTop={s2}>
+        <Body textAlign="center">Sign up to see what people around you are up to</Body>
+      </Base>
+      <Base marginTop={s4}>
+        <Form onSubmit={handleSubmit} />
+      </Base>
+      <Body marginTop={s4} textAlign="center">Do you have an account already? <Link to="/">Log in</Link></Body>
     </ScreenCenter>
   );
 };

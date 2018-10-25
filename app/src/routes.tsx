@@ -9,7 +9,7 @@ import SignUp from './sign-up/sign-up';
 const Routes: React.SFC = () => (
   <ConnectedRouter history={history}>
     <Switch>
-      <Route path="/login" component={Login}/>
+      <Route exact path="/" component={Login}/>
       <Route path="/signup" component={SignUp}/>
     </Switch>
   </ConnectedRouter>
