@@ -1,16 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Redirect, Route } from 'react-router-dom';
+import { Redirect, Route, RouteProps } from 'react-router-dom';
 
 import { IRootState } from 'src/redux/root-reducer';
+import { getIsLoggedIn } from './selectors';
 
 interface IStateProps {
   isLoggedIn: boolean;
 }
 
-interface IPrivateRouteProps {
-  redirectTo: string;
+interface IPrivateRouteProps extends RouteProps {
   component: React.ComponentType<any>;
+  redirectTo?: string;
 }
 
 type Props = IStateProps & IPrivateRouteProps;
@@ -23,8 +24,10 @@ class PrivateRoute extends React.PureComponent<Props> {
   }
 
   public render() {
+    const {component, ...rest} = this.props;
+
     return (
-      <Route {...this.props} render={this.renderRouteComponent} />
+      <Route {...rest} render={this.renderRouteComponent} />
     );
   }
 
@@ -33,7 +36,7 @@ class PrivateRoute extends React.PureComponent<Props> {
     const {
       isLoggedIn,
       component: RouteComponent,
-      redirectTo,
+      redirectTo = '/',
     } = this.props;
 
     return isLoggedIn ? (
@@ -44,10 +47,8 @@ class PrivateRoute extends React.PureComponent<Props> {
   }
 }
 
-const mapStateToProps = (state: IRootState) => {
+export default connect<IStateProps, {}, IPrivateRouteProps, IRootState>((state) => {
   return {
-    isLoggedIn: false,
+    isLoggedIn: getIsLoggedIn(state),
   };
-};
-
-export default connect<IStateProps, {}, IPrivateRouteProps, IRootState>(mapStateToProps)(PrivateRoute);
+})(PrivateRoute);

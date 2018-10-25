@@ -1,6 +1,6 @@
 import store from 'app/redux/store';
 
-interface IReduxAction<T> {
+export interface IReduxAction<T = any> {
   type: string;
   payload: T;
 }

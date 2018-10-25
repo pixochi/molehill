@@ -1,4 +1,3 @@
-import gql from 'graphql-tag';
 import React from 'react';
 import {graphql, MutateProps} from 'react-apollo';
 import { Link } from 'react-router-dom';
@@ -11,6 +10,7 @@ import { Base } from 'app/components/styled-components/layout';
 import { Body, Headline } from 'app/components/styled-components/text';
 
 import Form, {ISignUpFormData} from './form';
+import { signUpMutation } from './graphql';
 
 // import {signUp, signUpSuccess} from './actions';
 
@@ -43,13 +43,5 @@ const SignUp = (props: Props) => {
 };
 
 export default compose(
-  graphql(gql`
-    mutation createUser($user: SignUpInput!) {
-      createUser(user: $user) {
-        id
-        username
-        email
-      }
-    }
-  `),
+  graphql(signUpMutation),
 )(SignUp);

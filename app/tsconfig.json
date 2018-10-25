@@ -22,7 +22,8 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "paths": {
-      "app/*": ["src/*"]
+      "app/*": ["src/*"],
+      "immutable": ["./node_modules/immutable", "./node_modules/"]
     },
   },
   "exclude": [
