@@ -11,6 +11,7 @@ export interface ITheme {
   submit: string;
   text: string;
   invertedText: string;
+  error: string;
 }
 
 const Theme: ITheme = {
@@ -23,6 +24,7 @@ const Theme: ITheme = {
   shadow: 'rgba(180,180,180,0.3)',
   submit: '#0be881',
   text: '#333',
+  error: '#ff7676',
 };
 
 export default Theme;

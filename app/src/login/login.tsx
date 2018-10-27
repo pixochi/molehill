@@ -25,6 +25,10 @@ type Props = IStateProps & MutateProps;
 
 const Login: React.SFC<Props> = (props) => {
 
+  if (props.isLoggedIn) {
+    return <Redirect to="/overview" />;
+  }
+
   const onSubmit = (values: FormData) => {
     return props.mutate({
      variables: {
@@ -36,10 +40,6 @@ const Login: React.SFC<Props> = (props) => {
       }
     }).catch(e => e);
   };
-
-  if (props.isLoggedIn) {
-    return <Redirect to="/overview" />;
-  }
 
   return (
     <ScreenCenter>
@@ -56,5 +56,5 @@ export default compose(
   connect<IStateProps, {}, {}, IRootState>((state) => ({
     isLoggedIn: getIsLoggedIn(state),
   })),
-  graphql<{}, Response, FormData, Props>(loginMutation),
+  graphql<{}, Response, FormData>(loginMutation),
 )(Login);

@@ -2,6 +2,9 @@ import React from 'react';
 import { WrappedFieldProps } from 'redux-form';
 import styled from 'styled-components';
 
+import {Body} from 'app/components/styled-components/text';
+import { s2 } from '../styled-components/spacing';
+
 const StyledInput = styled.input`
   border-radius: 7px;
   padding: 8px;
@@ -18,17 +21,29 @@ const StyledInput = styled.input`
   }
 `;
 
+const InputMessage = styled(Body)`
+  color: ${props => props.theme.error};
+`;
+
 const FormInput: React.SFC<WrappedFieldProps> = (props) => {
   const {
     input,
+    meta: { touched, error, warning },
     ...rest
   } = props;
 
+  let inputMessage: string | undefined;
+  inputMessage = warning && warning;
+  inputMessage = error && error;
+
   return (
-    <StyledInput
-      {...input}
-      {...rest}
-    />
+    <>
+      <StyledInput
+        {...input}
+        {...rest}
+      />
+      {touched && <InputMessage marginTop={s2}>{inputMessage}</InputMessage>}
+    </>
   );
 };
 

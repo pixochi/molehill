@@ -1,9 +1,13 @@
 import React from 'react';
 import {graphql, MutateProps} from 'react-apollo';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import {compose} from 'redux';
+import { connect } from 'react-redux';
 
 import { s2, s4 } from 'app/components/styled-components/spacing';
+import { loginSuccess } from 'app/login/actions';
+import { IRootState } from 'app/redux/root-reducer';
+import { getIsLoggedIn } from 'app/components/private-route/selectors';
 
 import ScreenCenter from 'app/components/screen-center';
 import { Base } from 'app/components/styled-components/layout';
@@ -12,11 +16,16 @@ import { Body, Headline } from 'app/components/styled-components/text';
 import Form, {ISignUpFormData} from './form';
 import { signUpMutation } from './graphql';
 
-// import {signUp, signUpSuccess} from './actions';
-
-type Props = MutateProps;
+interface IStateProps {
+  isLoggedIn: boolean;
+}
+type Props = MutateProps & IStateProps;
 
 const SignUp = (props: Props) => {
+
+  if (props.isLoggedIn) {
+    return <Redirect to="/overview" />;
+  }
 
   const handleSubmit = (values: ISignUpFormData) => {
     const {passwordRepeat, ...newUser} = values;
@@ -25,7 +34,11 @@ const SignUp = (props: Props) => {
       variables: {
         user: newUser,
       },
-    });
+    }).then((response) => {
+      if (response) {
+        loginSuccess.dispatch(response.data.createUser);
+      }
+    }).catch(e => e);
   };
 
   return (
@@ -43,5 +56,8 @@ const SignUp = (props: Props) => {
 };
 
 export default compose(
-  graphql(signUpMutation),
+  connect<IStateProps, {}, {}, IRootState>((state) => ({
+    isLoggedIn: getIsLoggedIn(state),
+  })),
+  graphql<{}, Response, ISignUpFormData>(signUpMutation),
 )(SignUp);

@@ -56,7 +56,7 @@ export const createActions: CreateActions = (
 ): IActionSet => {
   return {
     aborted: createAction(`${actionType}_ABORTED`, abortedMapper),
-    action: createAction(`${actionType}_START`, actionMapper),
+    action: createAction(`${actionType}`, actionMapper),
     failed: createAction(`${actionType}_FAILED`, failedMapper),
     success: createAction(`${actionType}_SUCCESS`, successMapper),
   };

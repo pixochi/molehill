@@ -29,6 +29,9 @@
     "quotemark": [true, "single", "jsx-double"],
     "arrow-parens": [false],
     "jsx-boolean-value": false,
-    "no-empty": false
+    "no-empty": false,
+    "object-literal-sort-keys": false,
+    "ordered-imports": false,
+    "one-line": false
   }
 }
