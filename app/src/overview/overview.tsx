@@ -1,9 +1,13 @@
 import React from 'react';
 
+import Map from 'app/components/map/map';
+
 const Overview = (props: any) => {
 
   return (
-    <h1>Overview</h1>
+    <>
+      <Map />
+    </>
   );
 };
 

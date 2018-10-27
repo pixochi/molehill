@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ButtonHTMLAttributes } from 'react';
 import styled from 'styled-components';
 import { styledTS } from './styled-components';
 import { ITheme } from './styled-components/theme';
@@ -7,17 +7,20 @@ const getBackgroundColor = (theme: ITheme, appearance?: keyof typeof IButtonAppe
   switch (appearance) {
     case 'submit':
       return theme.submit;
+    case 'info':
+      return theme.info;
     default:
-      return 'grey';
+      return theme.invertedText;
   }
 };
 
 const getTextColor = (theme: ITheme, appearance?: keyof typeof IButtonAppearance): string => {
   switch (appearance) {
     case 'submit':
+    case 'info':
       return theme.invertedText;
     default:
-      return 'grey';
+      return theme.text;
   }
 };
 
@@ -31,6 +34,7 @@ const StyledButton = styledTS<IButtonProps>()<ITheme>(styled.button)`
   cursor: pointer;
   width: ${props => props.fullWidth ? '100%' : 'auto'};
   transition: all .2s;
+  box-shadow: 0 1px 1px ${props => props.theme.shadow};
 
   &:hover {
     box-shadow: 0 2px 2px ${props => props.theme.shadow};
@@ -40,6 +44,7 @@ const StyledButton = styledTS<IButtonProps>()<ITheme>(styled.button)`
 
 enum IButtonAppearance {
   submit = 'submit',
+  info = 'info',
 }
 
 interface IButtonProps {
@@ -48,7 +53,7 @@ interface IButtonProps {
   fullWidth?: boolean;
 }
 
-type Props = IButtonProps & Partial<HTMLButtonElement>;
+type Props = IButtonProps & Partial<ButtonHTMLAttributes<any>>;
 
 const Button: React.SFC<Props> = (props) => {
 
