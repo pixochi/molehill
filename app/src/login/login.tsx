@@ -1,5 +1,5 @@
 import React from 'react';
-import {graphql, MutateProps} from 'react-apollo';
+import {MutateProps, graphql} from 'react-apollo';
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import {compose} from 'redux';
@@ -7,6 +7,8 @@ import {compose} from 'redux';
 import { getIsLoggedIn } from 'app/components/private-route/selectors';
 import { s4 } from 'app/components/styled-components/spacing';
 import { IRootState } from 'app/redux/root-reducer';
+import withStateMutation, {IWithStateMutationProps} from 'app/components/higher-order/with-state-mutation';
+import { updateError } from 'app/components/global-event/actions';
 
 import ScreenCenter from 'app/components/screen-center';
 import { Base } from 'app/components/styled-components/layout';
@@ -21,16 +23,21 @@ interface IStateProps {
   isLoggedIn: boolean;
 }
 
-type Props = IStateProps & MutateProps;
+type Props = IStateProps & MutateProps & IWithStateMutationProps;
 
 const Login: React.SFC<Props> = (props) => {
 
-  if (props.isLoggedIn) {
+  const {
+    isLoggedIn,
+    sMutation,
+  } = props;
+
+  if (isLoggedIn) {
     return <Redirect to="/overview" />;
   }
 
   const onSubmit = (values: FormData) => {
-    return props.mutate({
+    return sMutation.mutate({
      variables: {
       loginInput: values,
      },
@@ -38,14 +45,14 @@ const Login: React.SFC<Props> = (props) => {
       if (response) {
         loginSuccess.dispatch(response.data.login);
       }
-    }).catch(e => e);
+    }).catch(e => updateError.dispatch('Invalid username/password combination.'));
   };
 
   return (
     <ScreenCenter>
       <Headline textAlign="center">Molehill</Headline>
       <Base marginTop={s4}>
-        <Form onSubmit={onSubmit}/>
+        <Form loading={sMutation.loading} onSubmit={onSubmit}/>
       </Base>
       <Body marginTop={s4} textAlign="center">Don't have an account? <Link to="/signup">Sign up</Link></Body>
     </ScreenCenter>
@@ -56,5 +63,6 @@ export default compose(
   connect<IStateProps, {}, {}, IRootState>((state) => ({
     isLoggedIn: getIsLoggedIn(state),
   })),
-  graphql<{}, Response, FormData>(loginMutation),
+  graphql(loginMutation),
+  withStateMutation(),
 )(Login);

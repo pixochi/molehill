@@ -31,18 +31,24 @@ class SimpleExample extends React.Component<{}, IStateProps> {
     super(props);
     this.geolocationSuccessCallback = this.geolocationSuccessCallback.bind(this);
     this.geolocationErrorCallback = this.geolocationErrorCallback.bind(this);
-    this.getLocation = () => navigator.geolocation.watchPosition(
-      this.geolocationSuccessCallback,
-      this.geolocationErrorCallback,
-      {enableHighAccuracy: true},
-    );
+    this.getLocation = () => {
+      if (navigator.geolocation) {
+        return navigator.geolocation.watchPosition(
+          this.geolocationSuccessCallback,
+          this.geolocationErrorCallback,
+          {enableHighAccuracy: true},
+        );
+      }
+      else {
+        this.isGeolocationAvailable = false;
+        return 0;
+      }
+    };
     this.getLocation = this.getLocation.bind(this);
+  }
 
-    if (navigator.geolocation) {
-      this.watchId = this.getLocation();
-    } else {
-      this.isGeolocationAvailable = false;
-    }
+  public componentDidMount() {
+    this.watchId = this.getLocation();
   }
 
   public componentWillMount() {

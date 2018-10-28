@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { styledTS } from './styled-components';
 import { ITheme } from './styled-components/theme';
 
+import Spinner from 'app/components/spinner';
+
 const getBackgroundColor = (theme: ITheme, appearance?: keyof typeof IButtonAppearance): string => {
   switch (appearance) {
     case 'submit':
@@ -51,15 +53,18 @@ interface IButtonProps {
   text: string;
   appearance?: keyof typeof IButtonAppearance;
   fullWidth?: boolean;
+  loading?: boolean;
 }
 
 type Props = IButtonProps & Partial<ButtonHTMLAttributes<any>>;
 
 const Button: React.SFC<Props> = (props) => {
 
+  const InnerChild = props.loading ? <Spinner /> : props.text;
+
   return (
     <StyledButton {...props}>
-      {props.text}
+      {InnerChild}
     </StyledButton>
   );
 };
