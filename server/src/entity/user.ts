@@ -6,7 +6,7 @@ import {Entity, PrimaryGeneratedColumn, Column} from 'typeorm';
 export default class User {
   @Field(() => ID)
   @PrimaryGeneratedColumn()
-  readonly id: string;
+  id: string;
 
   @Field()
   @Column({unique: true})
