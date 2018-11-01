@@ -1,16 +1,15 @@
 import {
   Resolver,
   Query,
-  Mutation,
   Arg,
+  Mutation,
 } from 'type-graphql';
 import { Repository } from 'typeorm';
 import { InjectRepository } from 'typeorm-typedi-extensions';
 
 import StatusEntity from 'src/entity/status';
-import {StatusInput} from './input';
-import { Location } from './types';
 import UserEntity from 'src/entity/user';
+import { StatusInput } from './types';
 
 @Resolver((of) => StatusEntity)
 export default class StatusResolver {
@@ -21,14 +20,14 @@ export default class StatusResolver {
 
   @Query((returns) => StatusEntity)
   async status(@Arg('id') statusId: string): Promise<StatusEntity> {
-   return await this.statusRepository.findOne(
+    return await this.statusRepository.findOne(
       {
         id: statusId,
       },
       {
         relations: ['user'],
       }
-    );
+      );
   }
 
   @Query((returns) => [StatusEntity])
@@ -53,13 +52,9 @@ export default class StatusResolver {
 
     const savedStatus = await this.statusRepository.save({
       ...newStatus,
-      location: `(${newStatus.location.x},${newStatus.location.y})` as unknown as Location,
       user,
     });
 
-    return {
-      ...savedStatus,
-      location: newStatus.location,
-    };
+    return savedStatus;
   }
 }

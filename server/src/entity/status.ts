@@ -1,12 +1,14 @@
 import {Field, ID, ObjectType} from 'type-graphql';
+import { Point } from 'geojson';
 import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, RelationId} from 'typeorm';
 
 import User from './user';
-import { Location } from 'src/graphql/resolvers/status/types';
+import { LocationInput } from 'src/graphql/resolvers/status/types';
 
 @Entity()
 @ObjectType()
 export default class Status {
+
   @Field(() => ID)
   @PrimaryGeneratedColumn()
   readonly id: string;
@@ -19,9 +21,12 @@ export default class Status {
   @Column('text')
   description: string;
 
-  @Field(() => Location)
-  @Column('point')
-  location: Location;
+  @Field(() => LocationInput)
+  @Column('geometry', {
+    spatialFeatureType: 'Point',
+    srid: 4326,
+  })
+  location: Point;
 
   @Field()
   @ManyToOne(type => User)

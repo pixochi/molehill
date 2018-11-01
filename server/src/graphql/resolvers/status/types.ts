@@ -1,12 +1,27 @@
-import { ObjectType, InputType, Field } from 'type-graphql';
-
+import { ObjectType, InputType, Field, ID, Float } from 'type-graphql';
+import StatusEntity from 'src/entity/status';
 
 @ObjectType()
-@InputType('LocationInput')
-export class Location {
+@InputType('LocationIn')
+export class LocationInput {
   @Field()
-  x: number;
+  type: 'Point';
+
+  @Field(type => [Float])
+  coordinates: number[];
+}
+
+@InputType('StatusType')
+export class StatusInput implements Partial<StatusEntity> {
+  @Field(() => ID)
+  userId: string;
 
   @Field()
-  y: number;
+  description: string;
+
+  @Field()
+  title: string;
+
+  @Field(type => LocationInput)
+  location: LocationInput;
 }
