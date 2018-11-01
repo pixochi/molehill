@@ -20,7 +20,7 @@ interface IStateProps {
   permissionAllowed?: boolean;
 }
 
-class SimpleExample extends React.Component<{}, IStateProps> {
+class StatusMap extends React.Component<{}, IStateProps> {
 
   public state: IStateProps = {};
   private watchId: number;
@@ -110,4 +110,4 @@ class SimpleExample extends React.Component<{}, IStateProps> {
   }
 }
 
-export default SimpleExample;
+export default StatusMap;
