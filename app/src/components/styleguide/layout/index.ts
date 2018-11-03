@@ -1,9 +1,9 @@
-import styled, { ThemedOuterStyledProps } from 'styled-components';
-import { FlexDirectionProperty, ContentPosition } from 'csstype';
+import { ThemedOuterStyledProps } from 'styled-components';
+import { FlexDirectionProperty, ContentPosition, StandardLonghandProperties } from 'csstype';
 
-import { styledTS } from 'app/components/styled-components';
-import {Spacing} from 'app/components/styled-components/spacing';
-import { ITheme } from 'app/components/styled-components/theme';
+import styled from 'app/components/styleguide';
+import {Spacing} from 'app/components/styleguide/spacing';
+import { ITheme } from 'app/components/styleguide/theme';
 import { DOMAttributes } from 'react';
 
 export interface IBaseLayoutProps {
@@ -20,11 +20,13 @@ export interface IBaseLayoutProps {
   padding?: Spacing;
 
   clickable?: boolean;
+
+  grow?: StandardLonghandProperties['flexGrow'];
 }
 
 type BasePropsWithTheme<T = {}> = ThemedOuterStyledProps<IBaseLayoutProps & DOMAttributes<any> & T, ITheme>;
 
-export const Base = styledTS<BasePropsWithTheme>()(styled.div)`
+export const Base = styled.div<BasePropsWithTheme>`
   margin-top: ${props => props.marginTop || props.margin};
   margin-bottom: ${props => props.marginBottom || props.margin};
   margin-left: ${props => props.marginLeft || props.margin};
@@ -35,6 +37,8 @@ export const Base = styledTS<BasePropsWithTheme>()(styled.div)`
   padding-left: ${props => props.paddingLeft || props.padding};
   padding-right: ${props => props.paddingRight || props.padding};
 
+  flex-grow: ${props => props.grow};
+
   cursor: ${props => props.clickable ? 'pointer' : ''};
 `;
 
@@ -44,7 +48,7 @@ interface IFlexProps {
   align?: ContentPosition;
 }
 
-export const Flex =  styledTS<BasePropsWithTheme<IFlexProps>>()(styled(Base))`
+export const Flex =  styled(Base)<BasePropsWithTheme<IFlexProps>>`
   display: flex;
   flex-direction: ${props => props.direction};
   justify-content: ${props => props.justify};

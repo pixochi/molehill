@@ -1,5 +1,5 @@
 import { createGlobalStyle  } from 'styled-components';
-import { ITheme } from './styled-components/theme';
+import { ITheme } from './styleguide/theme';
 
 interface IProps {
   theme: ITheme;

@@ -3,7 +3,7 @@ import { ApolloProvider } from 'react-apollo';
 import { Provider } from 'react-redux';
 import {ThemeProvider} from 'styled-components';
 
-import theme from 'app/components/styled-components/theme';
+import theme from 'app/components/styleguide/theme';
 import store from './redux/store';
 import client from './graphql-client';
 

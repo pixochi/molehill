@@ -1,18 +1,16 @@
-import styled, { ThemedOuterStyledProps } from 'styled-components';
-
-import { styledTS } from 'app/components/styled-components';
-import {Base as BaseLayout, IBaseLayoutProps} from 'app/components/styled-components/layout';
-import { ITheme } from 'app/components/styled-components/theme';
+import styled from 'app/components/styleguide';
+import {Base as BaseLayout, IBaseLayoutProps} from 'app/components/styleguide/layout';
 import { DOMAttributes } from 'react';
 
 interface IBaseTextProps {
   textAlign?: 'left' | 'right' | 'center' | 'justify';
   inverted?: boolean;
+  as?: string;
 }
 
 type BaseProps = IBaseTextProps & IBaseLayoutProps & DOMAttributes<any>;
 
-const BaseText = styledTS<ThemedOuterStyledProps<BaseProps, ITheme>>()<ITheme>(styled(BaseLayout))`
+const BaseText = styled(BaseLayout)<BaseProps>`
   text-align: ${props => props.textAlign};
   color: ${props => props.inverted ? props.theme.invertedText : props.theme.text};
 `;

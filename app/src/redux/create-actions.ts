@@ -32,17 +32,15 @@ type CreateAction = (type: string, mapper?: ActionArgsMapper) => IAction;
 
 const createAction: CreateAction = (type, mapper) => {
 
-  const getActionPayload = (...args: any) => mapper ? mapper(args) : args;
+  const getActionPayload = (...args: any) => mapper ? mapper(...args) : args;
+  const getActionContent = (...args: any) => ({
+    payload: getActionPayload(...args),
+    type,
+  });
 
   return {
-    action: (...args) => ({
-      payload: getActionPayload(...args),
-      type,
-    }),
-    dispatch: (...args) => store.dispatch({
-      payload: getActionPayload(...args),
-      type,
-    }),
+    action: (...args) => getActionContent(...args),
+    dispatch: (...args) => store.dispatch(getActionContent(...args)),
     type,
   };
 };
@@ -55,9 +53,9 @@ export const createActions: CreateActions = (
   abortedMapper?: ActionArgsMapper,
 ): IActionSet => {
   return {
-    aborted: createAction(`${actionType}_ABORTED`, abortedMapper),
     action: createAction(`${actionType}`, actionMapper),
-    failed: createAction(`${actionType}_FAILED`, failedMapper),
     success: createAction(`${actionType}_SUCCESS`, successMapper),
+    failed: createAction(`${actionType}_FAILED`, failedMapper),
+    aborted: createAction(`${actionType}_ABORTED`, abortedMapper),
   };
 };

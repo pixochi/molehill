@@ -4,14 +4,14 @@ import { Link, Redirect } from 'react-router-dom';
 import {compose} from 'redux';
 import { connect } from 'react-redux';
 
-import { s2, s4 } from 'app/components/styled-components/spacing';
+import { s2, s4 } from 'app/components/styleguide/spacing';
 import { loginSuccess } from 'app/login/actions';
 import { IRootState } from 'app/redux/root-reducer';
 import { getIsLoggedIn } from 'app/components/private-route/selectors';
 
 import ScreenCenter from 'app/components/screen-center';
-import { Base } from 'app/components/styled-components/layout';
-import { Body, Headline } from 'app/components/styled-components/text';
+import { Base } from 'app/components/styleguide/layout';
+import { Body, Headline } from 'app/components/styleguide/text';
 
 import Form, {ISignUpFormData} from './form';
 import { signUpMutation } from './graphql';

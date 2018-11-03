@@ -1,6 +1,7 @@
 import React from 'react';
 import { BaseFieldProps, Field, WrappedFieldProps } from 'redux-form';
-import styled from 'styled-components';
+
+import styled from 'app/components/styleguide';
 
 const FieldContainer = styled.div`
   margin: 8px 0;

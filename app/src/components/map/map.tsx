@@ -1,12 +1,13 @@
 import React from 'react';
 import { Map as LeafletMap, TileLayer, Marker, Popup } from 'react-leaflet';
-import styled from 'styled-components';
 import { LatLng } from 'leaflet';
 
-import { Title } from 'app/components/styled-components/text';
+import styled from 'app/components/styleguide';
+import { s4 } from 'app/components/styleguide/spacing';
+
+import { Flex, Base } from 'app/components/styleguide/layout';
 import Button from 'app/components/button';
-import { Flex, Base } from 'app/components/styled-components/layout';
-import { s4 } from 'app/components/styled-components/spacing';
+import { Title } from 'app/components/styleguide/text';
 
 const StyledMap = styled(LeafletMap)`
   height: 80vh;

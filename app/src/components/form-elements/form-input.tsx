@@ -1,9 +1,10 @@
 import React from 'react';
 import { WrappedFieldProps } from 'redux-form';
-import styled from 'styled-components';
 
-import {Body} from 'app/components/styled-components/text';
-import { s2 } from '../styled-components/spacing';
+import styled from 'app/components/styleguide';
+import { s2 } from '../styleguide/spacing';
+
+import {Body} from 'app/components/styleguide/text';
 
 const StyledInput = styled.input`
   border-radius: 7px;

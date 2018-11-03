@@ -1,7 +1,7 @@
 import React, { ButtonHTMLAttributes } from 'react';
-import styled from 'styled-components';
-import { styledTS } from './styled-components';
-import { ITheme } from './styled-components/theme';
+
+import { ITheme } from './styleguide/theme';
+import styled from 'app/components/styleguide';
 
 import Spinner from 'app/components/spinner';
 
@@ -11,6 +11,8 @@ const getBackgroundColor = (theme: ITheme, appearance?: keyof typeof IButtonAppe
       return theme.submit;
     case 'info':
       return theme.info;
+    case 'neutral':
+      return theme.textDisabled;
     default:
       return theme.invertedText;
   }
@@ -20,13 +22,14 @@ const getTextColor = (theme: ITheme, appearance?: keyof typeof IButtonAppearance
   switch (appearance) {
     case 'submit':
     case 'info':
+    case 'neutral':
       return theme.invertedText;
     default:
       return theme.text;
   }
 };
 
-const StyledButton = styledTS<IButtonProps>()<ITheme>(styled.button)`
+const StyledButton = styled.button<IButtonProps>`
   background-color: ${props => getBackgroundColor(props.theme, props.appearance)};
   color: ${props => getTextColor(props.theme, props.appearance)};
   padding: 8px 16px;
@@ -40,13 +43,14 @@ const StyledButton = styledTS<IButtonProps>()<ITheme>(styled.button)`
 
   &:hover {
     box-shadow: 0 2px 2px ${props => props.theme.shadow};
-    filter: brightness(90%);
+    filter: brightness(97%);
   }
 `;
 
 enum IButtonAppearance {
   submit = 'submit',
   info = 'info',
+  neutral = 'neutral',
 }
 
 interface IButtonProps {

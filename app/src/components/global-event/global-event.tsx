@@ -1,15 +1,13 @@
 import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import styled from 'styled-components';
 
 import { IRootState } from 'app/redux/root-reducer';
-import { styledTS } from '../styled-components';
-import { ITheme } from '../styled-components/theme';
-import { s2 } from '../styled-components/spacing';
+import styled from 'app/components/styleguide';
+import { s2 } from '../styleguide/spacing';
 
-import { Body, Title } from '../styled-components/text';
-import {Flex} from '../styled-components/layout';
+import { Body, Title } from '../styleguide/text';
+import {Flex} from '../styleguide/layout';
 
 import {IGlobalEvent, GlobaEventType} from './reducer';
 import {eventMessage, eventType} from './selectors';
@@ -25,7 +23,7 @@ interface IEventContainerProps {
   eventType: GlobaEventType;
 }
 
-const GlobalEventContainer = styledTS<IEventContainerProps>()<ITheme>(styled.div)`
+const GlobalEventContainer = styled.div<IEventContainerProps>`
   position: absolute;
   top: 40px;
   right: 40px;

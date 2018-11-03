@@ -1,5 +1,6 @@
 import React from 'react';
-import styled from 'styled-components';
+
+import styled from 'app/components/styleguide';
 
 const Container = styled.div`
   position: absolute;
