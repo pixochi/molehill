@@ -14,7 +14,7 @@ import ScreenCenter from 'app/components/screen-center';
 import { Base } from 'app/components/styleguide/layout';
 import { Body, Headline } from 'app/components/styleguide/text';
 
-import Form from './form';
+import Form, { IFormData } from './form';
 
 import { loginSuccess } from './actions';
 import { loginMutation } from './graphql';
@@ -25,39 +25,50 @@ interface IStateProps {
 
 type Props = IStateProps & MutateProps & IWithStateMutationProps;
 
-const Login: React.SFC<Props> = (props) => {
+class Login extends React.PureComponent<Props> {
 
-  const {
-    isLoggedIn,
-    sMutation,
-  } = props;
-
-  if (isLoggedIn) {
-    return <Redirect to="/overview" />;
+  constructor(props: Props) {
+    super(props);
+    this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
   }
 
-  const onSubmit = (values: FormData) => {
+  public render() {
+    const {
+      isLoggedIn,
+      sMutation,
+    } = this.props;
+
+    if (isLoggedIn) {
+      return <Redirect to="/overview" />;
+    }
+
+    return (
+      <ScreenCenter>
+        <Headline textAlign="center">Molehill</Headline>
+        <Base marginTop={s4}>
+          <Form loading={sMutation.loading} onSubmit={this.handleLoginSubmit}/>
+        </Base>
+        <Body marginTop={s4} textAlign="center">Don't have an account? <Link to="/signup">Sign up</Link></Body>
+      </ScreenCenter>
+    );
+  }
+
+  private handleLoginSubmit(values: IFormData) {
+    const {
+      sMutation,
+    } = this.props;
+
     return sMutation.mutate({
-     variables: {
+      variables: {
       loginInput: values,
-     },
+      },
     }).then(response => {
       if (response) {
         loginSuccess.dispatch(response.data.login);
       }
     }).catch(e => updateError.dispatch('Invalid username/password combination.'));
-  };
-
-  return (
-    <ScreenCenter>
-      <Headline textAlign="center">Molehill</Headline>
-      <Base marginTop={s4}>
-        <Form loading={sMutation.loading} onSubmit={onSubmit}/>
-      </Base>
-      <Body marginTop={s4} textAlign="center">Don't have an account? <Link to="/signup">Sign up</Link></Body>
-    </ScreenCenter>
-  );
-};
+  }
+}
 
 export default compose(
   connect<IStateProps, {}, {}, IRootState>((state) => ({

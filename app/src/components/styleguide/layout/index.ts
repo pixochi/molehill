@@ -1,5 +1,10 @@
 import { ThemedOuterStyledProps } from 'styled-components';
-import { FlexDirectionProperty, ContentPosition, StandardLonghandProperties } from 'csstype';
+import {
+  FlexDirectionProperty,
+  StandardLonghandProperties,
+  JustifyContentProperty,
+  AlignContentProperty,
+} from 'csstype';
 
 import styled from 'app/components/styleguide';
 import {Spacing} from 'app/components/styleguide/spacing';
@@ -44,8 +49,8 @@ export const Base = styled.div<BasePropsWithTheme>`
 
 interface IFlexProps {
   direction?: FlexDirectionProperty;
-  justify?: ContentPosition;
-  align?: ContentPosition;
+  justify?: JustifyContentProperty;
+  align?: AlignContentProperty;
 }
 
 export const Flex =  styled(Base)<BasePropsWithTheme<IFlexProps>>`

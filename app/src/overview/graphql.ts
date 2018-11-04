@@ -25,3 +25,11 @@ export const statusesInRadius = gql`
     }
   }
 `;
+
+export const addStatusMutation = gql`
+  mutation addStatus($status: StatusInput!) {
+    addStatus(status: $status) {
+      id
+    }
+  }
+`;

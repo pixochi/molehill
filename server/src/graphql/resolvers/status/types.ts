@@ -11,16 +11,16 @@ export class LocationInput {
   coordinates: number[];
 }
 
-@InputType('StatusType')
+@InputType()
 export class StatusInput implements Partial<StatusEntity> {
   @Field(() => ID)
   userId: string;
 
   @Field()
-  description: string;
-
-  @Field()
   title: string;
+
+  @Field({nullable: true})
+  description: string;
 
   @Field(type => LocationInput)
   location: LocationInput;

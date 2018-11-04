@@ -1,4 +1,6 @@
 import { createGlobalStyle  } from 'styled-components';
+import 'typeface-roboto';
+
 import { ITheme } from './styleguide/theme';
 
 interface IProps {
@@ -20,6 +22,7 @@ const GlobalStyle = createGlobalStyle`
   body {
     background-color: ${(props: IProps) => props.theme.background};
     color: ${props => props.theme.text};
+    font-family: 'Roboto', sans-serif;
   }
 
   a {

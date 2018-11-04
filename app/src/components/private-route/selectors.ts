@@ -1,4 +1,8 @@
-import { IRootState } from 'app/redux/root-reducer';
+import { createSelector } from 'reselect';
 
-export const getIsLoggedIn = (state: IRootState): boolean =>
-  Boolean(state.login.user && state.login.user.id);
+import { getUserId } from 'app/login/selectos';
+
+export const getIsLoggedIn = createSelector(
+  getUserId,
+  (userId): boolean => Boolean(userId),
+);

@@ -5,6 +5,7 @@ import { DOMAttributes } from 'react';
 interface IBaseTextProps {
   textAlign?: 'left' | 'right' | 'center' | 'justify';
   inverted?: boolean;
+  emphasized?: boolean;
   as?: string;
 }
 
@@ -13,6 +14,7 @@ type BaseProps = IBaseTextProps & IBaseLayoutProps & DOMAttributes<any>;
 const BaseText = styled(BaseLayout)<BaseProps>`
   text-align: ${props => props.textAlign};
   color: ${props => props.inverted ? props.theme.invertedText : props.theme.text};
+  font-weight: ${props => props.emphasized ? 600 : 400};
 `;
 
 export const Headline = styled(BaseText).attrs({

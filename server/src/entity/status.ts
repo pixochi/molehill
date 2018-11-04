@@ -18,7 +18,7 @@ export default class Status {
   title: string;
 
   @Field()
-  @Column('text')
+  @Column('text', {nullable: true})
   description: string;
 
   @Field(() => LocationInput)

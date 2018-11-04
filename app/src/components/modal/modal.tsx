@@ -11,6 +11,7 @@ import { s4 } from '../styleguide/spacing';
 
 import Button from '../button';
 import { Base, Flex } from '../styleguide/layout';
+import { Title } from '../styleguide/text';
 
 const ModalContainer = styled.div`
   position: fixed;
@@ -20,16 +21,35 @@ const ModalContainer = styled.div`
   right: 0;
   z-index: 9999;
   background-color: ${props => props.theme.shadowStrong};
-  `;
+`;
 
 const ModalContent = styled(Base)`
   background-color: ${props => props.theme.invertedText};
   border-radius: 7px;
 `;
 
+const ModalHeader = styled(Flex).attrs({
+  justify: 'space-between',
+  align: 'center',
+})`
+
+`;
+
+const CloseModalButton = styled(Button)`
+  font-weight: 600;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px ${props => props.theme.shadowStrong};
+  padding: 4px 12px;
+
+  & > * {
+    transform: rotate(45deg);
+    font-size: 28px;
+  }
+`;
+
 interface IModalProps {
   id: ModalIds;
-  cancelButtonText?: string;
+  headerTitle?: string;
 }
 
 interface IStateProps {
@@ -47,28 +67,32 @@ class Modal extends React.PureComponent<Props> {
 
   public render() {
       const {
-        cancelButtonText,
         children,
         isOpen,
+        headerTitle,
       } = this.props;
 
       if (!isOpen) {
         return null;
       }
 
+      const headerTitleElement = headerTitle ? <Title emphasized>{headerTitle}</Title> : null;
+
       return (
         <ModalContainer>
           <ModalContent margin={s4} padding={s4}>
-            <>
-              {children}
+            <ModalHeader>
+              {headerTitleElement}
               <Flex justify="flex-end">
-                <Button
-                  appearance="neutral"
-                  text={cancelButtonText ? cancelButtonText : 'Close'}
+                <CloseModalButton
+                  text="+"
                   onClick={this.handleCancelButtonClick}
                 />
               </Flex>
-            </>
+            </ModalHeader>
+            <Base marginTop={s4}>
+              {children}
+            </Base>
           </ModalContent>
         </ModalContainer>
       );

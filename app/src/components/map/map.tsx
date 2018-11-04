@@ -1,29 +1,43 @@
 import React from 'react';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
 import { Map as LeafletMap, TileLayer, Marker, Popup } from 'react-leaflet';
-import { LatLng } from 'leaflet';
 
 import styled from 'app/components/styleguide';
 import { s4 } from 'app/components/styleguide/spacing';
+import { IRootState } from 'app/redux/root-reducer';
 
-import { Flex, Base } from 'app/components/styleguide/layout';
-import Button from 'app/components/button';
 import { Title } from 'app/components/styleguide/text';
+
+import { getPermissionAllowed, getCoordinates } from './selectors';
+import { setLocation, blockLocation } from './actions';
+import LocationErrorInfo from './location-error-info';
 
 const StyledMap = styled(LeafletMap)`
   height: 80vh;
   max-height: 500px;
 `;
 
-interface IStateProps {
-  lat?: number;
-  lng?: number;
+interface IStatusMapProps {
   zoom?: number;
-  permissionAllowed?: boolean;
 }
 
-class StatusMap extends React.Component<{}, IStateProps> {
+interface IStateProps {
+  permissionAllowed: boolean;
+  coordinates: {
+    lat?: number,
+    lng?: number,
+  };
+}
 
-  public state: IStateProps = {};
+type Props = IStatusMapProps & IStateProps;
+
+class StatusMap extends React.Component<Props> {
+
+  public static defaultProps = {
+    zoom: 13,
+  };
+
   private watchId: number;
   private isGeolocationAvailable: boolean = true;
   private getLocation: () => number;
@@ -59,29 +73,42 @@ class StatusMap extends React.Component<{}, IStateProps> {
   }
 
   public render() {
+    const {
+      coordinates,
+      zoom,
+      permissionAllowed,
+    } = this.props;
 
     if (!this.isGeolocationAvailable) {
       return <Title padding={s4}>Your browser does not support geolocation.</Title>;
     }
 
-    if (!this.state.permissionAllowed) {
+    if (!permissionAllowed) {
       return (
-        <Flex direction="column" align="center" padding={s4}>
-          <Title textAlign="center">If you want to see statuses near you, you need to enable location.</Title>
-          <Base marginTop={s4}>
-            <Button text="Enable location" appearance="info" onClick={this.getLocation}/>
-          </Base>
-        </Flex>
+       <LocationErrorInfo
+          infoMessage="If you want to see statuses near you, you need to enable location."
+          ctaText="Enable location"
+          onCtaClick={this.getLocation}
+       />
+      );
+    }
+    else if (coordinates.lat === undefined || coordinates.lng === undefined) {
+      return (
+        <LocationErrorInfo
+          infoMessage="Failed to get your location."
+          ctaText="Retry"
+          onCtaClick={this.getLocation}
+        />
       );
     }
 
     const position = {
-      lat: this.state.lat,
-      lng: this.state.lng,
-    } as LatLng;
+      lat: coordinates.lat,
+      lng: coordinates.lng,
+    };
 
     return (
-      <StyledMap center={position} zoom={this.state.zoom}>
+      <StyledMap center={position} zoom={zoom}>
         <TileLayer
           attribution="&copy; <a href='http://osm.org/copyright'>OpenStreetMap</a> contributors"
           url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
@@ -96,19 +123,18 @@ class StatusMap extends React.Component<{}, IStateProps> {
   }
 
   private geolocationSuccessCallback(position: Position) {
-    this.setState({
-      lat: position.coords.latitude,
-      lng: position.coords.longitude,
-      zoom: 13,
-      permissionAllowed: true,
-    });
+    const {latitude, longitude} = position.coords;
+    setLocation.dispatch(latitude, longitude);
   }
 
   private geolocationErrorCallback(position: PositionError) {
-    this.setState({
-      permissionAllowed: false,
-    });
+    blockLocation.dispatch();
   }
 }
 
-export default StatusMap;
+export default compose(
+  connect<IStateProps, {}, IStatusMapProps, IRootState>((state) => ({
+    permissionAllowed: getPermissionAllowed(state),
+    coordinates: getCoordinates(state),
+  })),
+)(StatusMap);

@@ -4,6 +4,7 @@ import { ITheme } from './styleguide/theme';
 import styled from 'app/components/styleguide';
 
 import Spinner from 'app/components/spinner';
+import {Body} from 'app/components/styleguide/text';
 
 const getBackgroundColor = (theme: ITheme, appearance?: keyof typeof IButtonAppearance): string => {
   switch (appearance) {
@@ -31,8 +32,7 @@ const getTextColor = (theme: ITheme, appearance?: keyof typeof IButtonAppearance
 
 const StyledButton = styled.button<IButtonProps>`
   background-color: ${props => getBackgroundColor(props.theme, props.appearance)};
-  color: ${props => getTextColor(props.theme, props.appearance)};
-  padding: 8px 16px;
+  padding: 12px 16px;
   font-size: 20px;
   border-radius: 7px;
   border: none;
@@ -44,6 +44,15 @@ const StyledButton = styled.button<IButtonProps>`
   &:hover {
     box-shadow: 0 2px 2px ${props => props.theme.shadow};
     filter: brightness(97%);
+  }
+
+  &:active {
+    box-shadow: 0 4px 2px ${props => props.theme.shadow};
+    filter: brightness(93%);
+  }
+
+  ${Body} {
+    color: ${props => getTextColor(props.theme, props.appearance)};
   }
 `;
 
@@ -64,7 +73,7 @@ type Props = IButtonProps & Partial<ButtonHTMLAttributes<any>>;
 
 const Button: React.SFC<Props> = (props) => {
 
-  const InnerChild = props.loading ? <Spinner /> : props.text;
+  const InnerChild = props.loading ? <Spinner /> : <Body>{props.text}</Body>;
 
   return (
     <StyledButton {...props}>

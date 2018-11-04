@@ -9,26 +9,27 @@ import FormInput from 'app/components/form-elements/form-input';
 import { IFormProps } from 'app/components/form-elements/typings';
 
 export interface IFormData {
-  email: string;
-  password: string;
+  title: string;
+  description: string;
 }
 
 type Props = InjectedFormProps<IFormData> & IFormProps;
 
-const LoginForm: React.SFC<Props> = props => {
+const AddStatusForm: React.SFC<Props> = props => {
   const { handleSubmit, loading } = props;
 
   return (
     <Form onSubmit={handleSubmit}>
-        <FormField required name="email" component={FormInput} placeholder="Email address" />
-        <FormField required name="password" component={FormInput} type="password" placeholder="Password" />
-        <Button loading={loading} text="Log in" type="submit" appearance="submit" fullWidth={true} />
+        <FormField required name="title" component={FormInput} placeholder="Title" />
+        <FormField name="description" component={FormInput} placeholder="Description" />
+        <FormField name="location" component={FormInput} placeholder="Location" />
+        <Button loading={loading} text="+ Add" type="submit" appearance="submit" fullWidth={true} />
     </Form>
   );
 };
 
 export default compose<React.ComponentType<IFormProps>>(
   reduxForm({
-    form: 'LOGIN_FORM',
+    form: 'ADD_STATUS_FORM',
   }),
-)(LoginForm);
+)(AddStatusForm);
