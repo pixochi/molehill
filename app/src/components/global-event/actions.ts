@@ -1,17 +1,26 @@
 import {createActions} from 'app/redux/create-actions';
 
-const domain = 'GLOBAL_EVENT';
+import { GlobaEventType } from './constants';
+
+export const GLOBAL_EVENT_ACTION_TYPE = 'GLOBAL_EVENT';
+
+const makeGlobalEventAction = (eventType: GlobaEventType) =>
+  createActions(
+    GLOBAL_EVENT_ACTION_TYPE,
+    (message: string, sticky?: boolean) => ({message, sticky, type: eventType}),
+  );
 
 export const {
   action: updateError,
-} = createActions(
-  `${domain}/ERROR`,
-  (message: string) => ({message}),
-);
+} = makeGlobalEventAction(GlobaEventType.ERROR);
+
+export const {
+  action: updateSuccess,
+} = makeGlobalEventAction(GlobaEventType.SUCCESS);
 
 export const {
   action: dismissEvent,
 } = createActions(
-  `${domain}/DISMISS`,
+  `${GLOBAL_EVENT_ACTION_TYPE}/DISMISS`,
   () => null,
 );

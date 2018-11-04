@@ -9,15 +9,18 @@ import { s2 } from '../styleguide/spacing';
 import { Body, Title } from '../styleguide/text';
 import {Flex} from '../styleguide/layout';
 
-import {IGlobalEvent, GlobaEventType} from './reducer';
-import {eventMessage, eventType} from './selectors';
+import {IGlobalEvent} from './reducer';
+import {getGlobalEvent} from './selectors';
 import {dismissEvent} from './actions';
+import { GlobaEventType } from './constants';
 
 const DismissButton = styled(Title)`
-transform: rotate(45deg);
+  transform: rotate(45deg);
 `;
 
-type StateProps = IGlobalEvent;
+interface IStateProps {
+  globalEvent: IGlobalEvent;
+}
 
 interface IEventContainerProps {
   eventType: GlobaEventType;
@@ -28,23 +31,29 @@ const GlobalEventContainer = styled.div<IEventContainerProps>`
   top: 40px;
   right: 40px;
   border-radius: 7px;
-  padding: 8px 16px;
-  background-color: ${props => {
+  padding: 12px 16px;
+  z-index: 9998;
+  background: ${props => {
     if (props.eventType === GlobaEventType.SUCCESS) {
-      return props.theme.submit;
+      return `linear-gradient(to bottom right, ${props.theme.submitLight}, ${props.theme.submitDark})`;
     }
     else if (props.eventType === GlobaEventType.ERROR) {
-      return props.theme.error;
+      return `linear-gradient(to bottom right, ${props.theme.errorLight}, ${props.theme.errorDark})`;
     }
     return;
   }};
 `;
 
-const GlobalEvent: React.SFC<StateProps> = (props) => {
+const GlobalEvent: React.SFC<IStateProps> = (props) => {
+  const {
+    globalEvent,
+  } = props;
+
   const {
     message,
     type,
-  } = props;
+    sticky,
+  } = globalEvent;
 
   if (!message || !type) {
     return null;
@@ -56,15 +65,16 @@ const GlobalEvent: React.SFC<StateProps> = (props) => {
         <Body inverted>
           {message}
         </Body>
-        <DismissButton onClick={dismissEvent.dispatch} clickable inverted marginLeft={s2}>+</DismissButton>
+        {sticky && (
+          <DismissButton onClick={dismissEvent.dispatch} clickable inverted marginLeft={s2}>+</DismissButton>
+        )}
       </Flex>
     </GlobalEventContainer>
   );
 };
 
 export default compose<React.ComponentType>(
-  connect<StateProps, {}, {}, IRootState>((state) => ({
-    message: eventMessage(state),
-    type: eventType(state),
+  connect<IStateProps, {}, {}, IRootState>((state) => ({
+    globalEvent: getGlobalEvent(state),
   })),
 )(GlobalEvent);
