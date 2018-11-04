@@ -5,7 +5,7 @@ import { IReduxAction } from 'app/redux/create-actions';
 import * as Actions from './actions';
 
 interface IUser {
-  id: string;
+  id: string | null;
 }
 
 export class LoginState extends Record<{
