@@ -13,15 +13,17 @@ import withStateMutation, { IWithStateMutationProps } from 'app/components/highe
 import { openModal, closeModal } from 'app/components/modal/actions';
 import { IRootState } from 'app/redux/root-reducer';
 import { getUserId } from 'app/login/selectos';
-import { getCoordinates, ICoordinates } from 'app/components/map/selectors';
+import { getCoordinates, UserCoordinates } from 'app/components/map/selectors';
 import { updateSuccess, updateError } from 'app/components/global-event/actions';
 
-import {statusesInRadius, addStatusMutation} from './graphql';
+import {addStatusMutation, statusesInRadius} from './graphql';
 import AddStatusForm, { IFormData } from './add-status-form';
+
+const RADIUS = 20; // km
 
 interface IStateProps {
   userId: string | null;
-  coordinates: ICoordinates;
+  coordinates: UserCoordinates;
 }
 
 type Props = IStateProps & MutateProps & IWithStateMutationProps;
@@ -37,12 +39,13 @@ class Overview extends React.PureComponent<Props> {
   public render() {
     const {
       sMutation,
+      coordinates,
     } = this.props;
 
     return (
       <Flex direction="column">
         <Base grow={1}>
-          <Map />
+          <Map userCoordinates={coordinates}/>
         </Base>
         <Button text="+ Add" fullWidth onClick={this.handleOpenAddStatus} />
         <Modal id={ModalIds.addNewStatus} headerTitle="Add status">
@@ -57,9 +60,6 @@ class Overview extends React.PureComponent<Props> {
   }
 
   private handleAddStatus(values: IFormData) {
-    // tslint:disable-next-line:no-console
-    console.log({values});
-
     const {
       sMutation,
       userId,
@@ -72,15 +72,24 @@ class Overview extends React.PureComponent<Props> {
           ...values,
           location: {
             type: 'Point',
-            coordinates: [coordinates.lat, coordinates.lng],
+            coordinates: [
+              Number(coordinates.lat) + Math.random() / 5000,
+              Number(coordinates.lng) + Math.random() / 5000,
+            ], // TODO: remove random() and check if userCoordinates are available
           },
           userId,
         },
       },
+      refetchQueries: [{
+        query: statusesInRadius,
+        variables: {
+          radius: RADIUS,
+          latitude: coordinates.lat,
+          longitude: coordinates.lng,
+        },
+      }],
     }).then(response => {
       if (response) {
-        // tslint:disable-next-line:no-console
-        console.log({data: response.data});
         closeModal.dispatch(ModalIds.addNewStatus);
         if (!response.data) {
           throw new Error();
@@ -96,15 +105,6 @@ export default compose(
     userId: getUserId(state),
     coordinates: getCoordinates(state),
   })),
-  graphql(statusesInRadius, {
-    options: {
-      variables: {
-        radius: 50,
-        latitude: 55,
-        longitude: 66,
-      },
-    },
-  }),
   graphql(addStatusMutation),
   withStateMutation(),
 )(Overview);

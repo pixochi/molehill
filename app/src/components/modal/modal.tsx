@@ -21,6 +21,8 @@ const ModalContainer = styled.div`
   right: 0;
   z-index: 9999;
   background-color: ${props => props.theme.shadowStrong};
+  height: 100%;
+  overflow-y: auto;
 `;
 
 const ModalContent = styled(Base)`

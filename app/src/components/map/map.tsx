@@ -1,17 +1,21 @@
 import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+import { graphql, DataProps } from 'react-apollo';
 import { Map as LeafletMap, TileLayer, Marker, Popup } from 'react-leaflet';
+import { Point } from 'geojson';
 
 import styled from 'app/components/styleguide';
 import { s4 } from 'app/components/styleguide/spacing';
 import { IRootState } from 'app/redux/root-reducer';
+import { statusesInRadius } from 'app/overview/graphql';
 
 import { Title } from 'app/components/styleguide/text';
 
-import { getPermissionAllowed, getCoordinates } from './selectors';
+import { getPermissionAllowed, UserCoordinates } from './selectors';
 import { setLocation, blockLocation } from './actions';
 import LocationErrorInfo from './location-error-info';
+import UserIcon from './user-leaflet-icon';
 
 const StyledMap = styled(LeafletMap)`
   height: 80vh;
@@ -19,18 +23,16 @@ const StyledMap = styled(LeafletMap)`
 `;
 
 interface IStatusMapProps {
+  userCoordinates: UserCoordinates;
   zoom?: number;
 }
 
 interface IStateProps {
   permissionAllowed: boolean;
-  coordinates: {
-    lat?: number,
-    lng?: number,
-  };
+  // statuses: IStatus[];
 }
 
-type Props = IStatusMapProps & IStateProps;
+type Props = IStatusMapProps & IStateProps & DataProps<{statusesInRadius: IStatusResponse[]}>;
 
 class StatusMap extends React.Component<Props> {
 
@@ -74,7 +76,8 @@ class StatusMap extends React.Component<Props> {
 
   public render() {
     const {
-      coordinates,
+      userCoordinates,
+      data,
       zoom,
       permissionAllowed,
     } = this.props;
@@ -92,7 +95,7 @@ class StatusMap extends React.Component<Props> {
        />
       );
     }
-    else if (coordinates.lat === undefined || coordinates.lng === undefined) {
+    else if (userCoordinates.lat === undefined || userCoordinates.lng === undefined) {
       return (
         <LocationErrorInfo
           infoMessage="Failed to get your location."
@@ -102,22 +105,35 @@ class StatusMap extends React.Component<Props> {
       );
     }
 
-    const position = {
-      lat: coordinates.lat,
-      lng: coordinates.lng,
+    const userPosition = {
+      lat: userCoordinates.lat,
+      lng: userCoordinates.lng,
     };
 
     return (
-      <StyledMap center={position} zoom={zoom}>
+      <StyledMap center={userPosition} zoom={zoom}>
         <TileLayer
           attribution="&copy; <a href='http://osm.org/copyright'>OpenStreetMap</a> contributors"
           url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
         />
-        <Marker position={position}>
+        <Marker position={userPosition} icon={UserIcon}>
           <Popup>
             You are here.
           </Popup>
         </Marker>
+        {data.statusesInRadius && data.statusesInRadius.map(status => (
+          <Marker
+            key={status.id}
+            position={{
+              lat: status.location.coordinates[0],
+              lng: status.location.coordinates[1],
+            }}
+          >
+            <Popup>
+              {status.title}
+            </Popup>
+          </Marker>
+        ))}
       </StyledMap>
     );
   }
@@ -132,9 +148,26 @@ class StatusMap extends React.Component<Props> {
   }
 }
 
-export default compose(
+interface IStatusResponse {
+  id: string;
+  userId: string;
+  title: string;
+  location: Point;
+  description?: string;
+}
+
+export default compose<React.ComponentType<IStatusMapProps>>(
   connect<IStateProps, {}, IStatusMapProps, IRootState>((state) => ({
     permissionAllowed: getPermissionAllowed(state),
-    coordinates: getCoordinates(state),
   })),
+  graphql<IStatusMapProps & IStateProps, IStatusResponse[]>(statusesInRadius, {
+    options: (props) => ({
+      variables: {
+        radius: 15,
+        latitude: props.userCoordinates.lat,
+        longitude: props.userCoordinates.lng,
+      },
+    }),
+    skip: ({userCoordinates}) => !userCoordinates.lat || !userCoordinates.lng,
+  }),
 )(StatusMap);
