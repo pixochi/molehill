@@ -13,17 +13,17 @@ import withStateMutation, { IWithStateMutationProps } from 'app/components/highe
 import { openModal, closeModal } from 'app/components/modal/actions';
 import { IRootState } from 'app/redux/root-reducer';
 import { getUserId } from 'app/login/selectos';
-import { getCoordinates, UserCoordinates } from 'app/components/map/selectors';
+import { getLat, getLng } from 'app/components/map/selectors';
 import { updateSuccess, updateError } from 'app/components/global-event/actions';
+import { RADIUS } from 'app/constants';
 
 import {addStatusMutation, statusesInRadius} from './graphql';
 import AddStatusForm, { IFormData } from './add-status-form';
 
-const RADIUS = 20; // km
-
 interface IStateProps {
   userId: string | null;
-  coordinates: UserCoordinates;
+  userLat?: number;
+  userLng?: number;
 }
 
 type Props = IStateProps & MutateProps & IWithStateMutationProps;
@@ -39,15 +39,16 @@ class Overview extends React.PureComponent<Props> {
   public render() {
     const {
       sMutation,
-      coordinates,
+      userLat,
+      userLng,
     } = this.props;
 
     return (
       <Flex direction="column">
         <Base grow={1}>
-          <Map userCoordinates={coordinates}/>
+          <Map userLat={userLat} userLng={userLng}/>
         </Base>
-        <Button text="+ Add" fullWidth onClick={this.handleOpenAddStatus} />
+        <Button appearance="submit" text="+ Add" fullWidth onClick={this.handleOpenAddStatus} />
         <Modal id={ModalIds.addNewStatus} headerTitle="Add status">
           <AddStatusForm loading={sMutation.loading} onSubmit={this.handleAddStatus}/>
         </Modal>
@@ -63,18 +64,24 @@ class Overview extends React.PureComponent<Props> {
     const {
       sMutation,
       userId,
-      coordinates,
+      userLat,
+      userLng,
     } = this.props;
+
+    // tslint:disable-next-line:no-console
+    console.log({values});
+
+    const {useCurrentLocation, ...filteredFormValues} = values;
 
     return sMutation.mutate({
       variables: {
         status: {
-          ...values,
+          ...filteredFormValues,
           location: {
             type: 'Point',
             coordinates: [
-              Number(coordinates.lat) + Math.random() / 5000,
-              Number(coordinates.lng) + Math.random() / 5000,
+              Number(userLat) + Math.random() / 5000,
+              Number(userLng) + Math.random() / 5000,
             ], // TODO: remove random() and check if userCoordinates are available
           },
           userId,
@@ -84,8 +91,8 @@ class Overview extends React.PureComponent<Props> {
         query: statusesInRadius,
         variables: {
           radius: RADIUS,
-          latitude: coordinates.lat,
-          longitude: coordinates.lng,
+          latitude: userLat,
+          longitude: userLng,
         },
       }],
     }).then(response => {
@@ -103,7 +110,8 @@ class Overview extends React.PureComponent<Props> {
 export default compose(
   connect<IStateProps, {}, {}, IRootState>((state) => ({
     userId: getUserId(state),
-    coordinates: getCoordinates(state),
+    userLat: getLat(state),
+    userLng: getLng(state),
   })),
   graphql(addStatusMutation),
   withStateMutation(),

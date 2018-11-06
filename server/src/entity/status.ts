@@ -18,6 +18,22 @@ export default class Status {
   title: string;
 
   @Field()
+  @Column()
+  country: string;
+
+  @Field()
+  @Column()
+  city: string;
+
+  @Field()
+  @Column()
+  zipCode: string;
+
+  @Field()
+  @Column()
+  street: string;
+
+  @Field()
   @Column('text', {nullable: true})
   description: string;
 

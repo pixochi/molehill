@@ -27,7 +27,7 @@ const Theme: ITheme = {
     default: '#e6e6e6',
     focus: '#bababa',
   },
-  invertedText: '#fafafa',
+  invertedText: '#fefefe',
   shadow: 'rgba(180,180,180,0.3)',
   shadowStrong: 'rgba(50,50,50,0.7)',
   submit: '#14c505',

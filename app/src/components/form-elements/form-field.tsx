@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { HTMLAttributes } from 'react';
 import { BaseFieldProps, Field, WrappedFieldProps } from 'redux-form';
 
 import styled from 'app/components/styleguide';
@@ -8,10 +8,10 @@ const FieldContainer = styled.div`
 
 `;
 
-type Props = BaseFieldProps & Partial<WrappedFieldProps> & Partial<HTMLInputElement>;
+type Props = BaseFieldProps & Partial<WrappedFieldProps> &
+  Partial<HTMLAttributes<any>> & Partial<HTMLInputElement> & {[attribute: string]: any};
 
 const FormField: React.SFC<Props> = (props) => {
-
   return (
     <FieldContainer>
       <Field {...props}  />

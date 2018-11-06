@@ -9,10 +9,11 @@ import styled from 'app/components/styleguide';
 import { s4 } from 'app/components/styleguide/spacing';
 import { IRootState } from 'app/redux/root-reducer';
 import { statusesInRadius } from 'app/overview/graphql';
+import { RADIUS } from 'app/constants';
 
 import { Title } from 'app/components/styleguide/text';
 
-import { getPermissionAllowed, UserCoordinates } from './selectors';
+import { getPermissionAllowed } from './selectors';
 import { setLocation, blockLocation } from './actions';
 import LocationErrorInfo from './location-error-info';
 import UserIcon from './user-leaflet-icon';
@@ -23,13 +24,13 @@ const StyledMap = styled(LeafletMap)`
 `;
 
 interface IStatusMapProps {
-  userCoordinates: UserCoordinates;
+  userLat?: number;
+  userLng?: number;
   zoom?: number;
 }
 
 interface IStateProps {
   permissionAllowed: boolean;
-  // statuses: IStatus[];
 }
 
 type Props = IStatusMapProps & IStateProps & DataProps<{statusesInRadius: IStatusResponse[]}>;
@@ -76,7 +77,8 @@ class StatusMap extends React.Component<Props> {
 
   public render() {
     const {
-      userCoordinates,
+      userLat,
+      userLng,
       data,
       zoom,
       permissionAllowed,
@@ -95,7 +97,7 @@ class StatusMap extends React.Component<Props> {
        />
       );
     }
-    else if (userCoordinates.lat === undefined || userCoordinates.lng === undefined) {
+    else if (userLat === undefined || userLng === undefined) {
       return (
         <LocationErrorInfo
           infoMessage="Failed to get your location."
@@ -106,8 +108,8 @@ class StatusMap extends React.Component<Props> {
     }
 
     const userPosition = {
-      lat: userCoordinates.lat,
-      lng: userCoordinates.lng,
+      lat: userLat,
+      lng: userLng,
     };
 
     return (
@@ -163,11 +165,11 @@ export default compose<React.ComponentType<IStatusMapProps>>(
   graphql<IStatusMapProps & IStateProps, IStatusResponse[]>(statusesInRadius, {
     options: (props) => ({
       variables: {
-        radius: 15,
-        latitude: props.userCoordinates.lat,
-        longitude: props.userCoordinates.lng,
+        radius: RADIUS,
+        latitude: props.userLat,
+        longitude: props.userLng,
       },
     }),
-    skip: ({userCoordinates}) => !userCoordinates.lat || !userCoordinates.lng,
+    skip: ({userLat, userLng}) => !userLat || !userLng,
   }),
 )(StatusMap);

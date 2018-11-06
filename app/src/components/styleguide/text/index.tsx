@@ -9,7 +9,7 @@ interface IBaseTextProps {
   as?: string;
 }
 
-type BaseProps = IBaseTextProps & IBaseLayoutProps & DOMAttributes<any>;
+export type BaseProps = IBaseTextProps & IBaseLayoutProps & DOMAttributes<any>;
 
 const BaseText = styled(BaseLayout)<BaseProps>`
   text-align: ${props => props.textAlign};

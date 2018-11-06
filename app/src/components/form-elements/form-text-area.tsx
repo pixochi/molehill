@@ -5,14 +5,16 @@ import styled from 'app/components/styleguide';
 
 import genericFormElement from './generic-form-element';
 
-const StyledInput = styled.input`
+const StyledTextArea = styled.textarea`
   border-radius: 7px;
   padding: 8px;
   outline: none;
   border: 1px solid ${props => props.theme.border.default};
   font-size: 16px;
   width: 100%;
+  height: 100px;
   transition: 0.3s all;
+  resize: vertical;
 
   &:focus {
     outline: none;
@@ -21,12 +23,12 @@ const StyledInput = styled.input`
   }
 `;
 
-const FormInput: React.SFC<WrappedFieldProps> = (props) => {
+const FormTextArea: React.SFC<WrappedFieldProps> = (props) => {
   return (
-    <StyledInput
+    <StyledTextArea
       {...props}
     />
   );
 };
 
-export default genericFormElement(FormInput);
+export default genericFormElement(FormTextArea);

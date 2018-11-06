@@ -28,6 +28,8 @@ const ModalContainer = styled.div`
 const ModalContent = styled(Base)`
   background-color: ${props => props.theme.invertedText};
   border-radius: 7px;
+  margin: 16px auto;
+  max-width: 520px;
 `;
 
 const ModalHeader = styled(Flex).attrs({
@@ -82,7 +84,7 @@ class Modal extends React.PureComponent<Props> {
 
       return (
         <ModalContainer>
-          <ModalContent margin={s4} padding={s4}>
+          <ModalContent padding={s4}>
             <ModalHeader>
               {headerTitleElement}
               <Flex justify="flex-end">

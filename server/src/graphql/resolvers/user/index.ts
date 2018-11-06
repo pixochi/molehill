@@ -9,7 +9,6 @@ import { InjectRepository } from 'typeorm-typedi-extensions';
 
 import UserEntity from 'src/entity/user';
 import {SignUpInput, LoginInput} from 'src/graphql/resolvers/user/input';
-// import { GraphQLError } from 'src/graphql/error-helper';
 
 @Resolver((of) => UserEntity)
 export default class UserResolver {

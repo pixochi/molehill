@@ -33,6 +33,7 @@
     "object-literal-sort-keys": false,
     "ordered-imports": false,
     "one-line": false,
-    "jsx-no-multiline-js": false
+    "jsx-no-multiline-js": false,
+    "one-variable-per-declaration": false
   }
 }
