@@ -3,7 +3,6 @@ import { compose } from 'redux';
 import { graphql, MutateProps } from 'react-apollo';
 import { connect } from 'react-redux';
 
-import Map from 'app/components/map/map';
 import Button from 'app/components/button';
 import Modal from 'app/components/modal/modal';
 import { Flex, Base } from 'app/components/styleguide/layout';
@@ -13,12 +12,14 @@ import withStateMutation, { IWithStateMutationProps } from 'app/components/highe
 import { openModal, closeModal } from 'app/components/modal/actions';
 import { IRootState } from 'app/redux/root-reducer';
 import { getUserId } from 'app/login/selectos';
-import { getLat, getLng } from 'app/components/map/selectors';
 import { updateSuccess, updateError } from 'app/components/global-event/actions';
 import { RADIUS } from 'app/constants';
 
+import { getLat, getLng } from './map/selectors';
 import {addStatusMutation, statusesInRadius} from './graphql';
+
 import AddStatusForm, { IFormData } from './add-status-form';
+import Map from './map/map';
 
 interface IStateProps {
   userId: string | null;
@@ -68,22 +69,23 @@ class Overview extends React.PureComponent<Props> {
       userLng,
     } = this.props;
 
-    // tslint:disable-next-line:no-console
-    console.log({values});
-
-    const {useCurrentLocation, ...filteredFormValues} = values;
+    const {useCurrentLocation, ...formValues} = values;
+    // Used for not having all statuses at the very same point
+    const RANDOMIZER = Math.random() / Math.floor(Math.random() * 10) * (Math.random() > 0.5 ? 1 : -1);
+    const statusLocation = useCurrentLocation ? {
+      type: 'Point',
+      coordinates: [
+        Number(userLat) + RANDOMIZER,
+        Number(userLng) + RANDOMIZER,
+      ], // TODO: remove RANDOMIZER and check if userCoordinates are available
+    } : null;
 
     return sMutation.mutate({
       variables: {
         status: {
-          ...filteredFormValues,
-          location: {
-            type: 'Point',
-            coordinates: [
-              Number(userLat) + Math.random() / 5000,
-              Number(userLng) + Math.random() / 5000,
-            ], // TODO: remove random() and check if userCoordinates are available
-          },
+          ...formValues,
+          useCurrentLocation,
+          location: statusLocation,
           userId,
         },
       },

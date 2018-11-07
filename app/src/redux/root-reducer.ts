@@ -4,7 +4,7 @@ import { FormStateMap, reducer as formReducer } from 'redux-form';
 import loginReducer, { LoginState } from 'app/login/reducer';
 import globalEventReducer, { GlobalEventState } from 'app/components/global-event/reducer';
 import modalReducer, { ModalState } from 'app/components/modal/reducer';
-import locationReducer, { LocationState } from 'app/components/map/reducer';
+import locationReducer, { LocationState } from 'app/overview/map/reducer';
 
 export interface IRootState {
   form: FormStateMap;

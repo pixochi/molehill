@@ -1,7 +1,7 @@
 import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { Form, InjectedFormProps, reduxForm, formValueSelector } from 'redux-form';
+import { Form, InjectedFormProps, reduxForm } from 'redux-form';
 
 import Button from 'app/components/button';
 import FormField from 'app/components/form-elements/form-field';
@@ -11,6 +11,10 @@ import FormCheckbox from 'app/components/form-elements/checkbox/form-checkbox';
 
 import { IFormProps } from 'app/components/form-elements/typings';
 import { IRootState } from 'app/redux/root-reducer';
+import { getCountry, getStreet, getCity, getZipCode } from './map/selectors';
+
+export const ADD_STATUS_FORM = 'ADD_STATUS_FORM';
+export const USE_CURRENT_LOCATION_FIELD  = 'useCurrentLocation';
 
 export interface IFormData {
   title: string;
@@ -33,7 +37,6 @@ class AddStatusForm extends React.PureComponent<Props> {
     const {
       handleSubmit,
       loading,
-      useCurrentLocation,
     } = this.props;
 
     return (
@@ -41,33 +44,46 @@ class AddStatusForm extends React.PureComponent<Props> {
           <FormField required name="title" component={FormInput} placeholder="Title" />
           <FormField name="description" component={FormTextArea} placeholder="Description" />
           <FormField
-            id="useCurrentLocation"
-            name="useCurrentLocation"
+            id={USE_CURRENT_LOCATION_FIELD}
+            name={USE_CURRENT_LOCATION_FIELD}
             label="Use current location"
             component={FormCheckbox}
           />
-          {!useCurrentLocation && (
-            <>
-              <FormField name="country" component={FormInput} placeholder="Country" />
-              <FormField name="city" component={FormInput} placeholder="City" />
-              <FormField name="zipCode" component={FormInput} placeholder="ZIP Code" />
-              <FormField name="street" component={FormInput} placeholder="Street" />
-            </>
-          )}
+          <FormField required name="country" component={FormInput} placeholder="Country" />
+          <FormField required name="city" component={FormInput} placeholder="City" />
+          <FormField required name="zipCode" component={FormInput} placeholder="ZIP Code" />
+          <FormField
+            name="street"
+            component={FormInput}
+            placeholder="Street"
+            formName={ADD_STATUS_FORM}
+            clearable
+            required
+          />
           <Button loading={loading} text="+ Add" type="submit" appearance="submit" fullWidth={true} />
       </Form>
     );
   }
 }
 
-const FORM_NAME = 'ADD_STATUS_FORM';
-const formSelector = formValueSelector(FORM_NAME);
+interface IInitialValues {
+  initialValues: {
+    [K in keyof IFormData]?: string;
+  };
+}
 
 export default compose<React.ComponentType<IFormProps>>(
-  reduxForm({
-    form: FORM_NAME,
-  }),
-  connect<IStateProps>((state: IRootState) => ({
-    useCurrentLocation: formSelector(state, 'useCurrentLocation'),
+  connect<IInitialValues, {}, IFormProps, IRootState>((state: IRootState, props) => ({
+    initialValues: {
+      country: getCountry(state),
+      street: getStreet(state),
+      city: getCity(state),
+      zipCode: getZipCode(state),
+    },
   })),
+  reduxForm({
+    form: ADD_STATUS_FORM,
+    enableReinitialize: true,
+    keepDirtyOnReinitialize: true,
+  }),
 )(AddStatusForm);

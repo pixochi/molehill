@@ -33,3 +33,18 @@ export const addStatusMutation = gql`
     }
   }
 `;
+
+export const geocodeReverse = gql`
+  query geocodeReverse($latitude: Float!, $longitude: Float!) {
+    geocodeReverse(latitude: $latitude, longitude: $longitude) {
+      address {
+        country
+        city
+        suburb
+        postcode
+        road
+        houseNumber
+      }
+    }
+  }
+`;

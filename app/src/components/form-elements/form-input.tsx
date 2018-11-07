@@ -1,9 +1,11 @@
 import React from 'react';
-import { WrappedFieldProps } from 'redux-form';
+import { WrappedFieldProps, change } from 'redux-form';
 
 import styled from 'app/components/styleguide';
+import {Title} from 'app/components/styleguide/text';
 
 import genericFormElement from './generic-form-element';
+import store from 'app/redux/store';
 
 const StyledInput = styled.input`
   border-radius: 7px;
@@ -21,12 +23,62 @@ const StyledInput = styled.input`
   }
 `;
 
-const FormInput: React.SFC<WrappedFieldProps> = (props) => {
-  return (
-    <StyledInput
-      {...props}
-    />
-  );
-};
+const InputContainer = styled.div`
+  position: relative;
+`;
+
+const ClearButton = styled(Title)`
+  position: absolute;
+  right: 8px;
+  top: 4px;
+  transform: rotate(45deg);
+`;
+
+interface IFormInputProps {
+  name: string;
+  formName?: string;
+  clearable?: boolean;
+}
+
+type Props = WrappedFieldProps & IFormInputProps;
+
+class FormInput extends React.Component<Props> {
+
+  constructor(props: Props) {
+    super(props);
+    this.clearInput = this.clearInput.bind(this);
+  }
+
+  public render() {
+    const {
+      formName,
+      clearable,
+      ...rest
+    } = this.props;
+
+    return (
+      <InputContainer>
+        <StyledInput
+          {...rest}
+        />
+        {Boolean(formName && clearable) && (
+          <ClearButton clickable onClick={this.clearInput}>+</ClearButton>
+        )}
+      </InputContainer>
+    );
+  }
+
+  private clearInput() {
+    const {
+      formName,
+      name,
+    } = this.props;
+
+    if (formName) {
+      store.dispatch(change(formName, name, ''));
+    }
+
+  }
+}
 
 export default genericFormElement(FormInput);

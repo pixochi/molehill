@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { Flex, Base } from '../styleguide/layout';
-import { Title } from '../styleguide/text';
-import Button from '../button';
+import { Flex, Base } from 'app/components/styleguide/layout';
+import { Title } from 'app/components/styleguide/text';
+import Button from 'app/components/button';
 
-import { s4 } from '../styleguide/spacing';
+import { s4 } from 'app/components/styleguide/spacing';
 
 interface ILocationErrorInfoProps {
   infoMessage: string;

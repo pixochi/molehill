@@ -1,4 +1,5 @@
 import {createActions} from 'app/redux/create-actions';
+import { IAddress } from './types';
 
 const domain = 'LOCATION';
 
@@ -7,6 +8,13 @@ export const {
 } = createActions(
   `${domain}/SET_LOCATION`,
   (lat: number, lng: number) => ({lat, lng}),
+);
+
+export const {
+  action: setAddress,
+} = createActions(
+  `${domain}/SET_ADDRESS`,
+  (address: IAddress) => ({address}),
 );
 
 export const {

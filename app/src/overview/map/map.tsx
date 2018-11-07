@@ -19,7 +19,7 @@ import LocationErrorInfo from './location-error-info';
 import UserIcon from './user-leaflet-icon';
 
 const StyledMap = styled(LeafletMap)`
-  height: 80vh;
+  height: 50vh;
   max-height: 500px;
 `;
 

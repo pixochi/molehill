@@ -2,22 +2,23 @@ import { Field, ObjectType, Float, ArgsType } from 'type-graphql';
 
 @ObjectType()
 export class Address {
-  @Field()
+  @Field({nullable: true})
   city: string;
+
+  @Field({nullable: true})
+  suburb: string;
 
   @Field()
   country: string;
 
   @Field()
-  // tslint:disable-next-line:variable-name
-  country_code: string;
+  countryCode: string;
 
   @Field()
   county: string;
 
   @Field()
-  // tslint:disable-next-line:variable-name
-  house_number: string;
+  houseNumber: string;
 
   @Field()
   postcode: string;
@@ -29,23 +30,21 @@ export class Address {
   state: string;
 
   @Field()
-  // tslint:disable-next-line:variable-name
-  state_district: string;
+  stateDistrict: string;
 
   @Field()
   town: string;
 }
 
 @ObjectType()
-export class GeocoderResponse {
+export class GeocodeReverseResponse {
   @Field(() => Address)
   address: Address;
 
   @Field()
-  // tslint:disable-next-line:variable-name
-  display_name: string;
+  displayName: string;
 
-  @Field()
+  @Field({nullable: true})
   town: string;
 
   @Field()
@@ -55,20 +54,17 @@ export class GeocoderResponse {
   lon: string;
 
   @Field()
-  // tslint:disable-next-line:variable-name
-  osm_id: string;
+  osmId: string;
 
   @Field()
-  // tslint:disable-next-line:variable-name
-  osm_type: string;
+  osmType: string;
 
   @Field()
-  // tslint:disable-next-line:variable-name
-  place_id: string;
+  placeId: string;
 }
 
 @ArgsType()
-export class GeocodeQueryArgs {
+export class GeocodeReverseQueryArgs {
   @Field(type => Float)
   latitude: number;
 

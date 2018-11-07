@@ -10,10 +10,14 @@ import {
 } from 'type-graphql';
 import { Repository } from 'typeorm';
 import { InjectRepository } from 'typeorm-typedi-extensions';
+import axios from 'axios';
 
 import StatusEntity from 'src/entity/status';
 import UserEntity from 'src/entity/user';
+import { buildUrlQuery } from 'src/graphql/helpers/url-query-builder';
+
 import { StatusInput } from './types';
+import { GEOCODER_API } from '../constants';
 
 @ArgsType()
 class GetStatusesInRadius {
@@ -84,9 +88,32 @@ export default class StatusResolver {
 
     const user = new UserEntity();
     user.id = newStatus.userId;
+    let statusLocation = newStatus.location;
+
+    if (!newStatus.useCurrentLocation) {
+      const urlQuery = buildUrlQuery({
+        street: newStatus.street,
+        city: newStatus.city,
+        country: newStatus.country,
+        postalcode: newStatus.zipCode,
+        format: 'json',
+        namedetails: 0, // Include a list of alternative names in the results
+        addressdetails: 0, // Include a breakdown of the address into elements
+        'accept-language': 'en',
+      });
+      const url = `${GEOCODER_API}/search?${urlQuery}`;
+      const response = await axios.get(url);
+      const {lat, lon} = response.data.length ? response.data[0] : {} as any;
+
+      statusLocation = {
+        type: 'Point',
+        coordinates: [lat, lon],
+      };
+    }
 
     const savedStatus = await this.statusRepository.save({
       ...newStatus,
+      location: statusLocation,
       user,
     });
 

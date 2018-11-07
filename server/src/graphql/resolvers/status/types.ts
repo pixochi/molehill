@@ -20,20 +20,23 @@ export class StatusInput implements Partial<StatusEntity> {
   title: string;
 
   @Field({nullable: true})
-  description: string;
+  description?: string;
 
   @Field(type => LocationInput, {nullable: true})
-  location: LocationInput;
+  location?: LocationInput;
 
-  @Field({nullable: true})
+  @Field()
   country: string;
 
-  @Field({nullable: true})
+  @Field()
   city: string;
 
-  @Field({nullable: true})
+  @Field()
   zipCode: string;
 
-  @Field({nullable: true})
+  @Field()
   street: string;
+
+  @Field({nullable: true})
+  useCurrentLocation?: boolean;
 }

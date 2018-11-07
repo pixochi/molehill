@@ -1,6 +1,6 @@
 import { connectRouter, routerMiddleware } from 'connected-react-router';
 import { createBrowserHistory } from 'history';
-import { applyMiddleware, compose, createStore } from 'redux';
+import { applyMiddleware, compose, createStore, AnyAction } from 'redux';
 import { createEpicMiddleware } from 'redux-observable';
 
 import rootReducer, { IRootState } from './root-reducer';
@@ -14,7 +14,7 @@ const epicMiddleware = createEpicMiddleware();
 
 const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const store = createStore<IRootState, IReduxAction<any>, {}, {}>(
+const store = createStore<IRootState, IReduxAction<any> | AnyAction, {}, {}>(
   connectRouter(history)(rootReducer),
   {
     login: new LoginState({
