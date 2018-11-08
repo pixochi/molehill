@@ -56,6 +56,10 @@ const StyledButton = styled.button<IButtonProps>`
   }
 `;
 
+const StyledSpinner = styled(Spinner).attrs({
+  color: props => props.theme.invertedText,
+})``;
+
 enum IButtonAppearance {
   submit = 'submit',
   info = 'info',
@@ -73,7 +77,7 @@ type Props = IButtonProps & Partial<ButtonHTMLAttributes<any>>;
 
 const Button: React.SFC<Props> = (props) => {
 
-  const InnerChild = props.loading ? <Spinner /> : <Body>{props.text}</Body>;
+  const InnerChild = props.loading ? <StyledSpinner /> : <Body>{props.text}</Body>;
 
   return (
     <StyledButton {...props}>

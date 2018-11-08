@@ -17,7 +17,7 @@ export class Address {
   @Field()
   county: string;
 
-  @Field()
+  @Field({nullable: true})
   houseNumber: string;
 
   @Field()

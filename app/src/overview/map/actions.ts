@@ -18,6 +18,13 @@ export const {
 );
 
 export const {
+  action: fetchingAddress,
+} = createActions(
+  `${domain}/FETCHING_ADDRESS`,
+  (isFetching: boolean) => ({isFetching}),
+);
+
+export const {
   action: blockLocation,
 } = createActions(
   `${domain}/BLOCK_LOCATION`,

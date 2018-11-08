@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import Button from 'app/components/button';
 import Modal from 'app/components/modal/modal';
-import { Flex, Base } from 'app/components/styleguide/layout';
+import { Flex } from 'app/components/styleguide/layout';
 
 import { ModalIds } from 'app/components/modal/constants';
 import withStateMutation, { IWithStateMutationProps } from 'app/components/higher-order/with-state-mutation';
@@ -14,12 +14,36 @@ import { IRootState } from 'app/redux/root-reducer';
 import { getUserId } from 'app/login/selectos';
 import { updateSuccess, updateError } from 'app/components/global-event/actions';
 import { RADIUS } from 'app/constants';
+import styled from 'app/components/styleguide';
 
 import { getLat, getLng } from './map/selectors';
 import {addStatusMutation, statusesInRadius} from './graphql';
 
 import AddStatusForm, { IFormData } from './add-status-form';
 import Map from './map/map';
+import StatusList from './status-list';
+
+const StatusesContainer = styled(Flex)`
+`;
+
+const FixedContainer = styled.div`
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 40%;
+`;
+
+const OpenAddStatusButton = styled(Button)`
+  position:
+`;
+
+const StyledMap = styled(Map)`
+  width: 100%;
+`;
+
+const StyledStatusList = styled(StatusList)`
+  width: 60%;
+`;
 
 interface IStateProps {
   userId: string | null;
@@ -46,10 +70,15 @@ class Overview extends React.PureComponent<Props> {
 
     return (
       <Flex direction="column">
-        <Base grow={1}>
-          <Map userLat={userLat} userLng={userLng}/>
-        </Base>
-        <Button appearance="submit" text="+ Add" fullWidth onClick={this.handleOpenAddStatus} />
+        <StatusesContainer>
+          <StyledStatusList userLat={userLat} userLng={userLng} />
+          <FixedContainer>
+            <Flex direction="column">
+              <StyledMap userLat={userLat} userLng={userLng} />
+              <OpenAddStatusButton appearance="submit" text="+ Add" fullWidth onClick={this.handleOpenAddStatus} />
+            </Flex>
+          </FixedContainer>
+        </StatusesContainer>
         <Modal id={ModalIds.addNewStatus} headerTitle="Add status">
           <AddStatusForm loading={sMutation.loading} onSubmit={this.handleAddStatus}/>
         </Modal>
@@ -71,7 +100,7 @@ class Overview extends React.PureComponent<Props> {
 
     const {useCurrentLocation, ...formValues} = values;
     // Used for not having all statuses at the very same point
-    const RANDOMIZER = Math.random() / Math.floor(Math.random() * 10) * (Math.random() > 0.5 ? 1 : -1);
+    const RANDOMIZER = Math.random() / Math.floor(Math.random() * 1000) * (Math.random() > 0.5 ? 1 : -1);
     const statusLocation = useCurrentLocation ? {
       type: 'Point',
       coordinates: [

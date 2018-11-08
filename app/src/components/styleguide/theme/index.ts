@@ -22,7 +22,7 @@ export interface ITheme {
 }
 
 const Theme: ITheme = {
-  background: '#eee',
+  background: '#fcfcfc',
   border: {
     default: '#e6e6e6',
     focus: '#bababa',

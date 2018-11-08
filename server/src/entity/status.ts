@@ -33,7 +33,7 @@ export default class Status {
   @Column()
   street: string;
 
-  @Field()
+  @Field({nullable: true})
   @Column('text', {nullable: true})
   description: string;
 

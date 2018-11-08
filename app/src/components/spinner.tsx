@@ -30,16 +30,20 @@ const SpinnerSVG = styled.svg`
 `;
 
 const Circle = styled.circle`
-  stroke: ${props => props.theme.invertedText};
+  stroke: ${props => props.color ? props.color : props.theme.text};
   stroke-linecap: round;
   animation: ${dash} 1.5s ease-in-out infinite;
   stroke-width: 2px;
 `;
 
-const Spinner = () => {
+interface ISpinnerProps {
+  color?: string;
+}
+
+const Spinner: React.SFC<ISpinnerProps> = (props) => {
   return (
     <SpinnerSVG viewBox="0 0 24 24">
-      <Circle cx="12" cy="12 " r="11" fill="none" />
+      <Circle color={props.color} cx="12" cy="12 " r="11" fill="none" />
     </SpinnerSVG>
   );
 };

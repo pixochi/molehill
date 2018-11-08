@@ -27,7 +27,7 @@ interface IEventContainerProps {
 }
 
 const GlobalEventContainer = styled.div<IEventContainerProps>`
-  position: absolute;
+  position: fixed;
   top: 40px;
   right: 40px;
   border-radius: 7px;

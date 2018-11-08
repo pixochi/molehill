@@ -8,13 +8,13 @@ export interface ICoordinates {
 
 export type UserCoordinates = Partial<ICoordinates>;
 
-export const getPermissionAllowed = (state: IRootState) => state.location.permissionAllowed;
+export const getPermissionAllowed = (state: IRootState) => state.overview.location.permissionAllowed;
 
-export const getLat = (state: IRootState) => state.location.lat;
+export const getLat = (state: IRootState) => state.overview.location.lat;
 
-export const getLng = (state: IRootState) => state.location.lng;
+export const getLng = (state: IRootState) => state.overview.location.lng;
 
-export const getCurrentAddress = (state: IRootState) => state.location.currentAddress;
+export const getCurrentAddress = (state: IRootState) => state.overview.location.currentAddress;
 
 export const getHasAddress = createSelector(
   getCurrentAddress,
@@ -48,5 +48,16 @@ export const getZipCode = createSelector(
 
 export const getStreet = createSelector(
   getCurrentAddress,
-  (address) => address ? `${address.road} ${address.houseNumber}` : '',
+  (address) => {
+    if (address) {
+      if (address.houseNumber) {
+        return `${address.road} ${address.houseNumber}`;
+      }
+      return address.road;
+    }
+
+    return '';
+  },
 );
+
+export const getIsFetchingAddress = (state: IRootState) => state.overview.location.fetchingAddress;

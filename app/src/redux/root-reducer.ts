@@ -4,14 +4,14 @@ import { FormStateMap, reducer as formReducer } from 'redux-form';
 import loginReducer, { LoginState } from 'app/login/reducer';
 import globalEventReducer, { GlobalEventState } from 'app/components/global-event/reducer';
 import modalReducer, { ModalState } from 'app/components/modal/reducer';
-import locationReducer, { LocationState } from 'app/overview/map/reducer';
+import overviewReducer, { IOverviewState } from 'app/overview/reducer';
 
 export interface IRootState {
   form: FormStateMap;
   login: LoginState;
   globalEvent: GlobalEventState;
   modal: ModalState;
-  location: LocationState;
+  overview: IOverviewState;
 }
 
 export default combineReducers<IRootState>({
@@ -19,5 +19,5 @@ export default combineReducers<IRootState>({
   login: loginReducer,
   globalEvent: globalEventReducer,
   modal: modalReducer,
-  location: locationReducer,
+  overview: overviewReducer,
 });

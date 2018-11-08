@@ -7,7 +7,7 @@ import graphqlClient from 'app/graphql-client';
 import { ADD_STATUS_FORM, USE_CURRENT_LOCATION_FIELD } from './add-status-form';
 import { getHasAddress, getLat, getLng } from './map/selectors';
 import { geocodeReverse } from './graphql';
-import { setAddress } from './map/actions';
+import { setAddress, fetchingAddress } from './map/actions';
 
 const getAddressFromCoordinates: Epic<FormAction, any> = (action$, state$) => action$.pipe(
   ofType(actionTypes.CHANGE),
@@ -20,6 +20,8 @@ const getAddressFromCoordinates: Epic<FormAction, any> = (action$, state$) => ac
 
       const latitude = getLat(state$.value);
       const longitude = getLng(state$.value);
+
+      fetchingAddress.dispatch(true);
 
       graphqlClient.query<{geocodeReverse: any}>({
         query: geocodeReverse,

@@ -1,9 +1,8 @@
 import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { graphql, DataProps } from 'react-apollo';
+import { graphql } from 'react-apollo';
 import { Map as LeafletMap, TileLayer, Marker, Popup } from 'react-leaflet';
-import { Point } from 'geojson';
 
 import styled from 'app/components/styleguide';
 import { s4 } from 'app/components/styleguide/spacing';
@@ -17,6 +16,7 @@ import { getPermissionAllowed } from './selectors';
 import { setLocation, blockLocation } from './actions';
 import LocationErrorInfo from './location-error-info';
 import UserIcon from './user-leaflet-icon';
+import { IStatusResponse, StatusesInRadiusData } from '../types';
 
 const StyledMap = styled(LeafletMap)`
   height: 50vh;
@@ -27,13 +27,14 @@ interface IStatusMapProps {
   userLat?: number;
   userLng?: number;
   zoom?: number;
+  className?: string;
 }
 
 interface IStateProps {
   permissionAllowed: boolean;
 }
 
-type Props = IStatusMapProps & IStateProps & DataProps<{statusesInRadius: IStatusResponse[]}>;
+type Props = IStatusMapProps & IStateProps & StatusesInRadiusData;
 
 class StatusMap extends React.Component<Props> {
 
@@ -82,6 +83,7 @@ class StatusMap extends React.Component<Props> {
       data,
       zoom,
       permissionAllowed,
+      className,
     } = this.props;
 
     if (!this.isGeolocationAvailable) {
@@ -113,7 +115,7 @@ class StatusMap extends React.Component<Props> {
     };
 
     return (
-      <StyledMap center={userPosition} zoom={zoom}>
+      <StyledMap className={className} center={userPosition} zoom={zoom}>
         <TileLayer
           attribution="&copy; <a href='http://osm.org/copyright'>OpenStreetMap</a> contributors"
           url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
@@ -148,14 +150,6 @@ class StatusMap extends React.Component<Props> {
   private geolocationErrorCallback(position: PositionError) {
     blockLocation.dispatch();
   }
-}
-
-interface IStatusResponse {
-  id: string;
-  userId: string;
-  title: string;
-  location: Point;
-  description?: string;
 }
 
 export default compose<React.ComponentType<IStatusMapProps>>(

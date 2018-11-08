@@ -21,7 +21,11 @@ export const statusesInRadius = gql`
         type
         coordinates
       }
+      city
+      zipCode
+      street
       title
+      description
     }
   }
 `;

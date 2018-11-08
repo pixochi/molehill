@@ -5,7 +5,8 @@ import { IReduxAction } from 'app/redux/create-actions';
 import * as Actions from './actions';
 import { IAddress } from './types';
 
-interface ILocation {
+export interface ILocation {
+  fetchingAddress: boolean;
   permissionAllowed: boolean;
   lat?: number;
   lng?: number;
@@ -13,6 +14,7 @@ interface ILocation {
 }
 
 export class LocationState extends Record<ILocation>({
+  fetchingAddress: false,
   permissionAllowed: false,
   lat: undefined,
   lng: undefined,
@@ -36,6 +38,11 @@ const locationReducer = (state = new LocationState(), action: IReduxAction) => {
         currentAddress: {
           ...action.payload.address,
         },
+        fetchingAddress: false,
+      });
+    case Actions.fetchingAddress.type:
+      return state.merge({
+        fetchingAddress: action.payload.isFetching,
       });
     default:
       return state;
