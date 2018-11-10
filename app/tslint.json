@@ -34,6 +34,9 @@
     "ordered-imports": false,
     "one-line": false,
     "jsx-no-multiline-js": false,
-    "one-variable-per-declaration": false
+    "one-variable-per-declaration": false,
+    "no-console": false,
+    "no-shadowed-variable": false,
+    "jsx-no-lambda": false
   }
 }

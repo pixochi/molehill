@@ -5,6 +5,7 @@ interface IBorderColors {
 }
 
 export interface ITheme {
+  primary: string;
   background: string;
   border: IBorderColors;
   shadow: string;
@@ -22,6 +23,7 @@ export interface ITheme {
 }
 
 const Theme: ITheme = {
+  primary: '#14c505',
   background: '#fcfcfc',
   border: {
     default: '#e6e6e6',

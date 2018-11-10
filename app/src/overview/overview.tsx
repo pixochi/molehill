@@ -34,7 +34,7 @@ const FixedContainer = styled.div`
 `;
 
 const OpenAddStatusButton = styled(Button)`
-  position:
+  border-radius: 0 0 7px 7px;
 `;
 
 const StyledMap = styled(Map)`

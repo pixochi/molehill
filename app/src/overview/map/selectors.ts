@@ -8,11 +8,12 @@ export interface ICoordinates {
 
 export type UserCoordinates = Partial<ICoordinates>;
 
-export const getPermissionAllowed = (state: IRootState) => state.overview.location.permissionAllowed;
+// remove! only for dev purposes
+export const getPermissionAllowed = (state: IRootState) => state.overview.location.permissionAllowed || true;
 
-export const getLat = (state: IRootState) => state.overview.location.lat;
+export const getLat = (state: IRootState) => state.overview.location.lat || 55; // remove! only for dev purposes
 
-export const getLng = (state: IRootState) => state.overview.location.lng;
+export const getLng = (state: IRootState) => state.overview.location.lng || 55; // remove! only for dev purposes
 
 export const getCurrentAddress = (state: IRootState) => state.overview.location.currentAddress;
 

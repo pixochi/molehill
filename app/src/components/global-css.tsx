@@ -29,6 +29,11 @@ const GlobalStyle = createGlobalStyle`
   a {
     text-decoration: none;
   }
+
+  .leaflet-control-container {
+    position: absolute;
+    right: 50px;
+  }
 `;
 
 export default GlobalStyle;

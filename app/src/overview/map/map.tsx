@@ -2,7 +2,7 @@ import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { graphql } from 'react-apollo';
-import { Map as LeafletMap, TileLayer, Marker, Popup } from 'react-leaflet';
+import { Map as LeafletMap, TileLayer, Marker, Tooltip, Popup } from 'react-leaflet';
 
 import styled from 'app/components/styleguide';
 import { s4 } from 'app/components/styleguide/spacing';
@@ -10,13 +10,16 @@ import { IRootState } from 'app/redux/root-reducer';
 import { statusesInRadius } from 'app/overview/graphql';
 import { RADIUS } from 'app/constants';
 
-import { Title } from 'app/components/styleguide/text';
+import { Title, Body } from 'app/components/styleguide/text';
 
 import { getPermissionAllowed } from './selectors';
 import { setLocation, blockLocation } from './actions';
 import LocationErrorInfo from './location-error-info';
 import UserIcon from './user-leaflet-icon';
 import { IStatusResponse, StatusesInRadiusData } from '../types';
+import { LeafletMouseEvent } from 'leaflet';
+import { selectStatus } from '../actions';
+import { getSelectedStatusId } from '../selectors';
 
 const StyledMap = styled(LeafletMap)`
   height: 50vh;
@@ -32,6 +35,7 @@ interface IStatusMapProps {
 
 interface IStateProps {
   permissionAllowed: boolean;
+  selectedStatusId: string;
 }
 
 type Props = IStatusMapProps & IStateProps & StatusesInRadiusData;
@@ -45,6 +49,8 @@ class StatusMap extends React.Component<Props> {
   private watchId: number;
   private isGeolocationAvailable: boolean = true;
   private getLocation: () => number;
+  private markerRef: React.RefObject<Marker>;
+  private mapRef: React.RefObject<LeafletMap>;
 
   constructor(props: any) {
     super(props);
@@ -52,7 +58,6 @@ class StatusMap extends React.Component<Props> {
     this.geolocationErrorCallback = this.geolocationErrorCallback.bind(this);
     this.getLocation = () => {
       if (navigator.geolocation) {
-        // tslint:disable-next-line:no-console
         console.log('getting location');
         return navigator.geolocation.watchPosition(
           this.geolocationSuccessCallback,
@@ -66,10 +71,24 @@ class StatusMap extends React.Component<Props> {
       }
     };
     this.getLocation = this.getLocation.bind(this);
+    this.markerRef = React.createRef();
+    this.mapRef = React.createRef();
   }
 
   public componentDidMount() {
     this.watchId = this.getLocation();
+  }
+
+  public componentDidUpdate(prevProps: Props) {
+    if (this.markerRef.current && this.mapRef.current && prevProps.selectedStatusId !== this.props.selectedStatusId) {
+      const markerElement = this.markerRef.current.leafletElement;
+      const mapElement = this.mapRef.current.leafletElement;
+      const shouldAnimate = !mapElement.getBounds().contains(markerElement.getLatLng());
+
+      mapElement.flyTo(markerElement.getLatLng(), mapElement.getZoom(), {animate: shouldAnimate});
+      markerElement.openPopup();
+      markerElement.closeTooltip();
+    }
   }
 
   public componentWillMount() {
@@ -86,6 +105,7 @@ class StatusMap extends React.Component<Props> {
       zoom,
       permissionAllowed,
       className,
+      selectedStatusId,
     } = this.props;
 
     if (!this.isGeolocationAvailable) {
@@ -117,27 +137,39 @@ class StatusMap extends React.Component<Props> {
     };
 
     return (
-      <StyledMap className={className} center={userPosition} zoom={zoom}>
+      <StyledMap className={className} center={userPosition} zoom={zoom} ref={this.mapRef}>
         <TileLayer
           attribution="&copy; <a href='http://osm.org/copyright'>OpenStreetMap</a> contributors"
           url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
         />
         <Marker position={userPosition} icon={UserIcon}>
-          <Popup>
-            You are here.
-          </Popup>
+          <Tooltip>
+            <Body emphasized>
+              You are here.
+            </Body>
+          </Tooltip>
         </Marker>
         {data.statusesInRadius && data.statusesInRadius.map(status => (
           <Marker
             key={status.id}
+            value={status.id}
             position={{
               lat: status.location.coordinates[0],
               lng: status.location.coordinates[1],
             }}
+            onClick={this.handleMarkerClicked}
+            ref={selectedStatusId === status.id ? this.markerRef as React.RefObject<any> : ''}
           >
             <Popup>
-              {status.title}
+              <Body emphasized>
+                {status.title}
+              </Body>
             </Popup>
+            <Tooltip>
+              <Body emphasized>
+                {status.title}
+              </Body>
+            </Tooltip>
           </Marker>
         ))}
       </StyledMap>
@@ -146,21 +178,26 @@ class StatusMap extends React.Component<Props> {
 
   private geolocationSuccessCallback(position: Position) {
     const {latitude, longitude} = position.coords;
-    // tslint:disable-next-line:no-console
     console.log('location found', {latitude, longitude});
     setLocation.dispatch(latitude, longitude);
   }
 
   private geolocationErrorCallback(position: PositionError) {
-    // tslint:disable-next-line:no-console
     console.log('location error cb');
     blockLocation.dispatch();
   }
+
+  private handleMarkerClicked(markerClickEvent: LeafletMouseEvent) {
+    const statusId = markerClickEvent.target.options.value;
+    selectStatus.dispatch(statusId);
+  }
+
 }
 
 export default compose<React.ComponentType<IStatusMapProps>>(
   connect<IStateProps, {}, IStatusMapProps, IRootState>((state) => ({
     permissionAllowed: getPermissionAllowed(state),
+    selectedStatusId: getSelectedStatusId(state),
   })),
   graphql<IStatusMapProps & IStateProps, IStatusResponse[]>(statusesInRadius, {
     options: (props) => ({
