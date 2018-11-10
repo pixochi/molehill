@@ -3,7 +3,7 @@ import { compose } from 'redux';
 import { graphql } from 'react-apollo';
 
 import { Title, Body } from 'app/components/styleguide/text';
-import { Flex } from 'app/components/styleguide/layout';
+import { Flex, Base } from 'app/components/styleguide/layout';
 import Spinner from 'app/components/spinner';
 
 import { RADIUS } from 'app/constants';
@@ -12,6 +12,7 @@ import styled from 'app/components/styleguide';
 
 import { statusesInRadius } from './graphql';
 import { IStatusResponse, StatusesInRadiusData } from './types';
+import ShowMore from 'app/components/show-more';
 
 const StatusItem = styled(Flex)`
   background: ${props => props.theme.invertedText};
@@ -49,7 +50,9 @@ const StatusList: React.SFC<Props> = (props) => {
             <StatusItem padding={s5} grow={1} key={status.id} direction="column">
               <Title paddingBottom={s1}>{status.title}</Title>
               <Body disabled>{`${status.city} ${status.zipCode}, ${status.street}`}</Body>
-              <Body paddingTop={s4}>{status.description}</Body>
+              <Base paddingTop={s4}>
+                <ShowMore textComponent={Body} text={status.description} />
+              </Base>
             </StatusItem>
           ))
         ) : (

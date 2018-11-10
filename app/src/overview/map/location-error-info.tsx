@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Flex, Base } from 'app/components/styleguide/layout';
-import { Title } from 'app/components/styleguide/text';
+import { Body } from 'app/components/styleguide/text';
 import Button from 'app/components/button';
 
 import { s4 } from 'app/components/styleguide/spacing';
@@ -22,7 +22,7 @@ const LocationErrorInfo: React.SFC<ILocationErrorInfoProps> = (props) => {
 
   return (
     <Flex direction="column" align="center" padding={s4}>
-      <Title textAlign="center">{infoMessage}</Title>
+      <Body textAlign="center">{infoMessage}</Body>
       <Base marginTop={s4}>
         <Button text={ctaText} appearance="info" onClick={onCtaClick}/>
       </Base>

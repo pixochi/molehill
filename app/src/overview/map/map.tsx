@@ -52,10 +52,12 @@ class StatusMap extends React.Component<Props> {
     this.geolocationErrorCallback = this.geolocationErrorCallback.bind(this);
     this.getLocation = () => {
       if (navigator.geolocation) {
+        // tslint:disable-next-line:no-console
+        console.log('getting location');
         return navigator.geolocation.watchPosition(
           this.geolocationSuccessCallback,
           this.geolocationErrorCallback,
-          {enableHighAccuracy: true},
+          {enableHighAccuracy: false},
         );
       }
       else {
@@ -144,10 +146,14 @@ class StatusMap extends React.Component<Props> {
 
   private geolocationSuccessCallback(position: Position) {
     const {latitude, longitude} = position.coords;
+    // tslint:disable-next-line:no-console
+    console.log('location found', {latitude, longitude});
     setLocation.dispatch(latitude, longitude);
   }
 
   private geolocationErrorCallback(position: PositionError) {
+    // tslint:disable-next-line:no-console
+    console.log('location error cb');
     blockLocation.dispatch();
   }
 }

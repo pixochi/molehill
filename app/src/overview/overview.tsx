@@ -100,7 +100,7 @@ class Overview extends React.PureComponent<Props> {
 
     const {useCurrentLocation, ...formValues} = values;
     // Used for not having all statuses at the very same point
-    const RANDOMIZER = Math.random() / Math.floor(Math.random() * 1000) * (Math.random() > 0.5 ? 1 : -1);
+    const RANDOMIZER = Math.random() / Math.floor(Math.random() * 100) * (Math.random() > 0.5 ? 1 : -1);
     const statusLocation = useCurrentLocation ? {
       type: 'Point',
       coordinates: [
