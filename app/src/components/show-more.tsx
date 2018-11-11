@@ -59,9 +59,9 @@ class ShowMore extends React.PureComponent<Props & DefaultProps, IState> {
         <TextComponent>{textShown}</TextComponent>
         {text && text.length > maxChars && (
           !this.state.expanded ? (
-            <TextComponent onClick={this.handleShowMore}>Show more</TextComponent>
+            <TextComponent onClick={this.handleShowMore}>Show&nbsp;more</TextComponent>
           ) : (
-            <TextComponent onClick={this.handleShowLess}>Show less</TextComponent>
+            <TextComponent onClick={this.handleShowLess}>Show&nbsp;less</TextComponent>
           )
         )}
       </ShowMoreContainer>

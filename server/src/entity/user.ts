@@ -1,5 +1,7 @@
 import {Field, ID, ObjectType} from 'type-graphql';
-import {Entity, PrimaryGeneratedColumn, Column} from 'typeorm';
+import {Entity, PrimaryGeneratedColumn, Column, OneToMany} from 'typeorm';
+
+import Status from './status';
 
 @Entity()
 @ObjectType()
@@ -19,4 +21,8 @@ export default class User {
   @Field()
   @Column()
   password: string;
+
+  @Field(() => Status)
+  @OneToMany(type => Status, status => status.user)
+  statuses: Status[];
 }

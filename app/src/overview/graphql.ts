@@ -26,6 +26,10 @@ export const statusesInRadius = gql`
       street
       title
       description
+      user {
+        id
+        username
+      }
     }
   }
 `;

@@ -1,6 +1,6 @@
 import {Field, ID, ObjectType} from 'type-graphql';
 import { Point } from 'geojson';
-import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, RelationId} from 'typeorm';
+import {Entity, PrimaryGeneratedColumn, Column, ManyToOne} from 'typeorm';
 
 import User from './user';
 import { LocationInput } from 'src/graphql/resolvers/status/types';
@@ -44,10 +44,7 @@ export default class Status {
   })
   location: Point;
 
-  @Field()
-  @ManyToOne(type => User)
+  @Field(() => User)
+  @ManyToOne(type => User, user => user.statuses)
   user: User;
-
-  @RelationId((status: Status) => status.user)
-  userId: string;
 }

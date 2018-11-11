@@ -57,7 +57,7 @@ const StyledButton = styled.button<IButtonProps>`
 `;
 
 const StyledSpinner = styled(Spinner).attrs({
-  color: props => props.theme.invertedText,
+  color: (props: any) => props.theme.invertedText,
 })``;
 
 enum IButtonAppearance {

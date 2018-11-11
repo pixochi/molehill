@@ -3,12 +3,15 @@ import { DataProps } from 'react-apollo';
 
 export interface IStatusResponse {
   id: string;
-  userId: string;
   title: string;
   location: Point;
   city: string;
   zipCode: string;
   street: string;
+  user: {
+    id: string;
+    username: string;
+  };
   description?: string;
 }
 

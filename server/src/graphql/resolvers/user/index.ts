@@ -23,7 +23,7 @@ export default class UserResolver {
   }
 
   @Query((returns) => UserEntity)
-  async user(@Arg('id') userId: string): Promise<UserEntity> {
+  async userById(@Arg('id') userId: string): Promise<UserEntity> {
     return await this.userRepository.findOne(userId);
   }
 

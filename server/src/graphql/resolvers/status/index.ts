@@ -57,16 +57,19 @@ export default class StatusResolver {
 
   @Query((returns) => [StatusEntity])
   async statusesInRadius(@Args() { radius, latitude, longitude }: GetStatusesInRadius): Promise<StatusEntity[]> {
-    return await this.statusRepository
-      .createQueryBuilder()
-      .select()
+
+    const statusesWithUser = await this.statusRepository
+      .createQueryBuilder('status')
+      .leftJoinAndSelect('status.user', 'user')
       .where('ST_Distance_Sphere(location, ST_MakePoint(:latitude,:longitude)) <= :radius', {
-        radius,
-        latitude,
-        longitude,
-      })
+          radius,
+          latitude,
+          longitude,
+        })
       .limit(100)
       .getMany();
+
+      return statusesWithUser;
   }
 
   @Query((returns) => [StatusEntity])

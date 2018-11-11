@@ -18,6 +18,7 @@ import { statusesInRadius } from './graphql';
 import { IStatusResponse, StatusesInRadiusData } from './types';
 import { getSelectedStatusId, getRadiusInMeters } from './selectors';
 import { selectStatus } from './actions';
+import { Link } from 'react-router-dom';
 
 const GOOGLE_MAPS_API = 'https://www.google.com/maps/dir/?api=1&';
 
@@ -127,6 +128,9 @@ class StatusList extends React.Component<Props> {
                 >
                   <Body disabled>{`${status.city} ${status.zipCode}, ${status.street}`}</Body>
                 </a>
+                <Link to={`/users/${status.user.id}`}>
+                  <Body marginTop={s1}>@{`${status.user.username}`}</Body>
+                </Link>
                 <Base paddingTop={s4}>
                   <ShowMore textComponent={Body} text={status.description} />
                 </Base>
