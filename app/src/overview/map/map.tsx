@@ -8,18 +8,17 @@ import styled from 'app/components/styleguide';
 import { s4 } from 'app/components/styleguide/spacing';
 import { IRootState } from 'app/redux/root-reducer';
 import { statusesInRadius } from 'app/overview/graphql';
-import { RADIUS } from 'app/constants';
 
 import { Title, Body } from 'app/components/styleguide/text';
 
-import { getPermissionAllowed } from './selectors';
+import { getPermissionAllowed, getStopAutoRefetchStatuses } from './selectors';
 import { setLocation, blockLocation } from './actions';
 import LocationErrorInfo from './location-error-info';
 import UserIcon from './user-leaflet-icon';
 import { IStatusResponse, StatusesInRadiusData } from '../types';
 import { LeafletMouseEvent } from 'leaflet';
 import { selectStatus } from '../actions';
-import { getSelectedStatusId } from '../selectors';
+import { getSelectedStatusId, getRadiusInMeters } from '../selectors';
 
 const StyledMap = styled(LeafletMap)`
   height: 50vh;
@@ -36,6 +35,8 @@ interface IStatusMapProps {
 interface IStateProps {
   permissionAllowed: boolean;
   selectedStatusId: string;
+  radius: number;
+  stopAutoRefetchStatuses: boolean;
 }
 
 type Props = IStatusMapProps & IStateProps & StatusesInRadiusData;
@@ -51,6 +52,7 @@ class StatusMap extends React.Component<Props> {
   private getLocation: () => number;
   private markerRef: React.RefObject<Marker>;
   private mapRef: React.RefObject<LeafletMap>;
+  private userMarkerRef: React.RefObject<Marker>;
 
   constructor(props: any) {
     super(props);
@@ -73,6 +75,7 @@ class StatusMap extends React.Component<Props> {
     this.getLocation = this.getLocation.bind(this);
     this.markerRef = React.createRef();
     this.mapRef = React.createRef();
+    this.userMarkerRef = React.createRef();
   }
 
   public componentDidMount() {
@@ -88,6 +91,17 @@ class StatusMap extends React.Component<Props> {
       mapElement.flyTo(markerElement.getLatLng(), mapElement.getZoom(), {animate: shouldAnimate});
       markerElement.openPopup();
       markerElement.closeTooltip();
+    }
+
+    if (this.userMarkerRef.current) {
+      const userMarkerElement = this.userMarkerRef.current.leafletElement;
+
+      if (this.props.stopAutoRefetchStatuses || (this.props.data && this.props.data.loading)) {
+        userMarkerElement.openPopup();
+      }
+      else {
+        userMarkerElement.closePopup();
+      }
     }
   }
 
@@ -142,14 +156,17 @@ class StatusMap extends React.Component<Props> {
           attribution="&copy; <a href='http://osm.org/copyright'>OpenStreetMap</a> contributors"
           url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
         />
-        <Marker position={userPosition} icon={UserIcon}>
+        <Marker position={userPosition} icon={UserIcon} ref={this.userMarkerRef as React.RefObject<any>}>
           <Tooltip>
             <Body emphasized>
               You are here.
             </Body>
           </Tooltip>
+          <Popup>
+            <Body emphasized>Loading...</Body>
+          </Popup>
         </Marker>
-        {data.statusesInRadius && data.statusesInRadius.map(status => (
+        {data && data.statusesInRadius && data.statusesInRadius.map(status => (
           <Marker
             key={status.id}
             value={status.id}
@@ -198,15 +215,18 @@ export default compose<React.ComponentType<IStatusMapProps>>(
   connect<IStateProps, {}, IStatusMapProps, IRootState>((state) => ({
     permissionAllowed: getPermissionAllowed(state),
     selectedStatusId: getSelectedStatusId(state),
+    radius: getRadiusInMeters(state),
+    stopAutoRefetchStatuses: getStopAutoRefetchStatuses(state),
   })),
   graphql<IStatusMapProps & IStateProps, IStatusResponse[]>(statusesInRadius, {
     options: (props) => ({
       variables: {
-        radius: RADIUS,
+        radius: props.radius,
         latitude: props.userLat,
         longitude: props.userLng,
+        skip: props.stopAutoRefetchStatuses,
       },
     }),
-    skip: ({userLat, userLng}) => !userLat || !userLng,
+    skip: ({userLat, userLng, stopAutoRefetchStatuses}) => !userLat || !userLng,
   }),
 )(StatusMap);

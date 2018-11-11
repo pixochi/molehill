@@ -17,6 +17,8 @@ export const getLng = (state: IRootState) => state.overview.location.lng || 55; 
 
 export const getCurrentAddress = (state: IRootState) => state.overview.location.currentAddress;
 
+export const getStopAutoRefetchStatuses = (state: IRootState) => state.overview.status.stopAutoRefetchStatuses;
+
 export const getHasAddress = createSelector(
   getCurrentAddress,
   (address) => Boolean(address),

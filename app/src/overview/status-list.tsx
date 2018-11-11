@@ -9,14 +9,14 @@ import { Flex, Base } from 'app/components/styleguide/layout';
 import Spinner from 'app/components/spinner';
 import ShowMore from 'app/components/show-more';
 
-import { RADIUS } from 'app/constants';
 import { s5, s1, s4, s2 } from 'app/components/styleguide/spacing';
 import styled, { css } from 'app/components/styleguide';
 import { IRootState } from 'app/redux/root-reducer';
+import { getStopAutoRefetchStatuses } from './map/selectors';
 
 import { statusesInRadius } from './graphql';
 import { IStatusResponse, StatusesInRadiusData } from './types';
-import { getSelectedStatusId } from './selectors';
+import { getSelectedStatusId, getRadiusInMeters } from './selectors';
 import { selectStatus } from './actions';
 
 const StatusItem = styled(Flex)<{selected?: boolean}>`
@@ -42,11 +42,13 @@ interface IStatusListProps {
 
 interface IStateProps {
   selectedStatusId: string;
+  radius: number;
+  stopAutoRefetchStatuses: boolean;
 }
 
 type Props = StatusesInRadiusData & IStatusListProps & IStateProps;
 
-class StatusList extends React.PureComponent<Props> {
+class StatusList extends React.Component<Props> {
 
   private selectedItemRef: React.RefObject<any>;
 
@@ -72,16 +74,25 @@ class StatusList extends React.PureComponent<Props> {
     }
   }
 
+  public shouldComponentUpdate(nextProps: Props) {
+    // don't update if radius has been changed
+    if (this.props.stopAutoRefetchStatuses && nextProps.stopAutoRefetchStatuses) {
+      return false;
+    }
+    return true;
+  }
+
   public render() {
     const {
       data,
       className,
       selectedStatusId,
+      stopAutoRefetchStatuses,
     } = this.props;
 
     return (
       <StatusListContainer className={className}>
-        {!data || data.loading ? (
+        {!data || data.loading || stopAutoRefetchStatuses ? (
           <Flex padding={s5} direction="column" align="center" justify="center">
             <Spinner />
             <Body marginTop={s2}>Loading...</Body>
@@ -125,19 +136,22 @@ class StatusList extends React.PureComponent<Props> {
 }
 
 export default compose<React.ComponentType<IStatusListProps>>(
-  graphql<IStatusListProps, IStatusResponse[]>(statusesInRadius, {
+  connect<IStateProps, {}, StatusesInRadiusData & IStatusListProps, IRootState>(
+    (state) => ({
+      selectedStatusId: getSelectedStatusId(state),
+      radius: getRadiusInMeters(state),
+      stopAutoRefetchStatuses: getStopAutoRefetchStatuses(state),
+    }),
+  ),
+  graphql<IStatusListProps & IStateProps, IStatusResponse[]>(statusesInRadius, {
     options: (props) => ({
       variables: {
-        radius: RADIUS,
+        radius: props.radius,
         latitude: props.userLat,
         longitude: props.userLng,
+        skip: props.stopAutoRefetchStatuses,
       },
     }),
     skip: ({userLat, userLng}) => !userLat || !userLng,
   }),
-  connect<IStateProps, {}, StatusesInRadiusData & IStatusListProps, IRootState>(
-    (state) => ({
-      selectedStatusId: getSelectedStatusId(state),
-    }),
-  ),
 )(StatusList);

@@ -15,7 +15,7 @@ import { IFormProps } from 'app/components/form-elements/typings';
 import { IRootState } from 'app/redux/root-reducer';
 import { s2 } from 'app/components/styleguide/spacing';
 
-import { getCountry, getStreet, getCity, getZipCode, getIsFetchingAddress } from './map/selectors';
+import { getCountry, getStreet, getCity, getZipCode, getIsFetchingAddress } from '../map/selectors';
 
 export const ADD_STATUS_FORM = 'ADD_STATUS_FORM';
 export const USE_CURRENT_LOCATION_FIELD  = 'useCurrentLocation';

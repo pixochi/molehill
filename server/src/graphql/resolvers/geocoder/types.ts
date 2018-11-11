@@ -23,7 +23,7 @@ export class Address {
   @Field()
   postcode: string;
 
-  @Field()
+  @Field({nullable: true})
   road: string;
 
   @Field()

@@ -14,8 +14,8 @@ export const allStatuses = gql`
 `;
 
 export const statusesInRadius = gql`
-  query statusesInRadius($radius: Float!, $latitude: Float!, $longitude: Float!) {
-    statusesInRadius(radius: $radius, latitude: $latitude, longitude: $longitude) {
+  query statusesInRadius($radius: Float!, $latitude: Float!, $longitude: Float!, $skip: Boolean!) {
+    statusesInRadius(radius: $radius, latitude: $latitude, longitude: $longitude) @skip(if: $skip) {
       id
       location {
         type

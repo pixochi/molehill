@@ -6,6 +6,8 @@ interface IBorderColors {
 
 export interface ITheme {
   primary: string;
+  secondary: string;
+  secondaryLight: string;
   background: string;
   border: IBorderColors;
   shadow: string;
@@ -20,11 +22,14 @@ export interface ITheme {
   errorLight: string;
   errorDark: string;
   info: string;
+  inactive: string;
 }
 
 const Theme: ITheme = {
   primary: '#14c505',
-  background: '#fcfcfc',
+  secondary: '#edff3a',
+  secondaryLight: 'rgba(242, 255, 111, 0.75)',
+  background: '#fefefe',
   border: {
     default: '#e6e6e6',
     focus: '#bababa',
@@ -41,6 +46,7 @@ const Theme: ITheme = {
   errorLight: '#ff004b',
   errorDark: '#c80f0f',
   info: '#5994df',
+  inactive: 'rgba(200,200,200,0.70)',
 };
 
 export default Theme;
