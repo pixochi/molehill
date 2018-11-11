@@ -19,6 +19,12 @@ import { IStatusResponse, StatusesInRadiusData } from './types';
 import { getSelectedStatusId, getRadiusInMeters } from './selectors';
 import { selectStatus } from './actions';
 
+const GOOGLE_MAPS_API = 'https://www.google.com/maps/dir/?api=1&';
+
+const buildNavigationLink = (coordinates: number[]) => {
+  return `${GOOGLE_MAPS_API}destination=${coordinates[0]},${coordinates[1]}`;
+};
+
 const StatusItem = styled(Flex)<{selected?: boolean}>`
   background: ${props => props.theme.invertedText};
   border-bottom: 1px solid ${props => props.theme.border.default};
@@ -115,7 +121,12 @@ class StatusList extends React.Component<Props> {
                 >
                   {status.title}
                 </Title>
-                <Body disabled>{`${status.city} ${status.zipCode}, ${status.street}`}</Body>
+                <a
+                  target="_blank"
+                  href={buildNavigationLink(status.location.coordinates)}
+                >
+                  <Body disabled>{`${status.city} ${status.zipCode}, ${status.street}`}</Body>
+                </a>
                 <Base paddingTop={s4}>
                   <ShowMore textComponent={Body} text={status.description} />
                 </Base>
