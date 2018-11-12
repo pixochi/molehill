@@ -16,7 +16,7 @@ const ShowMoreContainer = styled.div`
 `;
 
 interface IShowMoreProps {
-  text?: string;
+  text?: string | null;
 }
 
 interface IState {

@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 
 export const allStatuses = gql`
-  query allStatuses {
+  query AllStatuses {
     allStatuses {
       id
       location {
@@ -14,7 +14,7 @@ export const allStatuses = gql`
 `;
 
 export const statusesInRadius = gql`
-  query statusesInRadius($radius: Float!, $latitude: Float!, $longitude: Float!, $skip: Boolean!) {
+  query StatusesInRadius($radius: Float!, $latitude: Float!, $longitude: Float!, $skip: Boolean!) {
     statusesInRadius(radius: $radius, latitude: $latitude, longitude: $longitude) @skip(if: $skip) {
       id
       location {
@@ -35,7 +35,7 @@ export const statusesInRadius = gql`
 `;
 
 export const addStatusMutation = gql`
-  mutation addStatus($status: StatusInput!) {
+  mutation AddStatus($status: StatusInput!) {
     addStatus(status: $status) {
       id
     }
@@ -43,7 +43,7 @@ export const addStatusMutation = gql`
 `;
 
 export const geocodeReverse = gql`
-  query geocodeReverse($latitude: Float!, $longitude: Float!) {
+  query GeocodeReverse($latitude: Float!, $longitude: Float!) {
     geocodeReverse(latitude: $latitude, longitude: $longitude) {
       address {
         country

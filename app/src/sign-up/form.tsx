@@ -7,14 +7,12 @@ import FormField from 'app/components/form-elements/form-field';
 import FormInput from 'app/components/form-elements/form-input';
 
 import { email, maxLength, minLength } from 'app/helpers/form-validation';
+import { SignUpInput } from 'app/generated/graphql';
 
 const minLength3 = minLength(3);
 const maxLength24 = maxLength(24);
 
-export interface ISignUpFormData {
-  email: string;
-  username: string;
-  password: string;
+export interface ISignUpFormData extends SignUpInput {
   passwordRepeat: string;
 }
 

@@ -15,10 +15,11 @@ import { getPermissionAllowed, getStopAutoRefetchStatuses } from './selectors';
 import { setLocation, blockLocation } from './actions';
 import LocationErrorInfo from './location-error-info';
 import UserIcon from './user-leaflet-icon';
-import { IStatusResponse, StatusesInRadiusData } from '../types';
+import { StatusesInRadiusData } from '../types';
 import { LeafletMouseEvent } from 'leaflet';
 import { selectStatus } from '../actions';
 import { getSelectedStatusId, getRadiusInMeters } from '../selectors';
+import { StatusesInRadius } from 'app/generated/graphql';
 
 const StyledMap = styled(LeafletMap)`
   height: 50vh;
@@ -218,7 +219,7 @@ export default compose<React.ComponentType<IStatusMapProps>>(
     radius: getRadiusInMeters(state),
     stopAutoRefetchStatuses: getStopAutoRefetchStatuses(state),
   })),
-  graphql<IStatusMapProps & IStateProps, IStatusResponse[]>(statusesInRadius, {
+  graphql<IStatusMapProps & IStateProps, StatusesInRadius>(statusesInRadius, {
     options: (props) => ({
       variables: {
         radius: props.radius,
@@ -227,6 +228,6 @@ export default compose<React.ComponentType<IStatusMapProps>>(
         skip: props.stopAutoRefetchStatuses,
       },
     }),
-    skip: ({userLat, userLng, stopAutoRefetchStatuses}) => !userLat || !userLng,
+    skip: ({userLat, userLng}) => !userLat || !userLng,
   }),
 )(StatusMap);

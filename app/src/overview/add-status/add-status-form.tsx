@@ -16,29 +16,20 @@ import { IRootState } from 'app/redux/root-reducer';
 import { s2 } from 'app/components/styleguide/spacing';
 
 import { getCountry, getStreet, getCity, getZipCode, getIsFetchingAddress } from '../map/selectors';
+import { StatusInput } from 'app/generated/graphql';
 
 export const ADD_STATUS_FORM = 'ADD_STATUS_FORM';
 export const USE_CURRENT_LOCATION_FIELD  = 'useCurrentLocation';
 
-export interface IFormData {
-  title: string;
-  description: string;
-  useCurrentLocation?: boolean;
-  country?: string;
-  city?: string;
-  zipCode?: string;
-  street?: string;
-}
-
 interface IInitialValues {
   initialValues: {
-    [K in keyof IFormData]?: string;
+    [K in keyof StatusInput]?: string;
   };
 }
 
 type StateProps = IInitialValues & {isFetchingAddress: boolean};
 
-type Props = StateProps & InjectedFormProps<IFormData> & IFormProps;
+type Props = StateProps & InjectedFormProps<StatusInput> & IFormProps;
 
 class AddStatusForm extends React.PureComponent<Props> {
   public render() {

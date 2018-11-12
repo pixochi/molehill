@@ -9,12 +9,13 @@ import { s4 } from 'app/components/styleguide/spacing';
 import { IRootState } from 'app/redux/root-reducer';
 import withStateMutation, {IWithStateMutationProps} from 'app/components/higher-order/with-state-mutation';
 import { updateError } from 'app/components/global-event/actions';
+import { LoginInput } from 'app/generated/graphql';
 
 import ScreenCenter from 'app/components/screen-center';
 import { Base } from 'app/components/styleguide/layout';
 import { Body, Headline } from 'app/components/styleguide/text';
 
-import Form, { IFormData } from './form';
+import Form from './form';
 
 import { loginSuccess } from './actions';
 import { loginMutation } from './graphql';
@@ -53,7 +54,7 @@ class Login extends React.PureComponent<Props> {
     );
   }
 
-  private handleLoginSubmit(values: IFormData) {
+  private handleLoginSubmit(values: LoginInput) {
     const {
       sMutation,
     } = this.props;

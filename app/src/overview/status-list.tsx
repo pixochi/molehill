@@ -15,7 +15,7 @@ import { IRootState } from 'app/redux/root-reducer';
 import { getStopAutoRefetchStatuses } from './map/selectors';
 
 import { statusesInRadius } from './graphql';
-import { IStatusResponse, StatusesInRadiusData } from './types';
+import { StatusesInRadiusData } from './types';
 import { getSelectedStatusId, getRadiusInMeters } from './selectors';
 import { selectStatus } from './actions';
 import { Link } from 'react-router-dom';
@@ -158,7 +158,7 @@ export default compose<React.ComponentType<IStatusListProps>>(
       stopAutoRefetchStatuses: getStopAutoRefetchStatuses(state),
     }),
   ),
-  graphql<IStatusListProps & IStateProps, IStatusResponse[]>(statusesInRadius, {
+  graphql<IStatusListProps & IStateProps, StatusesInRadiusData>(statusesInRadius, {
     options: (props) => ({
       variables: {
         radius: props.radius,

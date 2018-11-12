@@ -7,13 +7,9 @@ import FormField from 'app/components/form-elements/form-field';
 import FormInput from 'app/components/form-elements/form-input';
 
 import { IFormProps } from 'app/components/form-elements/typings';
+import { LoginInput } from 'app/generated/graphql';
 
-export interface IFormData {
-  email: string;
-  password: string;
-}
-
-type Props = InjectedFormProps<IFormData> & IFormProps;
+type Props = InjectedFormProps<LoginInput> & IFormProps;
 
 const LoginForm: React.SFC<Props> = props => {
   const { handleSubmit, loading } = props;

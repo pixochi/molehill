@@ -11,10 +11,11 @@ import { updateSuccess, updateError } from 'app/components/global-event/actions'
 import { closeModal } from 'app/components/modal/actions';
 import { IRootState } from 'app/redux/root-reducer';
 
-import AddStatusForm, { IFormData } from './add-status-form';
+import AddStatusForm from './add-status-form';
 
 import { addStatusMutation, statusesInRadius } from '../graphql';
 import { getRadiusInMeters } from '../selectors';
+import { StatusInput } from 'app/generated/graphql';
 
 interface IAddStatusProps {
   userId: string | null;
@@ -47,7 +48,7 @@ class AddStatus extends React.Component<Props> {
     );
   }
 
-  private handleAddStatus(values: IFormData) {
+  private handleAddStatus(values: StatusInput) {
     const {
       sMutation,
       userId,
@@ -82,6 +83,7 @@ class AddStatus extends React.Component<Props> {
           radius: radiusInMeters,
           latitude: userLat,
           longitude: userLng,
+          skip: false,
         },
       }],
     }).then((response: any) => {

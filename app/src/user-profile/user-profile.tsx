@@ -8,6 +8,7 @@ import {Body} from 'app/components/styleguide/text';
 import Spinner from 'app/components/spinner';
 
 import { userById } from './graphql';
+import { UserById } from 'app/generated/graphql';
 
 type RouteProps = RouteComponentProps<{userId: string}>;
 type UserData = DataProps<{userById: IUserResponse}>;
@@ -41,7 +42,7 @@ const UserProfile: React.SFC<Props> = (props) => {
 };
 
 export default compose<React.ComponentType>(
-  graphql<RouteProps, IUserResponse>(userById, {
+  graphql<RouteProps, UserById>(userById, {
     options: (props) => ({
       variables: {
         id: props.computedMatch.params.userId,
