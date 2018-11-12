@@ -5,7 +5,7 @@ import { timer } from 'rxjs';
 import { IReduxAction } from 'app/redux/create-actions';
 import { GLOBAL_EVENT_ACTION_TYPE, dismissEvent } from './actions';
 
-const HIDE_GLOBAL_EVENT_TIMEOUT = 4000;
+const HIDE_GLOBAL_EVENT_TIMEOUT = 4000; // ms
 
 const globalEvent: Epic<IReduxAction<any>, any> = (action$) => action$.pipe(
   ofType(GLOBAL_EVENT_ACTION_TYPE),

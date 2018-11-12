@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 
 export const userById = gql`
-  query userById($id: String!) {
+  query UserById($id: String!) {
     userById(id: $id) {
       id
       username

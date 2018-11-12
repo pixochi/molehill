@@ -32,8 +32,11 @@
     "start": "react-scripts-ts start",
     "build": "react-scripts-ts build",
     "test": "react-scripts-ts test --env=jsdom",
-    "eject": "react-scripts-ts eject"
+    "eject": "react-scripts-ts eject",
+    "precodegen": "apollo schema:download --endpoint=http://localhost:4000/graphql",
+    "codegen": "apollo codegen:generate --target=typescript --addTypename --outputFlat ./src/generated/graphql.ts --schema schema.json"
   },
+  
   "devDependencies": {
     "@types/graphql": "^14.0.3",
     "@types/history": "^4.7.2",
