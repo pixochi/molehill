@@ -1,18 +1,31 @@
-import ApolloClient from 'apollo-boost';
+import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
-// import { ErrorResponse } from 'apollo-link-error';
+import { onError } from 'apollo-link-error';
+import { ApolloLink } from 'apollo-link';
+import {createUploadLink} from 'apollo-upload-client';
 
-// import {updateError} from 'app/components/global-event/actions';
-
-// const graphQLErrorHandler = (response: ErrorResponse) => {
-//     updateError.dispatch(response.response!.errors![0].message);
-// };
 const cache = new InMemoryCache();
 
 const client = new ApolloClient({
-  uri: 'http://localhost:4000/graphql',
+  link: ApolloLink.from([
+    onError(({ graphQLErrors, networkError }) => {
+      if (graphQLErrors) {
+        graphQLErrors.map(({ message, locations, path }) =>
+          console.log(
+            `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
+          ),
+        );
+      }
+      if (networkError) {
+        console.log(`[Network error]: ${networkError}`);
+      }
+    }),
+    createUploadLink({
+      uri: 'http://localhost:4000/graphql',
+      credentials: 'same-origin',
+    }),
+  ]),
   cache,
-  // onError: graphQLErrorHandler,
 });
 
 export default client;

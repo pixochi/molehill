@@ -17,6 +17,7 @@
     "axios": "^0.18.0",
     "express": "^4.16.3",
     "geojson": "^0.5.0",
+    "graphql-upload": "^8.0.1",
     "nodemon": "^1.18.4",
     "pg": "^7.5.0",
     "reflect-metadata": "^0.1.12",

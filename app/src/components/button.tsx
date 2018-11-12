@@ -40,6 +40,7 @@ const StyledButton = styled.button<IButtonProps>`
   width: ${props => props.fullWidth ? '100%' : 'auto'};
   transition: all .2s;
   box-shadow: 0 1px 1px ${props => props.theme.shadow};
+  height: 45px;
 
   &:hover {
     box-shadow: 0 2px 2px ${props => props.theme.shadow};

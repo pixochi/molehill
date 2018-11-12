@@ -6,7 +6,7 @@ import { createEpicMiddleware } from 'redux-observable';
 import rootReducer, { IRootState } from './root-reducer';
 import rootEpic from 'app/root-epic';
 import { LoginState } from 'app/login/reducer';
-import { getUserIdFromLocalStorage } from 'app/login/helpers';
+import { getUserFromLocalStorage } from 'app/login/helpers';
 import { IReduxAction } from './create-actions';
 
 export const history = createBrowserHistory();
@@ -18,9 +18,7 @@ const store = createStore<IRootState, IReduxAction<any> | AnyAction, {}, {}>(
   connectRouter(history)(rootReducer),
   {
     login: new LoginState({
-      user: {
-        id: getUserIdFromLocalStorage(),
-      },
+      user: getUserFromLocalStorage(),
     }),
   },
   composeEnhancers(

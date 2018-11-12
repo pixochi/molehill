@@ -8,3 +8,11 @@ export const userById = gql`
     }
   }
 `;
+
+export const uploadProfileImageMutation = gql`
+  mutation UploadProfileImage($file: Upload!) {
+    uploadProfileImage(file: $file) {
+      id
+    }
+  }
+`;

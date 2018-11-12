@@ -6,9 +6,11 @@ import {
 } from 'type-graphql';
 import { Repository } from 'typeorm';
 import { InjectRepository } from 'typeorm-typedi-extensions';
+import { Upload, GraphQLUpload } from 'graphql-upload';
 
 import UserEntity from 'src/entity/user';
 import {SignUpInput, LoginInput} from 'src/graphql/resolvers/user/input';
+import { createWriteStream } from 'fs';
 
 @Resolver((of) => UserEntity)
 export default class UserResolver {
@@ -41,5 +43,18 @@ export default class UserResolver {
   async createUser(@Arg('user') newUser: SignUpInput): Promise<Partial<UserEntity> | any> {
     const savedUser = await this.userRepository.save(newUser);
     return savedUser;
+  }
+
+  @Mutation(returns => UserEntity)
+  async uploadProfileImage(@Arg('file', type => GraphQLUpload) file: Upload): Promise<UserEntity> {
+      const { filename, stream } = await file;
+      const fileRead = stream.read();
+
+      const writeStream = createWriteStream(`./${filename}`);
+      writeStream.write(fileRead, async () => {
+        return await this.userRepository.findOne('1');
+      });
+
+      return await this.userRepository.findOne('1');
   }
 }

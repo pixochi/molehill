@@ -27,8 +27,8 @@ const dash = keyframes`
 const SpinnerSVG = styled.svg<{margined?: boolean}>`
   animation: ${rotate} 2s linear infinite;
   z-index: 2;
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   margin: ${props => props.margined ? '16px' : 0};
 `;
 

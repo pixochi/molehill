@@ -6,5 +6,10 @@ export const getUser = (state: IRootState) => state.login.user;
 
 export const getUserId = createSelector(
   getUser,
-  (user) => user ? user.id : null,
+  (user) => user ? user.id : '',
+);
+
+export const getUsername = createSelector(
+  getUser,
+  (user) => user ? user.username : '',
 );

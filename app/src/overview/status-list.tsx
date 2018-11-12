@@ -19,6 +19,7 @@ import { StatusesInRadiusData } from './types';
 import { getSelectedStatusId, getRadiusInMeters } from './selectors';
 import { selectStatus } from './actions';
 import { Link } from 'react-router-dom';
+import { NAVBAR_HEIGHT } from 'app/components/navbar';
 
 const GOOGLE_MAPS_API = 'https://www.google.com/maps/dir/?api=1&';
 
@@ -75,7 +76,8 @@ class StatusList extends React.Component<Props> {
       if (this.selectedItemRef.current) {
         const statusItemNode = findDOMNode(this.selectedItemRef.current);
         if (statusItemNode) {
-          (statusItemNode as Element).scrollIntoView();
+          const {offsetTop} = statusItemNode as HTMLElement;
+          window.scrollTo(0, offsetTop - NAVBAR_HEIGHT);
         }
       }
     }

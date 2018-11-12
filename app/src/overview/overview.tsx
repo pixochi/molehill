@@ -10,6 +10,7 @@ import { openModal } from 'app/components/modal/actions';
 import { IRootState } from 'app/redux/root-reducer';
 import { getUserId } from 'app/login/selectos';
 import styled from 'app/components/styleguide';
+import { NAVBAR_HEIGHT_PX } from 'app/components/navbar';
 
 import { getLat, getLng } from './map/selectors';
 
@@ -24,7 +25,7 @@ const StatusesContainer = styled(Flex)`
 const FixedContainer = styled.div`
   position: fixed;
   right: 0;
-  top: 0;
+  top: ${NAVBAR_HEIGHT_PX};
   width: 40%;
 `;
 

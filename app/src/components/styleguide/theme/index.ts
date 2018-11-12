@@ -6,6 +6,7 @@ interface IBorderColors {
 
 export interface ITheme {
   primary: string;
+  primaryDark: string;
   secondary: string;
   secondaryLight: string;
   background: string;
@@ -27,6 +28,7 @@ export interface ITheme {
 
 const Theme: ITheme = {
   primary: '#14c505',
+  primaryDark: '#0a7100',
   secondary: '#edff3a',
   secondaryLight: 'rgba(242, 255, 111, 0.75)',
   background: '#fefefe',

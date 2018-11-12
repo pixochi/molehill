@@ -1,7 +1,7 @@
 import React from 'react';
 import { MutationBaseOptions } from 'apollo-client/core/watchQueryOptions';
 import { MutationFn } from 'react-apollo';
-import { ApolloQueryResult, ApolloError } from 'apollo-boost';
+import { ApolloQueryResult, ApolloError } from 'apollo-client';
 
 const DEFAULT_MUTATION_NAME = 'mutate';
 
