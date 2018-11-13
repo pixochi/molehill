@@ -15,7 +15,7 @@ const getBackgroundColor = (theme: ITheme, appearance?: keyof typeof IButtonAppe
     case 'neutral':
       return theme.textDisabled;
     default:
-      return theme.invertedText;
+      return theme.backgroundDarker;
   }
 };
 
@@ -33,27 +33,26 @@ const getTextColor = (theme: ITheme, appearance?: keyof typeof IButtonAppearance
 const StyledButton = styled.button<IButtonProps>`
   background-color: ${props => getBackgroundColor(props.theme, props.appearance)};
   padding: 12px 16px;
-  font-size: 20px;
   border-radius: 7px;
   border: none;
   cursor: pointer;
   width: ${props => props.fullWidth ? '100%' : 'auto'};
   transition: all .2s;
-  box-shadow: 0 1px 1px ${props => props.theme.shadow};
-  height: 45px;
+  box-shadow: 0 2px 2px ${props => props.theme.shadow};
 
   &:hover {
-    box-shadow: 0 2px 2px ${props => props.theme.shadow};
-    filter: brightness(97%);
+    filter: brightness(98%);
   }
 
   &:active {
-    box-shadow: 0 4px 2px ${props => props.theme.shadow};
-    filter: brightness(93%);
+    box-shadow: none;
+    filter: brightness(96%);
+    transform: scale(0.99);
   }
 
-  ${Body} {
+  & > ${Body} {
     color: ${props => getTextColor(props.theme, props.appearance)};
+    font-size: 20px;
   }
 `;
 
@@ -68,7 +67,7 @@ enum IButtonAppearance {
 }
 
 interface IButtonProps {
-  text: string;
+  text?: string;
   appearance?: keyof typeof IButtonAppearance;
   fullWidth?: boolean;
   loading?: boolean;
@@ -78,11 +77,18 @@ type Props = IButtonProps & Partial<ButtonHTMLAttributes<any>>;
 
 const Button: React.SFC<Props> = (props) => {
 
-  const InnerChild = props.loading ? <StyledSpinner /> : <Body>{props.text}</Body>;
+  const {
+    loading,
+    children,
+  } = props;
+
+  const InnerChild = children ? children : (
+    <Body>{props.text}</Body>
+  );
 
   return (
     <StyledButton {...props}>
-      {InnerChild}
+      {loading ?  <StyledSpinner /> : InnerChild}
     </StyledButton>
   );
 };

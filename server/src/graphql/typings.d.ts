@@ -1,3 +1,4 @@
+// https://github.com/19majkel94/type-graphql/issues/37
 declare module "graphql-upload" {
   import { GraphQLScalarType } from "graphql";
   import { RequestHandler } from "express";

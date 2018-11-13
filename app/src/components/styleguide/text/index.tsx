@@ -1,4 +1,4 @@
-import styled from 'app/components/styleguide';
+import styled, { css } from 'app/components/styleguide';
 import {Base as BaseLayout, IBaseLayoutProps} from 'app/components/styleguide/layout';
 import { DOMAttributes } from 'react';
 
@@ -7,6 +7,7 @@ interface IBaseTextProps {
   inverted?: boolean;
   emphasized?: boolean;
   disabled?: boolean;
+  inline?: boolean;
   as?: string;
 }
 
@@ -17,6 +18,10 @@ const BaseText = styled(BaseLayout)<BaseProps>`
   color: ${props => props.inverted ? props.theme.invertedText : props.theme.text};
   font-weight: ${props => props.emphasized ? 600 : 400};
   opacity: ${props => props.disabled ? 0.7 : 1};
+
+  ${props => props.inline && css`
+    display: inline;
+  `}
 `;
 
 export const Headline = styled(BaseText).attrs({

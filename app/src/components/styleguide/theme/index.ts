@@ -10,6 +10,7 @@ export interface ITheme {
   secondary: string;
   secondaryLight: string;
   background: string;
+  backgroundDarker: string;
   border: IBorderColors;
   shadow: string;
   shadowStrong: string;
@@ -32,12 +33,13 @@ const Theme: ITheme = {
   secondary: '#edff3a',
   secondaryLight: 'rgba(242, 255, 111, 0.75)',
   background: '#fefefe',
+  backgroundDarker: '#f1f1f1',
   border: {
     default: '#e6e6e6',
     focus: '#bababa',
   },
   invertedText: '#fefefe',
-  shadow: 'rgba(180,180,180,0.3)',
+  shadow: 'rgba(160,160,160,0.35)',
   shadowStrong: 'rgba(50,50,50,0.7)',
   submit: '#14c505',
   submitLight: '#58d52c',

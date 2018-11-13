@@ -1,9 +1,13 @@
 
 import styled from './styleguide';
 
-const Svg = styled.svg`
-  width: ${props => `${props.width}px`};
-  height: ${props => `${props.height}px`};
+interface ISvg {
+  size?: number | string;
+}
+
+const Svg = styled.svg<ISvg>`
+  width: ${({width, size}) => `${width ? width : size}px`};
+  height: ${({height, size}) => `${height ? height : size}px`};
 `;
 
 export default Svg;

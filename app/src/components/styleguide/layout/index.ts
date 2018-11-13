@@ -51,7 +51,7 @@ export const Base = styled.div<BasePropsWithTheme>`
   cursor: ${props => props.clickable ? 'pointer' : ''};
 `;
 
-interface IFlexProps {
+export interface IFlexProps {
   direction?: FlexDirectionProperty;
   justify?: JustifyContentProperty;
   align?: AlignContentProperty;

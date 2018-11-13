@@ -25,6 +25,7 @@ const NavbarContainer = styled(Flex)`
   z-index: 9998;
   height: ${NAVBAR_HEIGHT_PX};
   background: ${props => props.theme.primaryDark};
+  box-shadow: 0 2px 4px ${props => props.theme.shadowStrong};
 `;
 
 const PowerOffButton = styled(PowerOff).attrs({

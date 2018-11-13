@@ -4,6 +4,9 @@ import Svg from '../svg';
 
 interface IProfileImageDefaultProps {
   color?: string;
+  width?: string;
+  height?: string;
+  size?: string;
 }
 
 type Props = IProfileImageDefaultProps & React.HTMLAttributes<SVGElement>;
@@ -11,7 +14,7 @@ type Props = IProfileImageDefaultProps & React.HTMLAttributes<SVGElement>;
 {/* tslint:disable:max-line-length */}
 const ProfileImageDefault: React.SFC<Props> = (props) => {
   return (
-    <Svg width="32" height="32" viewBox="0 0 47 47">
+    <Svg {...props} viewBox="0 0 47 47">
       <rect width="100%" height="100%" x="0" y="0" fill="none" stroke="none"/>
       <g>
         <circle fill="#A4C2F7" cx="23.410715103149414" cy="23.410715103149414" r="22.559424160924323"/>
@@ -26,6 +29,10 @@ const ProfileImageDefault: React.SFC<Props> = (props) => {
       </g>
     </Svg>
   );
+};
+
+ProfileImageDefault.defaultProps = {
+  size: '32',
 };
 
 export default ProfileImageDefault;
