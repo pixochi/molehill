@@ -3,41 +3,23 @@ import { findDOMNode } from 'react-dom';
 import { compose } from 'redux';
 import { graphql } from 'react-apollo';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 
-import { Title, Body } from 'app/components/styleguide/text';
-import { Flex, Base } from 'app/components/styleguide/layout';
+import { Body } from 'app/components/styleguide/text';
+import { Flex } from 'app/components/styleguide/layout';
 import Spinner from 'app/components/spinner';
-import ShowMore from 'app/components/show-more';
-import UserImage from 'app/components/user-image';
 
-import { s5, s1, s4, s2 } from 'app/components/styleguide/spacing';
-import styled, { css } from 'app/components/styleguide';
+import { s5, s2 } from 'app/components/styleguide/spacing';
+import styled from 'app/components/styleguide';
 import { IRootState } from 'app/redux/root-reducer';
-import { getStopAutoRefetchStatuses } from './map/selectors';
 import { NAVBAR_HEIGHT } from 'app/components/navbar';
 
-import { statusesInRadius } from './graphql';
-import { StatusesInRadiusData } from './types';
-import { getSelectedStatusId, getRadiusInMeters } from './selectors';
-import { selectStatus } from './actions';
+import { getStopAutoRefetchStatuses } from '../map/selectors';
+import { statusesInRadius } from '../graphql';
+import { StatusesInRadiusData } from '../types';
+import { getSelectedStatusId, getRadiusInMeters } from '../selectors';
+import { selectStatus } from '../actions';
 
-const GOOGLE_MAPS_API = 'https://www.google.com/maps/dir/?api=1&';
-
-const buildNavigationLink = (coordinates: number[]) => {
-  return `${GOOGLE_MAPS_API}destination=${coordinates[0]},${coordinates[1]}`;
-};
-
-const StatusItem = styled(Flex)<{selected?: boolean}>`
-  background: ${props => props.theme.invertedText};
-  border-bottom: 1px solid ${props => props.theme.border.default};
-
-  ${props => props.selected && css`
-    border-left: 14px solid ${props => props.theme.primary};
-    box-shadow: 2px 2px 4px ${props => props.theme.shadow};
-    transform: translateZ(1px)
-  `}
-`;
+import StatusItem from './status-item';
 
 const StatusListContainer = styled.div`
   box-shadow: 1px 0 3px ${props => props.theme.border.focus};
@@ -111,36 +93,12 @@ class StatusList extends React.Component<Props> {
           data.statusesInRadius && data.statusesInRadius.length ? (
             data.statusesInRadius.map(status => (
               <StatusItem
-                padding={s5}
-                grow={1}
                 key={status.id}
-                direction="column"
-                selected={status.id === selectedStatusId}
+                isSelected={status.id === selectedStatusId}
+                status={status}
                 ref={status.id === selectedStatusId ? this.selectedItemRef : ''}
-              >
-                <Title
-                  clickable
-                  paddingBottom={s1}
-                  onClick={() => this.handleSelectedStatusChanged(status.id)}
-                >
-                  {status.title}
-                </Title>
-                <a
-                  target="_blank"
-                  href={buildNavigationLink(status.location.coordinates)}
-                >
-                  <Body disabled>{`${status.city} ${status.zipCode}, ${status.street}`}</Body>
-                </a>
-                <Link to={`/users/${status.user.id}`}>
-                  <Flex align="center" marginTop={s2}>
-                    <UserImage imgSrc={status.user.image} />
-                    <Body marginLeft={s2} marginTop={s1}>@{`${status.user.username}`}</Body>
-                  </Flex>
-                </Link>
-                <Base paddingTop={s4}>
-                  <ShowMore textComponent={Body} text={status.description} />
-                </Base>
-              </StatusItem>
+                selectStatus={() => this.handleSelectedStatusChanged(status.id)}
+              />
             ))
           ) : (
             <Body padding={s5} disabled>No statuses found. Be first to share the moment with people near you.</Body>

@@ -6,7 +6,7 @@ import { IFormProps } from 'app/components/form-elements/typings';
 
 import FormField from 'app/components/form-elements/form-field';
 import Button from 'app/components/button';
-import formTextArea from 'app/components/form-elements/form-text-area';
+import FormTextArea from 'app/components/form-elements/form-text-area';
 
 export interface IEditProfileFormProps {
   bio: string;
@@ -23,8 +23,8 @@ class EditUserProfile extends React.PureComponent<EditUserProfileProps> {
 
     return (
       <Form onSubmit={handleSubmit}>
-          <FormField name="bio" component={formTextArea} placeholder="..." />
-          <Button loading={loading} text="Update" type="submit" appearance="submit" fullWidth={true} />
+          <FormField name="bio" component={FormTextArea} placeholder="..." />
+          <Button loading={loading} text="Update" type="submit" appearance="submit" fullWidth />
       </Form>
     );
   }

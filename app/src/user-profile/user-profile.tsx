@@ -136,7 +136,6 @@ class UserProfile extends React.Component<Props, {image: string}> {
     }).then((response) => {
 
       if (response) {
-        console.log({data: response.data});
         removeFile.dispatch(PROFILE_IMAGE_ID);
         this.setState({image: response.data.uploadProfileImage.filePath});
       }

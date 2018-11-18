@@ -1,9 +1,10 @@
 import {Field, ID, ObjectType} from 'type-graphql';
 import { Point } from 'geojson';
-import {Entity, PrimaryGeneratedColumn, Column, ManyToOne} from 'typeorm';
+import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany} from 'typeorm';
 
-import User from './user';
 import { LocationInput } from 'src/graphql/resolvers/status/types';
+import User from './user';
+import Comment from './comment';
 
 @Entity()
 @ObjectType()
@@ -11,7 +12,7 @@ export default class Status {
 
   @Field(() => ID)
   @PrimaryGeneratedColumn()
-  readonly id: string;
+  id: string;
 
   @Field()
   @Column({length: 64})
@@ -47,4 +48,8 @@ export default class Status {
   @Field(() => User)
   @ManyToOne(type => User, user => user.statuses)
   user: User;
+
+  @Field(() => Comment)
+  @OneToMany(type => Comment, comment => comment.status)
+  comments: User;
 }

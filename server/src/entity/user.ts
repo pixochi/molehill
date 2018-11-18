@@ -2,6 +2,7 @@ import {Field, ID, ObjectType} from 'type-graphql';
 import {Entity, PrimaryGeneratedColumn, Column, OneToMany} from 'typeorm';
 
 import Status from './status';
+import Comment from './comment';
 
 @Entity()
 @ObjectType()
@@ -33,4 +34,8 @@ export default class User {
   @Field(() => Status)
   @OneToMany(type => Status, status => status.user)
   statuses: Status[];
+
+  @Field(() => Comment)
+  @OneToMany(type => Comment, comment => comment.user)
+  comments: Comment[];
 }

@@ -40,7 +40,7 @@ const SignUpForm: React.SFC<Props> = props => {
         />
         <FormField required name="password" component={FormInput} type="password" placeholder="Password" />
         <FormField required name="passwordRepeat" component={FormInput} type="password" placeholder="Repeat password" />
-        <Button text="Sign up" type="submit" appearance="submit" fullWidth={true} />
+        <Button text="Sign up" type="submit" appearance="submit" fullWidth />
     </Form>
   );
 };

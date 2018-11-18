@@ -12,7 +12,7 @@ const StyledTextArea = styled.textarea`
   border: 1px solid ${props => props.theme.border.default};
   font-size: 16px;
   width: 100%;
-  height: 100px;
+  height: ${props => props.rows ? 'auto' : '100px'};
   transition: 0.3s all;
   resize: vertical;
 

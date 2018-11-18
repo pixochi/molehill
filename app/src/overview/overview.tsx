@@ -15,7 +15,7 @@ import { NAVBAR_HEIGHT_PX } from 'app/components/navbar';
 import { getLat, getLng } from './map/selectors';
 
 import Map from './map/map';
-import StatusList from './status-list';
+import StatusList from './status-list/status-list';
 import RadiusFilter from './radius-filter';
 import AddStatus from './add-status/add-status';
 

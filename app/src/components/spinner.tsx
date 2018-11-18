@@ -24,7 +24,12 @@ const dash = keyframes`
   }
 `;
 
-const SpinnerSVG = styled.svg<{margined?: boolean}>`
+interface ISpinnerSVGProps {
+  margined?: boolean;
+  className?: string;
+}
+
+const SpinnerSVG = styled.svg<ISpinnerSVGProps>`
   animation: ${rotate} 2s linear infinite;
   z-index: 2;
   width: 20px;
@@ -47,6 +52,7 @@ interface ISpinnerProps {
   color?: string;
   centered?: boolean;
   margined?: boolean;
+  className?: string;
 }
 
 const Spinner: React.SFC<ISpinnerProps> = (props) => {
@@ -55,13 +61,14 @@ const Spinner: React.SFC<ISpinnerProps> = (props) => {
     centered,
     margined,
     color,
+    className,
   } = props;
 
   const Container = centered ? StyledFlex : React.Fragment;
 
   return (
     <Container>
-      <SpinnerSVG viewBox="0 0 24 24" margined={margined}>
+      <SpinnerSVG viewBox="0 0 24 24" margined={margined} className={className}>
         <Circle color={color} cx="12" cy="12 " r="11" fill="none" />
       </SpinnerSVG>
     </Container>

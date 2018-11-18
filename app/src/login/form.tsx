@@ -18,7 +18,7 @@ const LoginForm: React.SFC<Props> = props => {
     <Form onSubmit={handleSubmit}>
         <FormField required name="email" component={FormInput} placeholder="Email address" />
         <FormField required name="password" component={FormInput} type="password" placeholder="Password" />
-        <Button loading={loading} text="Log in" type="submit" appearance="submit" fullWidth={true} />
+        <Button loading={loading} text="Log in" type="submit" appearance="submit" fullWidth/>
     </Form>
   );
 };

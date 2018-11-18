@@ -67,7 +67,7 @@ class AddStatusForm extends React.PureComponent<Props> {
             clearable
             required
           />
-          <Button loading={loading} text="+ Add" type="submit" appearance="submit" fullWidth={true} />
+          <Button loading={loading} text="+ Add" type="submit" appearance="submit" fullWidth />
       </Form>
     );
   }
