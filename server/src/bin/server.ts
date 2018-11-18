@@ -1,7 +1,7 @@
 import startServer from 'src/app';
 import {initDbConnection} from 'src/db-connection';
 
-const PORT = 4000;
+export const PORT = 4000;
 
 (function() {
   initDbConnection().then(() => {

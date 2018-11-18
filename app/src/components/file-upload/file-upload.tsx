@@ -25,8 +25,15 @@ const VisualInput = styled.label`
   height: 100%;
 `;
 
+const Filename = styled(Body)`
+  display: block;
+  max-width: 240px;
+  word-break: break-word;
+`;
+
 interface IFileUploadProps {
   id: string;
+  uploadBtnText?: string;
   required?: boolean;
 }
 
@@ -43,10 +50,11 @@ class FileUpload extends React.Component<Props> {
     const {
       id,
       file,
+      uploadBtnText,
     } = this.props;
 
     return (
-      <Flex align="center">
+      <Flex direction="column" align="center" justify="center" grow={1}>
         <ActualInput
           type="file"
           {...this.props}
@@ -58,13 +66,13 @@ class FileUpload extends React.Component<Props> {
             },
           }) => validity.valid && files && addFile.dispatch(id, files[0])}
         />
-        <Button>
+        <Button fullWidth>
           <VisualInput htmlFor={id}>
-              Choose a file
+          {uploadBtnText || 'Choose a file'}
           </VisualInput>
         </Button>
         {file && (
-          <Body inline marginLeft={s4}>{(file as File).name}</Body>
+          <Filename marginTop={s4}>{(file as File).name}</Filename>
         )}
       </Flex>
     );

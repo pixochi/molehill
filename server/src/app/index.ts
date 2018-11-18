@@ -6,6 +6,9 @@ import buildSchema from 'src/graphql/schema';
 const startServer = (): Promise<{app: Express, server: ApolloServer}> => {
   const app = express();
 
+  // Allows to serve static files
+  app.use(express.static('uploads'));
+
   return new Promise((resolve) => {
     buildSchema.then(schema => {
       const server = new ApolloServer({schema});

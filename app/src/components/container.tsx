@@ -1,7 +1,7 @@
 import React from 'react';
 
 import styled from './styleguide';
-import { Flex, IFlexProps } from './styleguide/layout';
+import { Flex, IFlexProps, IBaseLayoutProps } from './styleguide/layout';
 import { s4 } from './styleguide/spacing';
 
 const StyledContainer = styled(Flex)<IContainer>`
@@ -14,7 +14,7 @@ interface IContainer {
   height?: number;
 }
 
-type Props = IFlexProps & IContainer;
+type Props = IFlexProps & IBaseLayoutProps & IContainer;
 
 const Container: React.SFC<Props> = (props) => {
   return (

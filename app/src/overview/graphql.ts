@@ -29,6 +29,7 @@ export const statusesInRadius = gql`
       user {
         id
         username
+        image
       }
     }
   }

@@ -3,23 +3,24 @@ import { findDOMNode } from 'react-dom';
 import { compose } from 'redux';
 import { graphql } from 'react-apollo';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import { Title, Body } from 'app/components/styleguide/text';
 import { Flex, Base } from 'app/components/styleguide/layout';
 import Spinner from 'app/components/spinner';
 import ShowMore from 'app/components/show-more';
+import UserImage from 'app/components/user-image';
 
 import { s5, s1, s4, s2 } from 'app/components/styleguide/spacing';
 import styled, { css } from 'app/components/styleguide';
 import { IRootState } from 'app/redux/root-reducer';
 import { getStopAutoRefetchStatuses } from './map/selectors';
+import { NAVBAR_HEIGHT } from 'app/components/navbar';
 
 import { statusesInRadius } from './graphql';
 import { StatusesInRadiusData } from './types';
 import { getSelectedStatusId, getRadiusInMeters } from './selectors';
 import { selectStatus } from './actions';
-import { Link } from 'react-router-dom';
-import { NAVBAR_HEIGHT } from 'app/components/navbar';
 
 const GOOGLE_MAPS_API = 'https://www.google.com/maps/dir/?api=1&';
 
@@ -131,7 +132,10 @@ class StatusList extends React.Component<Props> {
                   <Body disabled>{`${status.city} ${status.zipCode}, ${status.street}`}</Body>
                 </a>
                 <Link to={`/users/${status.user.id}`}>
-                  <Body marginTop={s1}>@{`${status.user.username}`}</Body>
+                  <Flex align="center" marginTop={s2}>
+                    <UserImage imgSrc={status.user.image} />
+                    <Body marginLeft={s2} marginTop={s1}>@{`${status.user.username}`}</Body>
+                  </Flex>
                 </Link>
                 <Base paddingTop={s4}>
                   <ShowMore textComponent={Body} text={status.description} />

@@ -11,6 +11,7 @@
 
 # misc
 /resources
+/uploads
 app/src/generated
 .DS_Store
 .env.local

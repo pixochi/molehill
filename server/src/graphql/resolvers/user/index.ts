@@ -3,14 +3,23 @@ import {
   Query,
   Mutation,
   Arg,
+  Field,
+  ObjectType,
+  Args,
 } from 'type-graphql';
 import { Repository } from 'typeorm';
 import { InjectRepository } from 'typeorm-typedi-extensions';
-import { Upload, GraphQLUpload } from 'graphql-upload';
 
 import UserEntity from 'src/entity/user';
 import {SignUpInput, LoginInput} from 'src/graphql/resolvers/user/input';
-import { createWriteStream } from 'fs';
+import { writeFile } from '../helpers/fs';
+import { UploadUserProfileImageArgs, UpdateUserBioArgs } from './types';
+
+@ObjectType()
+export class UploadedFile {
+  @Field()
+  filePath: string;
+}
 
 @Resolver((of) => UserEntity)
 export default class UserResolver {
@@ -40,21 +49,24 @@ export default class UserResolver {
   }
 
   @Mutation(returns => UserEntity)
-  async createUser(@Arg('user') newUser: SignUpInput): Promise<Partial<UserEntity> | any> {
+  async createUser(@Arg('user') newUser: SignUpInput): Promise<Partial<UserEntity>> {
     const savedUser = await this.userRepository.save(newUser);
     return savedUser;
   }
 
   @Mutation(returns => UserEntity)
-  async uploadProfileImage(@Arg('file', type => GraphQLUpload) file: Upload): Promise<UserEntity> {
+  async updateUserBio(@Args() {bio, userId}: UpdateUserBioArgs): Promise<Partial<UserEntity> | any> {
+    await this.userRepository.update(userId, {bio});
+    return {id: userId};
+  }
+
+  @Mutation(returns => UploadedFile)
+  async uploadProfileImage(@Args() {file, userId}: UploadUserProfileImageArgs): Promise<UploadedFile> {
       const { filename, stream } = await file;
       const fileRead = stream.read();
+      const uploadedFile = await writeFile(`./uploads/${filename}`, filename, fileRead);
+      await this.userRepository.update(userId, {image: uploadedFile.filePath});
 
-      const writeStream = createWriteStream(`./${filename}`);
-      writeStream.write(fileRead, async () => {
-        return await this.userRepository.findOne('1');
-      });
-
-      return await this.userRepository.findOne('1');
+      return uploadedFile;
   }
 }

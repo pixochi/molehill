@@ -4,9 +4,9 @@ import Svg from '../svg';
 
 interface IProfileImageDefaultProps {
   color?: string;
-  width?: string;
-  height?: string;
-  size?: string;
+  width?: string | number;
+  height?: string | number;
+  size?: string | number;
 }
 
 type Props = IProfileImageDefaultProps & React.HTMLAttributes<SVGElement>;

@@ -29,7 +29,7 @@ export interface IBaseLayoutProps {
   paddingHorizontal?: Spacing;
 
   clickable?: boolean;
-
+  fullWidth?: boolean;
   grow?: StandardLonghandProperties['flexGrow'];
 }
 
@@ -47,11 +47,12 @@ export const Base = styled.div<BasePropsWithTheme>`
   padding-right: ${props => props.paddingRight || props.paddingHorizontal || props.padding};
 
   flex-grow: ${props => props.grow};
+  width: ${props => props.fullWidth ? '100%' : 'auto'};
 
   cursor: ${props => props.clickable ? 'pointer' : ''};
 `;
 
-export interface IFlexProps {
+export interface IFlexProps extends IBaseLayoutProps {
   direction?: FlexDirectionProperty;
   justify?: JustifyContentProperty;
   align?: AlignContentProperty;

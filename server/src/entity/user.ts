@@ -22,6 +22,14 @@ export default class User {
   @Column()
   password: string;
 
+  @Field({nullable: true})
+  @Column({nullable: true})
+  image: string;
+
+  @Field({nullable: true})
+  @Column({nullable: true})
+  bio: string;
+
   @Field(() => Status)
   @OneToMany(type => Status, status => status.user)
   statuses: Status[];

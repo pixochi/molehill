@@ -12,6 +12,8 @@ const fileUploadReducer = (state = FileUploadState, action: IReduxAction) => {
       return state.merge({
         [action.payload.fileId]: action.payload.file,
       });
+    case Actions.removeFile.type:
+      return state.remove(action.payload.fileId);
     default:
       return state;
   }
