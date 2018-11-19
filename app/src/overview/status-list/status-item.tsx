@@ -29,6 +29,10 @@ const StatusContainer = styled(Flex)<{selected?: boolean}>`
   `}
 `;
 
+const StatusContent = styled(Base)`
+  border-bottom: 1px solid ${props => props.theme.border.default};
+`;
+
 interface IStatusItemProps {
   isSelected: boolean;
   status: StatusesInRadius_statusesInRadius;
@@ -48,13 +52,14 @@ const StatusItem: React.SFC<Props> = (props) => {
 
   return (
     <StatusContainer
-      padding={s5}
+      paddingVertical={s5}
       grow={1}
       key={status.id}
       direction="column"
       selected={isSelected}
       ref={forwardedRef}
     >
+    <StatusContent paddingBottom={s2} paddingHorizontal={s5}>
       <Title
         clickable
         paddingBottom={s1}
@@ -74,9 +79,12 @@ const StatusItem: React.SFC<Props> = (props) => {
           <Body marginLeft={s2} marginTop={s1}>@{`${status.user.username}`}</Body>
         </Flex>
       </Link>
-      <Base paddingTop={s4}>
-        <ShowMore textComponent={Body} text={status.description} />
-      </Base>
+      {Boolean(status.description) && (
+        <Base paddingTop={s4}>
+          <ShowMore textComponent={Body} text={status.description} />
+        </Base>
+      )}
+    </StatusContent>
       <Comments statusId={status.id} />
     </StatusContainer>
   );

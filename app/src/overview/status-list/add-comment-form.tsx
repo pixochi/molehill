@@ -23,7 +23,7 @@ class AddCommentForm extends React.PureComponent<Props> {
 
     return (
       <Form onSubmit={handleSubmit}>
-          <FormField name="body" rows="2" component={FormTextArea} />
+          <FormField name="body" rows="2" placeholder="Write a comment..." component={FormTextArea} />
           <Button
             loading={loading}
             text="Comment"

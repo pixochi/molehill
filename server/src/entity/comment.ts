@@ -15,7 +15,7 @@ export default class Comment {
   @Column('text')
   body: string;
 
-  @Field(() => User, {nullable: true}) // TODO: remove nullable
+  @Field(() => User)
   @ManyToOne(type => User, user => user.comments)
   user: User;
 

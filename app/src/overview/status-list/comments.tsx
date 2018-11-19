@@ -1,18 +1,23 @@
 import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { graphql } from 'react-apollo';
+import { graphql, DataProps } from 'react-apollo';
 import { reset } from 'redux-form';
 
 import withStateMutation, { IWithStateMutationProps } from 'app/components/higher-order/with-state-mutation';
-import { getUserId } from 'app/login/selectos';
+import { getUserId, getUsername } from 'app/login/selectos';
 import { IRootState } from 'app/redux/root-reducer';
 import { updateError } from 'app/components/global-event/actions';
 import store from 'app/redux/store';
+import { s5 } from 'app/components/styleguide/spacing';
+
+import { Base } from 'app/components/styleguide/layout';
 
 import AddCommentForm, { IAddCommentFormProps } from './add-comment-form';
 import CommentsList from './comments-list';
 import { addCommentMutation, statusComments } from './graphql';
+import { StatusComments, StatusCommentsVariables, UserById, AddComment } from 'app/generated/graphql';
+import { userById } from 'app/user-profile/graphql';
 
 interface ICommentsProps {
   statusId: string;
@@ -20,9 +25,10 @@ interface ICommentsProps {
 
 interface IStateProps {
   userId: string;
+  username: string;
 }
 
-type Props = IWithStateMutationProps & ICommentsProps;
+type Props = IStateProps & IWithStateMutationProps & ICommentsProps & DataProps<UserById>;
 
 class Comments extends React.PureComponent<Props> {
 
@@ -43,7 +49,9 @@ class Comments extends React.PureComponent<Props> {
     return (
       <>
         <CommentsList statusId={statusId} />
-        <AddCommentForm loading={sMutation.loading} form={this.formName} onSubmit={this.handleAddComment}/>
+        <Base paddingHorizontal={s5}>
+          <AddCommentForm loading={sMutation.loading} form={this.formName} onSubmit={this.handleAddComment}/>
+        </Base>
       </>
     );
   }
@@ -53,35 +61,71 @@ class Comments extends React.PureComponent<Props> {
       sMutation,
       userId,
       statusId,
+      data,
     } = this.props;
+
+    const newComment = {
+      body: values.body,
+      userId,
+      statusId,
+    };
 
     sMutation.mutate({
       variables: {
-        comment: {
-          body: values.body,
-          userId,
-          statusId,
-        },
+        comment: newComment,
       },
-      refetchQueries: [{
-        query: statusComments,
-        variables: {
-          statusId,
-        },
-      }],
+      // update locally cached comments data
+      update: (store, addCommentResult) => {
+        const commentsData = store.readQuery<StatusComments, StatusCommentsVariables>({
+          query: statusComments,
+          variables: {
+            statusId,
+          },
+        });
+
+        if (commentsData && data.userById) {
+          store.writeQuery<StatusComments, StatusCommentsVariables>({
+            query: statusComments,
+            variables: {
+              statusId,
+            },
+            data: {
+              statusComments: {
+                comments: [
+                  {
+                    ...addCommentResult.data.addComment,
+                    ...newComment,
+                    user: data.userById,
+                  },
+                  ...commentsData.statusComments.comments,
+                ],
+               count: commentsData.statusComments.count + 1,
+               __typename: 'StatusCommentsWithCount',
+              },
+            },
+          });
+        }
+      },
     })
     .then(() => {
       store.dispatch(reset(this.formName));
     })
     .catch(e => updateError.dispatch('Failed to add a comment'));
-
   }
 }
 
 export default compose(
   connect<IStateProps, {}, ICommentsProps, IRootState>((state) => ({
     userId: getUserId(state),
+    username: getUsername(state),
   })),
-  graphql(addCommentMutation),
+  graphql<IStateProps & ICommentsProps>(userById, {
+    options: (props) => ({
+      variables: {
+        id: props.userId,
+      },
+    }),
+  }),
+  graphql<IStateProps & ICommentsProps, AddComment>(addCommentMutation),
   withStateMutation(),
 )(Comments);

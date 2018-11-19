@@ -9,6 +9,7 @@ interface IBaseTextProps {
   disabled?: boolean;
   inline?: boolean;
   as?: string;
+  break?: boolean;
 }
 
 export type BaseProps = IBaseTextProps & IBaseLayoutProps & DOMAttributes<any>;
@@ -18,6 +19,7 @@ const BaseText = styled(BaseLayout)<BaseProps>`
   color: ${props => props.inverted ? props.theme.invertedText : props.theme.text};
   font-weight: ${props => props.emphasized ? 600 : 400};
   opacity: ${props => props.disabled ? 0.7 : 1};
+  word-break: ${props => props.break ? 'break-word' : 'unset'};
 
   ${props => props.inline && css`
     display: inline;

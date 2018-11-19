@@ -9,15 +9,19 @@ export const addCommentMutation = gql`
 `;
 
 export const statusComments = gql`
-  query StatusComments($statusId: String!) {
-    statusComments(statusId: $statusId) {
-      id
-      body
-      user {
+  query StatusComments($statusId: String!, $cursor: String, $limit: Int) {
+    statusComments(statusId: $statusId, cursor: $cursor, limit: $limit)
+    @connection(key: "commentCursor", filter: ["statusId"]) {
+      comments {
         id
-        username
-        image
+        body
+        user {
+          id
+          username
+          image
+        }
       }
+      count
     }
   }
 `;

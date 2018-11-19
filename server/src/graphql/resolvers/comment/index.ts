@@ -3,6 +3,7 @@ import {
   Arg,
   Mutation,
   Query,
+  Args,
 } from 'type-graphql';
 import { Repository } from 'typeorm';
 import { InjectRepository } from 'typeorm-typedi-extensions';
@@ -11,7 +12,9 @@ import CommentEntity from 'src/entity/comment';
 import UserEntity from 'src/entity/user';
 import StatusEntity from 'src/entity/status';
 
-import { CommentInput } from './types';
+import { CommentInput, StatusCommentsArgs, StatusCommentsWithCount } from './types';
+
+// const MAX_COMMENT_LIMIT = 9223372036854775807;
 
 @Resolver((of) => CommentEntity)
 export default class StatusResolver {
@@ -20,9 +23,9 @@ export default class StatusResolver {
     @InjectRepository(CommentEntity) private readonly commentRepository: Repository<CommentEntity>
   ) {}
 
-  @Query((returns) => [CommentEntity])
-  async statusComments(@Arg('statusId') statusId: string): Promise<CommentEntity[]> {
-    const comments = await this.commentRepository
+  @Query((returns) => StatusCommentsWithCount)
+  async statusComments(@Args() {statusId, limit, cursor}: StatusCommentsArgs): Promise<StatusCommentsWithCount> {
+    const commentsAndCount = await this.commentRepository
       .createQueryBuilder('comment')
       .leftJoinAndSelect('comment.user', 'user')
       .where({
@@ -30,11 +33,15 @@ export default class StatusResolver {
           id: statusId
         },
       })
-      .limit(5)
-      .orderBy({'comment.id': 'ASC'})
-      .getMany();
+      .andWhere(cursor ? `comment.id < ${cursor}` : 'TRUE')
+      .orderBy({'comment.id': 'DESC'})
+      .take(limit ? limit : 5)
+      .getManyAndCount();
 
-    return comments;
+    return {
+      comments: commentsAndCount[0],
+      count: commentsAndCount[1],
+    };
   }
 
   @Mutation(returns => CommentEntity)

@@ -1,4 +1,4 @@
-import { InputType, Field, ID } from 'type-graphql';
+import { InputType, Field, ID, ArgsType, Int, ObjectType } from 'type-graphql';
 
 import CommentEntity from 'src/entity/comment';
 
@@ -13,3 +13,25 @@ export class CommentInput implements Partial<CommentEntity> {
   @Field()
   body: string;
 }
+
+@ArgsType()
+export class StatusCommentsArgs {
+  @Field()
+  statusId: string;
+
+  @Field(type => Int, {nullable: true})
+  limit: number;
+
+  @Field({nullable: true})
+  cursor: string;
+}
+
+@ObjectType()
+export class StatusCommentsWithCount {
+  @Field(type => [CommentEntity])
+  comments: CommentEntity[];
+
+  @Field(type => Int)
+  count: number;
+}
+
