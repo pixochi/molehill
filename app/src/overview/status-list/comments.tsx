@@ -91,6 +91,7 @@ class Comments extends React.PureComponent<Props> {
             },
             data: {
               statusComments: {
+                ...commentsData.statusComments,
                 comments: [
                   {
                     ...addCommentResult.data.addComment,
@@ -100,7 +101,6 @@ class Comments extends React.PureComponent<Props> {
                   ...commentsData.statusComments.comments,
                 ],
                count: commentsData.statusComments.count + 1,
-               __typename: 'StatusCommentsWithCount',
               },
             },
           });

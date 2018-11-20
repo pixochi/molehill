@@ -109,6 +109,7 @@ class AddStatus extends React.Component<Props> {
                   ...statusesData.statusesInRadius.statuses,
                   {
                     ...addStatusResult.data.addStatus,
+                    statusLikes: [],
                     user: data.userById,
                   },
                 ],

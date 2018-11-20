@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import 'js-joda-timezone';
 
 import registerServiceWorker from './registerServiceWorker';
 

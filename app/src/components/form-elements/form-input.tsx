@@ -12,7 +12,7 @@ const StyledInput = styled.input`
   padding: 8px;
   outline: none;
   border: 1px solid ${props => props.theme.border.default};
-  font-size: 16px;
+  font-size: 14px;
   width: 100%;
   transition: 0.3s all;
 

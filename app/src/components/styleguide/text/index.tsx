@@ -41,12 +41,12 @@ export const SubHeadline = styled(BaseText).attrs({
 export const Title = styled(BaseText).attrs({
   as: 'p',
 })`
-  font-size: 24px;
+  font-size: 20px;
 `;
 
 export const Body = styled(BaseText).attrs({
   as: 'p',
 })`
-  font-size: 16px;
-  line-height: 1.3;
+  font-size: 14px;
+  line-height: 1.38;
 `;

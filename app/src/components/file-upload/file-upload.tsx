@@ -20,7 +20,7 @@ const ActualInput = styled.input`
 
 const VisualInput = styled.label`
   cursor: pointer;
-  font-size: 16px;
+  font-size: 14px;
   width: 100%;
   height: 100%;
 `;

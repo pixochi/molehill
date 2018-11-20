@@ -22,6 +22,7 @@ export const statusesInRadius = gql`
     @skip(if: $skip) {
       statuses {
         id
+        createdAt
         location {
           type
           coordinates
@@ -59,6 +60,7 @@ export const addStatusMutation = gql`
       street
       title
       description
+      createdAt
     }
   }
 `;

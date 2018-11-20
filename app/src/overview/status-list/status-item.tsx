@@ -10,7 +10,7 @@ import ShowMore from 'app/components/show-more';
 import UserImage from 'app/components/user-image';
 import Like from 'app/components/icons/like';
 
-import { s5, s1, s4, s2 } from 'app/components/styleguide/spacing';
+import { s5, s1, s4, s2, s3 } from 'app/components/styleguide/spacing';
 import styled, { css } from 'app/components/styleguide';
 import {
   StatusesInRadius_statusesInRadius_statuses,
@@ -27,6 +27,7 @@ import withStateMutation, { IWithStateMutationProps } from 'app/components/highe
 import { IRootState } from 'app/redux/root-reducer';
 import { getUserId } from 'app/login/selectos';
 import { userById } from 'app/user-profile/graphql';
+import { formatCreatedAt } from 'app/helpers/time';
 
 import Comments from './comments';
 import { addStatusLikeMutation, statusesInRadius, removeStatusLikeMutation } from '../graphql';
@@ -100,7 +101,7 @@ class StatusItem extends React.Component<Props, {canAddLike: boolean}> {
 
     return (
       <StatusContainer
-        paddingVertical={s5}
+        paddingVertical={s3}
         grow={1}
         key={status.id}
         direction="column"
@@ -124,7 +125,10 @@ class StatusItem extends React.Component<Props, {canAddLike: boolean}> {
         <Link to={`/users/${status.user.id}`}>
           <Flex align="center" marginTop={s2}>
             <UserImage imgSrc={status.user.image} />
-            <Body marginLeft={s2} marginTop={s1}>@{`${status.user.username}`}</Body>
+            <Flex direction="column" marginLeft={s2}>
+              <Body>@{`${status.user.username}`}</Body>
+              <Body disabled marginTop={s1}>{formatCreatedAt(status.createdAt)}</Body>
+            </Flex>
           </Flex>
         </Link>
         {Boolean(status.description) && (

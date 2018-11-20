@@ -26,7 +26,7 @@ const FixedContainer = styled.div`
   position: fixed;
   right: 0;
   top: ${NAVBAR_HEIGHT_PX};
-  width: 40%;
+  width: 50%;
 `;
 
 const OpenAddStatusButton = styled(Button)`
@@ -38,7 +38,7 @@ const StyledMap = styled(Map)`
 `;
 
 const StyledStatusList = styled(StatusList)`
-  width: 60%;
+  width: 50%;
 `;
 
 interface IStateProps {

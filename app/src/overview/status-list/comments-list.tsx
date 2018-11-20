@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { StatusComments } from 'app/generated/graphql';
 import { s2, s4, s5, s1 } from 'app/components/styleguide/spacing';
 import styled from 'app/components/styleguide';
+import { formatCreatedAt } from 'app/helpers/time';
 
 import Spinner from 'app/components/spinner';
 import { Flex, Base } from 'app/components/styleguide/layout';
@@ -96,9 +97,12 @@ class CommentsList extends React.Component<Props> {
                   <UserImage imgSrc={comment.user.image} />
               </Link>
               <Base marginLeft={s4}>
-                <Link to={`/users/${comment.user.id}`}>
-                  <Body emphasized>{comment.user.username}</Body>
-                </Link>
+                <Flex>
+                  <Link to={`/users/${comment.user.id}`}>
+                    <Body emphasized>{comment.user.username}</Body>
+                  </Link>
+                  <Body disabled marginLeft={s2}>{formatCreatedAt(comment.createdAt)}</Body>
+                </Flex>
                 <ShowMore maxChars={80} textComponent={Body} text={comment.body} />
               </Base>
             </Comment>

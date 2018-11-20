@@ -45,10 +45,10 @@ const getPadding = (buttonSize?: ButtonSize): string => {
 const getFontSize = (buttonSize?: ButtonSize): string => {
   switch (buttonSize) {
     case 'mini':
-      return '16px';
+      return '14px';
     case 'default':
     default:
-      return '20px';
+      return '16px';
   }
 };
 

@@ -4,6 +4,7 @@ export const addCommentMutation = gql`
   mutation AddComment($comment: CommentInput!) {
     addComment(comment: $comment) {
       id
+      createdAt
     }
   }
 `;
@@ -14,6 +15,7 @@ export const statusComments = gql`
     @connection(key: "commentCursor", filter: ["statusId"]) {
       comments {
         id
+        createdAt
         body
         user {
           id

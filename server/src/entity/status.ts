@@ -1,6 +1,6 @@
 import {Field, ID, ObjectType} from 'type-graphql';
 import { Point } from 'geojson';
-import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany} from 'typeorm';
+import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, CreateDateColumn} from 'typeorm';
 
 import { LocationInput } from 'src/graphql/resolvers/status/types';
 import User from './user';
@@ -45,6 +45,10 @@ export default class Status {
     srid: 4326,
   })
   location: Point;
+
+  @Field()
+  @CreateDateColumn({type: 'timestamp'})
+  createdAt: Date;
 
   @Field(() => User)
   @ManyToOne(type => User, user => user.statuses)
