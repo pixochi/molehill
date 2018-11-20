@@ -18,8 +18,8 @@ const UserImage: React.SFC<IProps> = (props) => {
     imgHeight,
   } = props;
 
-  const width = imgWidth || imgSize || 32;
-  const height = imgHeight || imgSize || 32;
+  const width = imgWidth || imgSize || 40;
+  const height = imgHeight || imgSize || 40;
 
   return (
     imgSrc ? (

@@ -9,8 +9,9 @@ import { Flex, Base } from 'app/components/styleguide/layout';
 import ShowMore from 'app/components/show-more';
 import UserImage from 'app/components/user-image';
 import Like from 'app/components/icons/like';
+import MenuButton from 'app/components/menu-button';
 
-import { s5, s1, s4, s2, s3 } from 'app/components/styleguide/spacing';
+import { s5, s1, s4, s2 } from 'app/components/styleguide/spacing';
 import styled, { css } from 'app/components/styleguide';
 import {
   StatusesInRadius_statusesInRadius_statuses,
@@ -45,8 +46,8 @@ const StatusContainer = styled(Flex)<{selected?: boolean}>`
   border-bottom: 1px solid ${props => props.theme.border.default};
 
   ${props => props.selected && css`
-    border-left: 14px solid ${props => props.theme.primary};
-    box-shadow: 2px 2px 4px ${props => props.theme.shadow};
+    border-left: 8px solid ${props => props.theme.primary};
+    box-shadow: 1px 1px 2px ${props => props.theme.shadow};
     transform: translateZ(1px)
   `}
 `;
@@ -97,11 +98,12 @@ class StatusItem extends React.Component<Props, {canAddLike: boolean}> {
       isSelected,
       forwardedRef,
       selectStatus,
+      userId,
     } = this.props;
 
     return (
       <StatusContainer
-        paddingVertical={s3}
+        paddingVertical={s2}
         grow={1}
         key={status.id}
         direction="column"
@@ -109,6 +111,7 @@ class StatusItem extends React.Component<Props, {canAddLike: boolean}> {
         ref={forwardedRef}
       >
       <StatusContent paddingBottom={s2} paddingHorizontal={s5}>
+      <Flex justify="space-between" align="center">
         <Title
           clickable
           paddingBottom={s1}
@@ -116,6 +119,10 @@ class StatusItem extends React.Component<Props, {canAddLike: boolean}> {
         >
           {status.title}
         </Title>
+        {status.user.id === userId && (
+          <MenuButton />
+        )}
+      </Flex>
         <a
           target="_blank"
           href={buildNavigationLink(status.location.coordinates)}

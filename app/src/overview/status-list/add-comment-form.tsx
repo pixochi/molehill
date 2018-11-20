@@ -3,10 +3,15 @@ import { Form, InjectedFormProps, reduxForm } from 'redux-form';
 import { compose } from 'redux';
 
 import { IFormProps } from 'app/components/form-elements/typings';
+import styled from 'app/components/styleguide';
 
 import FormField from 'app/components/form-elements/form-field';
 import Button from 'app/components/button';
 import FormTextArea from 'app/components/form-elements/form-text-area';
+
+const SubmitButton = styled(Button)`
+  margin-top: -4px;
+`;
 
 export interface IAddCommentFormProps {
   body: string;
@@ -24,7 +29,7 @@ class AddCommentForm extends React.PureComponent<Props> {
     return (
       <Form onSubmit={handleSubmit}>
           <FormField name="body" rows="2" placeholder="Write a comment..." component={FormTextArea} />
-          <Button
+          <SubmitButton
             loading={loading}
             text="Comment"
             type="submit"

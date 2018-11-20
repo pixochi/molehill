@@ -19,7 +19,7 @@ import ShowMore from 'app/components/show-more';
 const COMMENTS_LIMIT = 5;
 
 const CommentsListContainer = styled(Base)`
-  background-color: ${props => props.theme.backgroundDarker};
+
 `;
 
 const SpinnerContainer = styled(Base)`
@@ -34,6 +34,11 @@ const Comment = styled(Flex)<{canLoadMore: boolean}>`
 
   &:first-child {
     margin-top: ${props => props.canLoadMore ? 0 : '8px'};
+  }
+
+  &:not(:last-child) {
+    border-bottom: 1px solid ${props => props.theme.border.default};
+    padding-bottom: 8px;
   }
 `;
 
@@ -77,7 +82,7 @@ class CommentsList extends React.Component<Props> {
 
     return (
       <CommentsListContainer paddingHorizontal={s5} paddingBottom={s2}>
-        <CommentsInfo align="center" justify="flex-end" marginTop={s1}>
+        <CommentsInfo align="center" justify="flex-end" marginVertical={s1}>
           {canLoadMore && (
             <LoadMoreContainer align="center">
               <LoadMore clickable onClick={this.handleFetchMore}>Load more</LoadMore>
@@ -94,7 +99,7 @@ class CommentsList extends React.Component<Props> {
           {[...data.statusComments.comments].reverse().map(comment => (
             <Comment key={comment.id} align="flex-start" canLoadMore={canLoadMore}>
               <Link to={`/users/${comment.user.id}`}>
-                  <UserImage imgSrc={comment.user.image} />
+                  <UserImage imgSrc={comment.user.image} imgSize={32}/>
               </Link>
               <Base marginLeft={s4}>
                 <Flex>

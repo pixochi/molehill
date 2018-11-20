@@ -8,7 +8,7 @@ import { Body } from 'app/components/styleguide/text';
 import { Flex } from 'app/components/styleguide/layout';
 import Spinner from 'app/components/spinner';
 
-import { s5, s2, s3 } from 'app/components/styleguide/spacing';
+import { s5, s2, s4 } from 'app/components/styleguide/spacing';
 import styled from 'app/components/styleguide';
 import { IRootState } from 'app/redux/root-reducer';
 import { NAVBAR_HEIGHT } from 'app/components/navbar';
@@ -111,7 +111,7 @@ class StatusList extends React.Component<Props> {
           )
         )}
         {canLoadMore && (
-          <Flex clickable padding={s3} justify="center" onClick={this.handleFetchMore}>
+          <Flex clickable padding={s4} justify="center" onClick={this.handleFetchMore}>
             <Body>Load more</Body>
           </Flex>
         )}
