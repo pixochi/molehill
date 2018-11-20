@@ -3,6 +3,7 @@ import {Entity, PrimaryGeneratedColumn, Column, OneToMany} from 'typeorm';
 
 import Status from './status';
 import Comment from './comment';
+import StatusLike from './status-like';
 
 @Entity()
 @ObjectType()
@@ -38,4 +39,8 @@ export default class User {
   @Field(() => Comment)
   @OneToMany(type => Comment, comment => comment.user)
   comments: Comment[];
+
+  @Field(() => StatusLike)
+  @OneToMany(type => StatusLike, statusLike => statusLike.user)
+  statusLikes: StatusLike[];
 }

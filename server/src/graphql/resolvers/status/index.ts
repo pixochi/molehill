@@ -22,7 +22,6 @@ export default class StatusResolver {
   constructor(
     @InjectRepository(StatusEntity) private readonly statusRepository: Repository<StatusEntity>,
   ) {}
-
   @Query((returns) => StatusEntity)
   async status(@Arg('id') statusId: string): Promise<StatusEntity> {
     return await this.statusRepository.findOne(
@@ -46,6 +45,7 @@ export default class StatusResolver {
     const statusesWithUser = await this.statusRepository
       .createQueryBuilder('status')
       .leftJoinAndSelect('status.user', 'user')
+      .leftJoinAndSelect('status.statusLikes', 'likes')
       .where('ST_Distance_Sphere(location, ST_MakePoint(:latitude,:longitude)) <= :radius', {
         radius,
         latitude,

@@ -56,10 +56,11 @@ export interface IFlexProps extends IBaseLayoutProps {
   direction?: FlexDirectionProperty;
   justify?: JustifyContentProperty;
   align?: AlignContentProperty;
+  isInline?: boolean;
 }
 
 export const Flex =  styled(Base)<BasePropsWithTheme<IFlexProps>>`
-  display: flex;
+  display: ${props => props.isInline ? 'inline-flex' : 'flex'};
   flex-direction: ${props => props.direction};
   justify-content: ${props => props.justify};
   align-items: ${props => props.align};

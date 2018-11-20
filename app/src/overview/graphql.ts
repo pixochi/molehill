@@ -36,6 +36,10 @@ export const statusesInRadius = gql`
           username
           image
         }
+        statusLikes {
+          id
+          userId
+        }
       }
       count
     }
@@ -55,6 +59,22 @@ export const addStatusMutation = gql`
       street
       title
       description
+    }
+  }
+`;
+
+export const addStatusLikeMutation = gql`
+  mutation AddStatusLike($like: StatusLikeInput!) {
+    addStatusLike(like: $like) {
+      id
+    }
+  }
+`;
+
+export const removeStatusLikeMutation = gql`
+  mutation RemoveStatusLike($like: StatusLikeInput!) {
+    removeStatusLike(like: $like) {
+      statusId
     }
   }
 `;

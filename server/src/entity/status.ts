@@ -5,6 +5,7 @@ import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany} from 'type
 import { LocationInput } from 'src/graphql/resolvers/status/types';
 import User from './user';
 import Comment from './comment';
+import StatusLike from './status-like';
 
 @Entity()
 @ObjectType()
@@ -52,4 +53,8 @@ export default class Status {
   @Field(() => Comment)
   @OneToMany(type => Comment, comment => comment.status)
   comments: User;
+
+  @Field(() => StatusLike)
+  @OneToMany(type => StatusLike, statusLike => statusLike.status)
+  statusLikes: StatusLike[];
 }

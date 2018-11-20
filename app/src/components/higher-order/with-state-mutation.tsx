@@ -1,13 +1,13 @@
 import React from 'react';
 import { MutationBaseOptions } from 'apollo-client/core/watchQueryOptions';
-import { MutationFn } from 'react-apollo';
+import { MutationFn, OperationVariables } from 'react-apollo';
 import { ApolloQueryResult, ApolloError } from 'apollo-client';
 
 const DEFAULT_MUTATION_NAME = 'mutate';
 
-export interface IWithStateMutationProps {
+export interface IWithStateMutationProps<TData = any, TVariables = OperationVariables> {
   [mutationName: string]: {
-    mutate: MutationFn;
+    mutate: MutationFn<TData, TVariables>;
     loading: boolean;
     error: Error | null;
     result: any;

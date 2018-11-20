@@ -9,6 +9,7 @@ export interface ITheme {
   primaryDark: string;
   secondary: string;
   secondaryLight: string;
+  secondaryDark: string;
   background: string;
   backgroundDarker: string;
   border: IBorderColors;
@@ -32,6 +33,7 @@ const Theme: ITheme = {
   primaryDark: '#0a7100',
   secondary: '#edff3a',
   secondaryLight: 'rgba(242, 255, 111, 0.75)',
+  secondaryDark: '#d2d21c',
   background: '#fefefe',
   backgroundDarker: '#f1f1f1',
   border: {

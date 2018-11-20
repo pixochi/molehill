@@ -35,9 +35,7 @@ const ModalContent = styled(Base)`
 const ModalHeader = styled(Flex).attrs({
   justify: 'space-between',
   align: 'center',
-})`
-
-`;
+})``;
 
 const CloseModalButton = styled(Button)`
   font-weight: 600;
