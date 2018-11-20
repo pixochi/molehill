@@ -13,8 +13,7 @@ import UserEntity from 'src/entity/user';
 import StatusEntity from 'src/entity/status';
 
 import { CommentInput, StatusCommentsArgs, StatusCommentsWithCount } from './types';
-
-// const MAX_COMMENT_LIMIT = 9223372036854775807;
+import { BIG_INT_LIMIT } from '../constants';
 
 @Resolver((of) => CommentEntity)
 export default class StatusResolver {
@@ -35,7 +34,7 @@ export default class StatusResolver {
       })
       .andWhere(cursor ? `comment.id < ${cursor}` : 'TRUE')
       .orderBy({'comment.id': 'DESC'})
-      .take(limit ? limit : 5)
+      .take(limit ? limit : BIG_INT_LIMIT)
       .getManyAndCount();
 
     return {

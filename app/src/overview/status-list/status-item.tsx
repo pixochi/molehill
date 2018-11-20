@@ -8,7 +8,7 @@ import UserImage from 'app/components/user-image';
 
 import { s5, s1, s4, s2 } from 'app/components/styleguide/spacing';
 import styled, { css } from 'app/components/styleguide';
-import { StatusesInRadius_statusesInRadius } from 'app/generated/graphql';
+import { StatusesInRadius_statusesInRadius_statuses } from 'app/generated/graphql';
 
 import Comments from './comments';
 
@@ -35,7 +35,7 @@ const StatusContent = styled(Base)`
 
 interface IStatusItemProps {
   isSelected: boolean;
-  status: StatusesInRadius_statusesInRadius;
+  status: StatusesInRadius_statusesInRadius_statuses;
   selectStatus: () => void;
   forwardedRef?: RefObject<any>;
 }

@@ -167,7 +167,7 @@ class StatusMap extends React.Component<Props> {
             <Body emphasized>Loading...</Body>
           </Popup>
         </Marker>
-        {data && data.statusesInRadius && data.statusesInRadius.map(status => (
+        {data && data.statusesInRadius && data.statusesInRadius.statuses.map(status => (
           <Marker
             key={status.id}
             value={status.id}
@@ -226,6 +226,7 @@ export default compose<React.ComponentType<IStatusMapProps>>(
         latitude: props.userLat,
         longitude: props.userLng,
         skip: props.stopAutoRefetchStatuses,
+        limit: 3,
       },
     }),
     skip: ({userLat, userLng}) => !userLat || !userLng,

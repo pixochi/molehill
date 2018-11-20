@@ -8,7 +8,7 @@ import { Body } from 'app/components/styleguide/text';
 import { Flex } from 'app/components/styleguide/layout';
 import Spinner from 'app/components/spinner';
 
-import { s5, s2 } from 'app/components/styleguide/spacing';
+import { s5, s2, s3 } from 'app/components/styleguide/spacing';
 import styled from 'app/components/styleguide';
 import { IRootState } from 'app/redux/root-reducer';
 import { NAVBAR_HEIGHT } from 'app/components/navbar';
@@ -20,10 +20,13 @@ import { getSelectedStatusId, getRadiusInMeters } from '../selectors';
 import { selectStatus } from '../actions';
 
 import StatusItem from './status-item';
+import { StatusesInRadiusVariables } from 'app/generated/graphql';
 
 const StatusListContainer = styled.div`
   box-shadow: 1px 0 3px ${props => props.theme.border.focus};
 `;
+
+const STATUSES_LIMIT = 10;
 
 interface IStatusListProps {
   userLat?: number;
@@ -50,6 +53,7 @@ class StatusList extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
     this.selectedItemRef = createRef();
+    this.handleFetchMore = this.handleFetchMore.bind(this);
   }
 
   public componentDidUpdate(prevProps: Props) {
@@ -82,6 +86,8 @@ class StatusList extends React.Component<Props> {
       stopAutoRefetchStatuses,
     } = this.props;
 
+    const canLoadMore = data.statusesInRadius && data.statusesInRadius.count > data.statusesInRadius.statuses.length;
+
     return (
       <StatusListContainer className={className}>
         {!data || data.loading || stopAutoRefetchStatuses ? (
@@ -90,8 +96,8 @@ class StatusList extends React.Component<Props> {
             <Body marginTop={s2}>Loading...</Body>
           </Flex>
         ) : (
-          data.statusesInRadius && data.statusesInRadius.length ? (
-            data.statusesInRadius.map(status => (
+          data.statusesInRadius && data.statusesInRadius.statuses.length ? (
+            data.statusesInRadius.statuses.map(status => (
               <StatusItem
                 key={status.id}
                 isSelected={status.id === selectedStatusId}
@@ -104,6 +110,11 @@ class StatusList extends React.Component<Props> {
             <Body padding={s5} disabled>No statuses found. Be first to share the moment with people near you.</Body>
           )
         )}
+        {canLoadMore && (
+          <Flex clickable padding={s3} justify="center" onClick={this.handleFetchMore}>
+            <Body>Load more</Body>
+          </Flex>
+        )}
       </StatusListContainer>
     );
   }
@@ -111,6 +122,45 @@ class StatusList extends React.Component<Props> {
   private handleSelectedStatusChanged(statusId: string) {
     this.nextSelectedStatusId = statusId;
     selectStatus.dispatch(statusId);
+  }
+
+  private handleFetchMore() {
+    const {
+      data,
+      radius,
+      userLat,
+      userLng,
+    } = this.props;
+
+    const {
+      fetchMore,
+      loading,
+      statusesInRadius,
+    } = data;
+
+    if (!loading && statusesInRadius && statusesInRadius.statuses.length) {
+      fetchMore({
+        variables: {
+          radius,
+          latitude: userLat as number,
+          longitude: userLng as number,
+          skip: false,
+          limit: STATUSES_LIMIT,
+          cursor: statusesInRadius.statuses[statusesInRadius.statuses.length - 1].id,
+        },
+        updateQuery: (prevResult, {fetchMoreResult}) => {
+          return {
+            statusesInRadius: {
+              ...prevResult.statusesInRadius,
+              statuses: [
+                ...prevResult.statusesInRadius.statuses,
+                ...fetchMoreResult.statusesInRadius.statuses,
+              ],
+            },
+          };
+        },
+      });
+    }
   }
 }
 
@@ -122,13 +172,14 @@ export default compose<React.ComponentType<IStatusListProps>>(
       stopAutoRefetchStatuses: getStopAutoRefetchStatuses(state),
     }),
   ),
-  graphql<IStatusListProps & IStateProps, StatusesInRadiusData>(statusesInRadius, {
+  graphql<IStatusListProps & IStateProps, StatusesInRadiusData, StatusesInRadiusVariables>(statusesInRadius, {
     options: (props) => ({
       variables: {
         radius: props.radius,
-        latitude: props.userLat,
-        longitude: props.userLng,
+        latitude: props.userLat as number,
+        longitude: props.userLng as number,
         skip: props.stopAutoRefetchStatuses,
+        limit: 3,
       },
     }),
     skip: ({userLat, userLng}) => !userLat || !userLng,

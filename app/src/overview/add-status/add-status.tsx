@@ -1,6 +1,6 @@
 import React from 'react';
 import { compose } from 'redux';
-import { graphql, MutateProps } from 'react-apollo';
+import { graphql, MutateProps, DataProps } from 'react-apollo';
 import { connect } from 'react-redux';
 
 import Modal from 'app/components/modal/modal';
@@ -15,7 +15,9 @@ import AddStatusForm from './add-status-form';
 
 import { addStatusMutation, statusesInRadius } from '../graphql';
 import { getRadiusInMeters } from '../selectors';
-import { StatusInput } from 'app/generated/graphql';
+import { StatusInput, StatusesInRadius, StatusesInRadiusVariables, UserById } from 'app/generated/graphql';
+import { getUserId } from 'app/login/selectos';
+import { userById } from 'app/user-profile/graphql';
 
 interface IAddStatusProps {
   userId: string | null;
@@ -25,9 +27,10 @@ interface IAddStatusProps {
 
 interface IStateProps {
   radiusInMeters: number;
+  userId: string;
 }
 
-type Props = IAddStatusProps & IStateProps & MutateProps & IWithStateMutationProps;
+type Props = IAddStatusProps & IStateProps & MutateProps & IWithStateMutationProps & DataProps<UserById>;
 
 class AddStatus extends React.Component<Props> {
 
@@ -55,6 +58,7 @@ class AddStatus extends React.Component<Props> {
       userLat,
       userLng,
       radiusInMeters,
+      data,
     } = this.props;
 
     const {useCurrentLocation, ...formValues} = values;
@@ -77,15 +81,42 @@ class AddStatus extends React.Component<Props> {
           userId,
         },
       },
-      refetchQueries: [{
-        query: statusesInRadius,
-        variables: {
-          radius: radiusInMeters,
-          latitude: userLat,
-          longitude: userLng,
-          skip: false,
-        },
-      }],
+      // update locally cached statuses data
+      update: (store, addStatusResult) => {
+        const statusesData = store.readQuery<StatusesInRadius, Partial<StatusesInRadiusVariables>>({
+          query: statusesInRadius,
+          variables: {
+            radius: radiusInMeters,
+            latitude: userLat as number,
+            longitude: userLng as number,
+            skip: false,
+          },
+        });
+
+        if (statusesData) {
+          store.writeQuery<StatusesInRadius, Partial<StatusesInRadiusVariables>>({
+            query: statusesInRadius,
+            variables: {
+              radius: radiusInMeters,
+              latitude: userLat as number,
+              longitude: userLng as number,
+              skip: false,
+            },
+            data: {
+              statusesInRadius: {
+                ...statusesData.statusesInRadius,
+                statuses: [
+                  ...statusesData.statusesInRadius.statuses,
+                  {
+                    ...addStatusResult.data.addStatus,
+                    user: data.userById,
+                  },
+                ],
+              },
+            },
+          });
+        }
+      },
     }).then((response: any) => {
       if (response) {
         closeModal.dispatch(ModalIds.addNewStatus);
@@ -101,7 +132,15 @@ class AddStatus extends React.Component<Props> {
 export default compose<React.ComponentType<IAddStatusProps>>(
   connect<IStateProps, {}, IAddStatusProps, IRootState>((state) => ({
     radiusInMeters: getRadiusInMeters(state),
+    userId: getUserId(state),
   })),
+  graphql<IStateProps>(userById, {
+    options: (props) => ({
+      variables: {
+        id: props.userId,
+      },
+    }),
+  }),
   graphql(addStatusMutation),
   withStateMutation(),
 )(AddStatus);

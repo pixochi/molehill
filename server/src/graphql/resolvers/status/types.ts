@@ -1,4 +1,4 @@
-import { ObjectType, InputType, Field, ID, Float } from 'type-graphql';
+import { ObjectType, InputType, Field, ID, Float, ArgsType, Int } from 'type-graphql';
 import StatusEntity from 'src/entity/status';
 
 @ObjectType()
@@ -39,4 +39,31 @@ export class StatusInput implements Partial<StatusEntity> {
 
   @Field({nullable: true})
   useCurrentLocation?: boolean;
+}
+
+@ArgsType()
+export class StatusesInRadiusArgs {
+  @Field(type => Float)
+  radius: number;
+
+  @Field(type => Float)
+  latitude: number;
+
+  @Field(type => Float)
+  longitude: number;
+
+  @Field(type => Int, {nullable: true})
+  limit: number;
+
+  @Field({nullable: true})
+  cursor: string;
+}
+
+@ObjectType()
+export class StatusesInRadiusWithCount {
+  @Field(type => [StatusEntity])
+  statuses: StatusEntity[];
+
+  @Field(type => Int)
+  count: number;
 }

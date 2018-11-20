@@ -4,9 +4,6 @@ import {
   Arg,
   Mutation,
   Args,
-  ArgsType,
-  Field,
-  Float,
 } from 'type-graphql';
 import { Repository } from 'typeorm';
 import { InjectRepository } from 'typeorm-typedi-extensions';
@@ -16,20 +13,8 @@ import StatusEntity from 'src/entity/status';
 import UserEntity from 'src/entity/user';
 import { buildUrlQuery } from 'src/graphql/helpers/url-query-builder';
 
-import { StatusInput } from './types';
-import { GEOCODER_API } from '../constants';
-
-@ArgsType()
-class GetStatusesInRadius {
-  @Field(type => Float)
-  radius: number;
-
-  @Field(type => Float)
-  latitude: number;
-
-  @Field(type => Float)
-  longitude: number;
-}
+import { StatusInput, StatusesInRadiusArgs, StatusesInRadiusWithCount } from './types';
+import { GEOCODER_API, BIG_INT_LIMIT } from '../constants';
 
 @Resolver((of) => StatusEntity)
 export default class StatusResolver {
@@ -55,21 +40,25 @@ export default class StatusResolver {
     return await this.statusRepository.find();
   }
 
-  @Query((returns) => [StatusEntity])
-  async statusesInRadius(@Args() { radius, latitude, longitude }: GetStatusesInRadius): Promise<StatusEntity[]> {
+  @Query((returns) => StatusesInRadiusWithCount)
+  async statusesInRadius(@Args() { radius, latitude, longitude, limit, cursor }: StatusesInRadiusArgs): Promise<StatusesInRadiusWithCount> {
 
     const statusesWithUser = await this.statusRepository
       .createQueryBuilder('status')
       .leftJoinAndSelect('status.user', 'user')
       .where('ST_Distance_Sphere(location, ST_MakePoint(:latitude,:longitude)) <= :radius', {
-          radius,
-          latitude,
-          longitude,
-        })
-      .limit(100)
-      .getMany();
+        radius,
+        latitude,
+        longitude,
+      })
+      .andWhere(cursor ? `status.id > ${cursor}` : 'TRUE')
+      .take(limit ? limit : BIG_INT_LIMIT)
+      .getManyAndCount();
 
-      return statusesWithUser;
+      return {
+        statuses: statusesWithUser[0],
+        count: statusesWithUser[1],
+      };
   }
 
   @Query((returns) => [StatusEntity])

@@ -14,8 +14,37 @@ export const allStatuses = gql`
 `;
 
 export const statusesInRadius = gql`
-  query StatusesInRadius($radius: Float!, $latitude: Float!, $longitude: Float!, $skip: Boolean!) {
-    statusesInRadius(radius: $radius, latitude: $latitude, longitude: $longitude) @skip(if: $skip) {
+  query StatusesInRadius(
+    $radius: Float!, $latitude: Float!, $longitude: Float!, $skip: Boolean!, $cursor: String, $limit: Int
+  ) {
+    statusesInRadius(radius: $radius, latitude: $latitude, longitude: $longitude, cursor: $cursor, limit: $limit)
+    @connection(key: "statusCursor", filter: ["radius", "latitude", "longitude"])
+    @skip(if: $skip) {
+      statuses {
+        id
+        location {
+          type
+          coordinates
+        }
+        city
+        zipCode
+        street
+        title
+        description
+        user {
+          id
+          username
+          image
+        }
+      }
+      count
+    }
+  }
+`;
+
+export const addStatusMutation = gql`
+  mutation AddStatus($status: StatusInput!) {
+    addStatus(status: $status) {
       id
       location {
         type
@@ -26,19 +55,6 @@ export const statusesInRadius = gql`
       street
       title
       description
-      user {
-        id
-        username
-        image
-      }
-    }
-  }
-`;
-
-export const addStatusMutation = gql`
-  mutation AddStatus($status: StatusInput!) {
-    addStatus(status: $status) {
-      id
     }
   }
 `;

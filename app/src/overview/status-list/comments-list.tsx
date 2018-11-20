@@ -68,7 +68,7 @@ class CommentsList extends React.Component<Props> {
       data,
     } = this.props;
 
-    if (!data || !data.statusComments) {
+    if (!data || !data.statusComments || !data.statusComments.count) {
       return null;
     }
 
