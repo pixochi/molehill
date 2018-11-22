@@ -9,9 +9,9 @@ import { Flex } from 'app/components/styleguide/layout';
 import Spinner from 'app/components/spinner';
 
 import { s5, s2, s4 } from 'app/components/styleguide/spacing';
-import styled from 'app/components/styleguide';
 import { IRootState } from 'app/redux/root-reducer';
 import { NAVBAR_HEIGHT } from 'app/components/navbar';
+import styled from 'app/components/styleguide';
 
 import { getStopAutoRefetchStatuses } from '../map/selectors';
 import { statusesInRadius } from '../graphql';
@@ -21,12 +21,13 @@ import { selectStatus } from '../actions';
 
 import StatusItem from './status-item';
 import { StatusesInRadiusVariables } from 'app/generated/graphql';
-
-const StatusListContainer = styled.div`
-  box-shadow: 1px 0 3px ${props => props.theme.border.focus};
-`;
+import Container from 'app/components/container';
 
 const STATUSES_LIMIT = 10;
+
+const StyledContainer = styled(Container)`
+  background-color: ${props => props.theme.backgroundDarker};
+`;
 
 interface IStatusListProps {
   userLat?: number;
@@ -89,7 +90,7 @@ class StatusList extends React.Component<Props> {
     const canLoadMore = data.statusesInRadius && data.statusesInRadius.count > data.statusesInRadius.statuses.length;
 
     return (
-      <StatusListContainer className={className}>
+      <StyledContainer withShadow noPadding className={className} direction="column">
         {!data || data.loading || stopAutoRefetchStatuses ? (
           <Flex padding={s5} direction="column" align="center" justify="center">
             <Spinner />
@@ -107,15 +108,17 @@ class StatusList extends React.Component<Props> {
               />
             ))
           ) : (
-            <Body padding={s5} disabled>No statuses found. Be first to share the moment with people near you.</Body>
+            <Container>
+              <Body disabled>No statuses found. Be first to share the moment with people near you.</Body>
+            </Container>
           )
         )}
         {canLoadMore && (
-          <Flex clickable padding={s4} justify="center" onClick={this.handleFetchMore}>
+          <Container clickable padding={s4} justify="center" onClick={this.handleFetchMore}>
             <Body>Load more</Body>
-          </Flex>
+          </Container>
         )}
-      </StatusListContainer>
+      </StyledContainer>
     );
   }
 

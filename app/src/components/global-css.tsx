@@ -21,7 +21,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   body {
-    background-color: ${(props: IProps) => props.theme.background};
+    background-color: ${(props: IProps) => props.theme.backgroundDarker};
     color: ${props => props.theme.text};
     font-family: 'Roboto', sans-serif;
   }

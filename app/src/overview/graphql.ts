@@ -27,6 +27,7 @@ export const statusesInRadius = gql`
           type
           coordinates
         }
+        country
         city
         zipCode
         street
@@ -55,6 +56,7 @@ export const addStatusMutation = gql`
         type
         coordinates
       }
+      country
       city
       zipCode
       street

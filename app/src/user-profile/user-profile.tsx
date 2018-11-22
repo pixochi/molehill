@@ -69,7 +69,7 @@ class UserProfile extends React.Component<Props, {image: string}> {
     const isOwnProfile = computedMatch.params.userId === userId;
 
     return (
-      <Container justify="center">
+      <Container justify="center" withShadow>
         <Flex direction="column" align="center">
           <UserImage imgSrc={data.userById.image} imgSize="120"/>
           {isOwnProfile && (

@@ -51,8 +51,9 @@ export default class StatusResolver {
         latitude,
         longitude,
       })
-      .andWhere(cursor ? `status.id > ${cursor}` : 'TRUE')
+      .andWhere(cursor ? `status.id < ${cursor}` : 'TRUE')
       .take(limit ? limit : BIG_INT_LIMIT)
+      .orderBy('status.createdAt', 'DESC')
       .getManyAndCount();
 
       return {

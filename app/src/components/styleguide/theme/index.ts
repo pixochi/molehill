@@ -42,7 +42,7 @@ const Theme: ITheme = {
   },
   invertedText: '#fefefe',
   shadow: 'rgba(160,160,160,0.35)',
-  shadowStrong: 'rgba(50,50,50,0.7)',
+  shadowStrong: 'rgba(50,50,50,0.5)',
   submit: '#14c505',
   submitLight: '#58d52c',
   submitDark: '#0b9100',

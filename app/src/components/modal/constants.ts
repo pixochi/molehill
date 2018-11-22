@@ -1,4 +1,4 @@
 export enum ModalIds {
-  addNewStatus = 'addNewStatus',
+  status = 'status',
   editUserProfile = 'editUserProfile',
 }

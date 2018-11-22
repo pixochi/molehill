@@ -6,7 +6,7 @@ import styled, { css } from 'app/components/styleguide';
 import Spinner from 'app/components/spinner';
 import {Body} from 'app/components/styleguide/text';
 
-type ButtonSize = 'mini' | 'default';
+type ButtonSize = 'big' | 'mini' | 'default';
 
 const getBackgroundColor = (theme: ITheme, appearance?: keyof typeof IButtonAppearance): string => {
   switch (appearance) {
@@ -17,7 +17,7 @@ const getBackgroundColor = (theme: ITheme, appearance?: keyof typeof IButtonAppe
     case 'neutral':
       return theme.textDisabled;
     default:
-      return theme.backgroundDarker;
+      return 'transparent';
   }
 };
 
@@ -46,6 +46,8 @@ const getFontSize = (buttonSize?: ButtonSize): string => {
   switch (buttonSize) {
     case 'mini':
       return '14px';
+    case 'big':
+      return '20px';
     case 'default':
     default:
       return '16px';

@@ -9,7 +9,7 @@ import { Flex, Base } from 'app/components/styleguide/layout';
 import ShowMore from 'app/components/show-more';
 import UserImage from 'app/components/user-image';
 import Like from 'app/components/icons/like';
-import MenuButton from 'app/components/menu-button';
+import MenuButton, { IMenuOption } from 'app/components/menu-button';
 
 import { s5, s1, s4, s2 } from 'app/components/styleguide/spacing';
 import styled, { css } from 'app/components/styleguide';
@@ -29,6 +29,8 @@ import { IRootState } from 'app/redux/root-reducer';
 import { getUserId } from 'app/login/selectos';
 import { userById } from 'app/user-profile/graphql';
 import { formatCreatedAt } from 'app/helpers/time';
+import { openModal } from 'app/components/modal/actions';
+import { ModalIds } from 'app/components/modal/constants';
 
 import Comments from './comments';
 import { addStatusLikeMutation, statusesInRadius, removeStatusLikeMutation } from '../graphql';
@@ -42,7 +44,7 @@ const buildNavigationLink = (coordinates: number[]) => {
 };
 
 const StatusContainer = styled(Flex)<{selected?: boolean}>`
-  background: ${props => props.theme.invertedText};
+  background: ${props => props.theme.background};
   border-bottom: 1px solid ${props => props.theme.border.default};
 
   ${props => props.selected && css`
@@ -83,6 +85,8 @@ type Props = IStateProps & IStatusItemProps & IWithStateMutationProps<AddStatusL
 
 class StatusItem extends React.Component<Props, {canAddLike: boolean}> {
 
+  private statusMenuOptions: IMenuOption[];
+
   constructor(props: Props) {
     super(props);
     this.handleAddStatusLike = this.handleAddStatusLike.bind(this);
@@ -90,6 +94,20 @@ class StatusItem extends React.Component<Props, {canAddLike: boolean}> {
     this.state = {
       canAddLike: !Boolean(props.status.statusLikes.find(like => like.userId === props.userId)),
     };
+    this.statusMenuOptions = [
+      {
+        title: 'Edit',
+        onClick: () => openModal.dispatch(ModalIds.status, {
+          statusId: props.status.id,
+          header: 'Edit status',
+          submitText: 'Edit',
+        }),
+      },
+      {
+        title: 'Delete',
+        onClick: () => console.log('delete!'),
+      },
+    ];
   }
 
   public render() {
@@ -104,6 +122,7 @@ class StatusItem extends React.Component<Props, {canAddLike: boolean}> {
     return (
       <StatusContainer
         paddingVertical={s2}
+        marginBottom={s2}
         grow={1}
         key={status.id}
         direction="column"
@@ -120,7 +139,7 @@ class StatusItem extends React.Component<Props, {canAddLike: boolean}> {
           {status.title}
         </Title>
         {status.user.id === userId && (
-          <MenuButton />
+          <MenuButton options={this.statusMenuOptions} />
         )}
       </Flex>
         <a

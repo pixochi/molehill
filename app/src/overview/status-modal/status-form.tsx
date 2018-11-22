@@ -17,19 +17,27 @@ import { s2 } from 'app/components/styleguide/spacing';
 
 import { getCountry, getStreet, getCity, getZipCode, getIsFetchingAddress } from '../map/selectors';
 import { StatusInput } from 'app/generated/graphql';
+import { getStatusModalSubmitText } from './selectors';
 
-export const ADD_STATUS_FORM = 'ADD_STATUS_FORM';
+export const STATUS_FORM = 'STATUS_FORM';
 export const USE_CURRENT_LOCATION_FIELD  = 'useCurrentLocation';
 
-interface IInitialValues {
-  initialValues: {
-    [K in keyof StatusInput]?: string;
-  };
+export interface IInitialValues {
+  initialValues?: {
+    [K in keyof StatusInput]?: string | null;
+  } | null;
 }
 
-type StateProps = IInitialValues & {isFetchingAddress: boolean};
+type IStateProps = IInitialValues & {
+  submitText: string;
+  isFetchingAddress: boolean;
+};
 
-type Props = StateProps & InjectedFormProps<StatusInput> & IFormProps;
+type StateProps = IInitialValues & IStateProps;
+
+type AddStatusFormProps = InjectedFormProps<StatusInput> & IFormProps & IInitialValues;
+
+type Props = StateProps & AddStatusFormProps;
 
 class AddStatusForm extends React.PureComponent<Props> {
   public render() {
@@ -37,6 +45,7 @@ class AddStatusForm extends React.PureComponent<Props> {
       handleSubmit,
       loading,
       isFetchingAddress,
+      submitText,
     } = this.props;
 
     return (
@@ -63,28 +72,29 @@ class AddStatusForm extends React.PureComponent<Props> {
             name="street"
             component={FormInput}
             placeholder="Street"
-            formName={ADD_STATUS_FORM}
+            formName={STATUS_FORM}
             clearable
             required
           />
-          <Button loading={loading} text="+ Add" type="submit" appearance="submit" fullWidth />
+          <Button loading={loading} text={submitText} type="submit" appearance="submit" fullWidth />
       </Form>
     );
   }
 }
 
-export default compose<React.ComponentType<IFormProps>>(
-  connect<StateProps, {}, IFormProps, IRootState>((state) => ({
-    initialValues: {
+export default compose<React.ComponentType<IFormProps & IInitialValues>>(
+  connect<StateProps, {}, AddStatusFormProps, IRootState>((state, props) => ({
+    initialValues: props.initialValues ? props.initialValues : {
       country: getCountry(state),
       street: getStreet(state),
       city: getCity(state),
       zipCode: getZipCode(state),
     },
     isFetchingAddress: getIsFetchingAddress(state),
+    submitText: getStatusModalSubmitText(state),
   })),
   reduxForm({
-    form: ADD_STATUS_FORM,
+    form: STATUS_FORM,
     enableReinitialize: true,
     keepDirtyOnReinitialize: true,
   }),

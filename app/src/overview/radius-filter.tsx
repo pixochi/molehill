@@ -9,12 +9,12 @@ import { IRootState } from 'app/redux/root-reducer';
 import { s5, s6 } from 'app/components/styleguide/spacing';
 import styled from 'app/components/styleguide';
 
-import { Flex } from 'app/components/styleguide/layout';
 import { Body } from 'app/components/styleguide/text';
 
 import { getRadius } from './selectors';
 import { changeRadius } from './actions';
 import { RADIUS_MIN, RADIUS_MAX } from './constants';
+import Container from 'app/components/container';
 
 const StyledSlider = styled(Slider)`
 
@@ -68,7 +68,7 @@ const RadiusFilter: React.SFC<IStateProps> = (props) => {
   } = props;
 
   return (
-    <Flex paddingVertical={s5} paddingHorizontal={s6} direction="column">
+    <Container paddingVertical={s5} paddingHorizontal={s6} direction="column">
       <Body>within {radius}&nbsp;km</Body>
       <StyledSlider
         min={RADIUS_MIN}
@@ -77,7 +77,7 @@ const RadiusFilter: React.SFC<IStateProps> = (props) => {
         handle={handle}
         onChange={(value) => changeRadius.dispatch(value, true)}
       />
-    </Flex>
+    </Container>
   );
 };
 

@@ -6,7 +6,7 @@ import { of } from 'rxjs';
 import graphqlClient from 'app/graphql-client';
 import { IReduxAction } from 'app/redux/create-actions';
 
-import { ADD_STATUS_FORM, USE_CURRENT_LOCATION_FIELD } from './add-status/add-status-form';
+import { STATUS_FORM, USE_CURRENT_LOCATION_FIELD } from './status-modal/status-form';
 import { getHasAddress, getLat, getLng } from './map/selectors';
 import { geocodeReverse } from './graphql';
 import { setAddress, fetchingAddress } from './map/actions';
@@ -17,7 +17,7 @@ const getAddressFromCoordinates: Epic<FormAction, any> = (action$, state$) => ac
   tap((reduxFormChangeAction) => {
     const {meta, payload} = reduxFormChangeAction;
 
-    if (meta.form === ADD_STATUS_FORM && meta.field === USE_CURRENT_LOCATION_FIELD &&
+    if (meta.form === STATUS_FORM && meta.field === USE_CURRENT_LOCATION_FIELD &&
       payload && !getHasAddress(state$.value)
     ) {
 

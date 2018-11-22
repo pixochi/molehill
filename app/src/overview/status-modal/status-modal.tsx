@@ -10,14 +10,21 @@ import withStateMutation, { IWithStateMutationProps } from 'app/components/highe
 import { updateSuccess, updateError } from 'app/components/global-event/actions';
 import { closeModal } from 'app/components/modal/actions';
 import { IRootState } from 'app/redux/root-reducer';
+import client from 'app/graphql-client';
+import { getUserId } from 'app/login/selectos';
+import { userById } from 'app/user-profile/graphql';
+import {
+  StatusInput,
+  StatusesInRadius,
+  StatusesInRadiusVariables,
+  UserById,
+} from 'app/generated/graphql';
 
-import AddStatusForm from './add-status-form';
+import AddStatusForm, { IInitialValues } from './status-form';
 
 import { addStatusMutation, statusesInRadius } from '../graphql';
 import { getRadiusInMeters } from '../selectors';
-import { StatusInput, StatusesInRadius, StatusesInRadiusVariables, UserById } from 'app/generated/graphql';
-import { getUserId } from 'app/login/selectos';
-import { userById } from 'app/user-profile/graphql';
+import { getEditingStatusId, getStatusModalHeader } from './selectors';
 
 interface IAddStatusProps {
   userId: string | null;
@@ -26,27 +33,47 @@ interface IAddStatusProps {
 }
 
 interface IStateProps {
-  radiusInMeters: number;
+  radius: number;
   userId: string;
+  editingStatusId?: string;
+  header?: string;
 }
 
 type Props = IAddStatusProps & IStateProps & MutateProps & IWithStateMutationProps & DataProps<UserById>;
 
-class AddStatus extends React.Component<Props> {
+class AddStatus extends React.Component<Props, IInitialValues> {
 
   constructor(props: Props) {
     super(props);
     this.handleAddStatus = this.handleAddStatus.bind(this);
+    this.getStatusInitialValues = this.getStatusInitialValues.bind(this);
+    this.state = {
+      initialValues: null,
+    };
+  }
+
+  public componentDidUpdate(prevProps: Props) {
+    if (this.props.editingStatusId && prevProps.editingStatusId !== this.props.editingStatusId
+        || (prevProps.editingStatusId && !this.props.editingStatusId)) {
+      this.setState({
+        initialValues: this.getStatusInitialValues(),
+      });
+    }
   }
 
   public render() {
     const {
       sMutation,
+      header,
     } = this.props;
 
     return (
-      <Modal id={ModalIds.addNewStatus} headerTitle="Add status">
-        <AddStatusForm loading={sMutation.loading} onSubmit={this.handleAddStatus}/>
+      <Modal id={ModalIds.status} headerTitle={header}>
+        <AddStatusForm
+          loading={sMutation.loading}
+          onSubmit={this.handleAddStatus}
+          initialValues={this.state.initialValues}
+        />
       </Modal>
     );
   }
@@ -57,7 +84,7 @@ class AddStatus extends React.Component<Props> {
       userId,
       userLat,
       userLng,
-      radiusInMeters,
+      radius,
       data,
     } = this.props;
 
@@ -83,35 +110,35 @@ class AddStatus extends React.Component<Props> {
       },
       // update locally cached statuses data
       update: (store, addStatusResult) => {
-        const statusesData = store.readQuery<StatusesInRadius, Partial<StatusesInRadiusVariables>>({
+        const statusesInRadiusData = store.readQuery<StatusesInRadius, Partial<StatusesInRadiusVariables>>({
           query: statusesInRadius,
           variables: {
-            radius: radiusInMeters,
-            latitude: userLat as number,
-            longitude: userLng as number,
+            radius: this.props.radius,
+            latitude: this.props.userLat as number,
+            longitude: this.props.userLng as number,
             skip: false,
           },
         });
 
-        if (statusesData) {
+        if (statusesInRadiusData) {
           store.writeQuery<StatusesInRadius, Partial<StatusesInRadiusVariables>>({
             query: statusesInRadius,
             variables: {
-              radius: radiusInMeters,
+              radius,
               latitude: userLat as number,
               longitude: userLng as number,
               skip: false,
             },
             data: {
               statusesInRadius: {
-                ...statusesData.statusesInRadius,
+                ...statusesInRadiusData.statusesInRadius,
                 statuses: [
-                  ...statusesData.statusesInRadius.statuses,
                   {
                     ...addStatusResult.data.addStatus,
                     statusLikes: [],
                     user: data.userById,
                   },
+                  ...statusesInRadiusData.statusesInRadius.statuses,
                 ],
               },
             },
@@ -120,7 +147,7 @@ class AddStatus extends React.Component<Props> {
       },
     }).then((response: any) => {
       if (response) {
-        closeModal.dispatch(ModalIds.addNewStatus);
+        closeModal.dispatch(ModalIds.status);
         if (!response.data) {
           throw new Error();
         }
@@ -128,12 +155,60 @@ class AddStatus extends React.Component<Props> {
       }
     }).catch((e: any) => updateError.dispatch('Failed to add a new status.'));
   }
+
+  private getStatusInitialValues() {
+
+    const {
+      radius,
+      userLat,
+      userLng,
+      editingStatusId,
+    } = this.props;
+
+    try {
+      const statusesInRadiusData = client.store.getCache()
+      .readQuery<StatusesInRadius, Partial<StatusesInRadiusVariables>>({
+        query: statusesInRadius,
+        variables: {
+          radius,
+          latitude: userLat as number,
+          longitude: userLng as number,
+          skip: false,
+        },
+      });
+
+      if (statusesInRadiusData && editingStatusId) {
+        const selectedStatus = statusesInRadiusData.statusesInRadius.statuses.find(
+          status => status.id === editingStatusId,
+        );
+
+        if (selectedStatus) {
+          const {title, description, country, street, city, zipCode} = selectedStatus;
+          return {
+            title,
+            description,
+            country,
+            street,
+            city,
+            zipCode,
+          };
+        }
+        return null;
+      }
+    } catch (error) {
+      console.log({error});
+      return null;
+    }
+    return null;
+  }
 }
 
 export default compose<React.ComponentType<IAddStatusProps>>(
   connect<IStateProps, {}, IAddStatusProps, IRootState>((state) => ({
-    radiusInMeters: getRadiusInMeters(state),
+    radius: getRadiusInMeters(state),
     userId: getUserId(state),
+    editingStatusId: getEditingStatusId(state),
+    header: getStatusModalHeader(state),
   })),
   graphql<IStateProps>(userById, {
     options: (props) => ({

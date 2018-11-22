@@ -1,24 +1,26 @@
-import React from 'react';
+import React, { HTMLAttributes } from 'react';
 
 import styled from './styleguide';
 import { Flex, IFlexProps, IBaseLayoutProps } from './styleguide/layout';
-import { s4 } from './styleguide/spacing';
 
 const StyledContainer = styled(Flex)<IContainer>`
   background-color: ${props => props.theme.background};
-  box-shadow: 0 2px 4px ${props => props.theme.shadow};
-  height: ${props => props.height ? `${props.height}px` : '100%'};
+  box-shadow:  ${props => props.withShadow ? `0 2px 4px ${props.theme.shadowStrong}` : 'unset'};
+  padding:  ${props => props.noPadding ? 0 : `16px`};
+  height: ${props => props.height ? `${props.height}px` : 'auto'};
 `;
 
 interface IContainer {
   height?: number;
+  withShadow?: boolean;
+  noPadding?: boolean;
 }
 
-type Props = IFlexProps & IBaseLayoutProps & IContainer;
+type Props = IFlexProps & IBaseLayoutProps & IContainer & HTMLAttributes<any>;
 
 const Container: React.SFC<Props> = (props) => {
   return (
-    <StyledContainer padding={s4} {...props}>
+    <StyledContainer {...props}>
       {props.children}
     </StyledContainer>
   );

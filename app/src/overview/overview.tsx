@@ -17,7 +17,7 @@ import { getLat, getLng } from './map/selectors';
 import Map from './map/map';
 import StatusList from './status-list/status-list';
 import RadiusFilter from './radius-filter';
-import AddStatus from './add-status/add-status';
+import StatusModal from './status-modal/status-modal';
 
 const StatusesContainer = styled(Flex)`
 `;
@@ -75,13 +75,16 @@ class Overview extends React.PureComponent<Props> {
             </Flex>
           </FixedContainer>
         </StatusesContainer>
-        <AddStatus userLat={userLat} userLng={userLng} userId={userId} />
+        <StatusModal userLat={userLat} userLng={userLng} userId={userId} />
       </Flex>
     );
   }
 
   private handleOpenAddStatus() {
-    openModal.dispatch(ModalIds.addNewStatus);
+    openModal.dispatch(ModalIds.status, {
+      header: 'Add status',
+      submitText: '+ Add',
+    });
   }
 }
 

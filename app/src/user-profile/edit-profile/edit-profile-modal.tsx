@@ -56,7 +56,7 @@ class EditProfileModal extends React.Component<Props> {
       }],
     }).then((response: any) => {
       if (response) {
-        closeModal.dispatch(ModalIds.addNewStatus);
+        closeModal.dispatch(ModalIds.status);
         if (!response.data) {
           throw new Error();
         }

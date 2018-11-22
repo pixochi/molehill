@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+import onClickOutside from 'react-onclickoutside';
 
 import styled from 'app/components/styleguide';
 import { IRootState } from 'app/redux/root-reducer';
@@ -39,8 +40,6 @@ const ModalHeader = styled(Flex).attrs({
 
 const CloseModalButton = styled(Button)`
   font-weight: 600;
-  border-radius: 50%;
-  box-shadow: 0 2px 4px ${props => props.theme.shadowStrong};
   padding: 4px 12px;
 
   & > * {
@@ -59,6 +58,51 @@ interface IStateProps {
 }
 
 type Props = IStateProps & IModalProps;
+
+interface IContentProps {
+  headerTitleElement: ReactNode;
+  onCloseButtonClick: () => void;
+}
+
+class Content extends React.PureComponent<IContentProps> {
+
+  constructor(props: IContentProps) {
+    super(props);
+    this.handleClickOutside = this.handleClickOutside.bind(this);
+  }
+
+  public render() {
+    const {
+      children,
+      headerTitleElement,
+      onCloseButtonClick,
+    } = this.props;
+
+    return (
+      <ModalContent padding={s4}>
+        <ModalHeader>
+          {headerTitleElement}
+          <Flex justify="flex-end">
+            <CloseModalButton
+              text="+"
+              buttonSize="big"
+              onClick={onCloseButtonClick}
+            />
+          </Flex>
+        </ModalHeader>
+        <Base marginTop={s4}>
+          {children}
+        </Base>
+      </ModalContent>
+    );
+  }
+
+  private handleClickOutside = (evt: Event) => {
+    this.props.onCloseButtonClick();
+  }
+}
+
+const EnhancedContent = onClickOutside(Content);
 
 class Modal extends React.PureComponent<Props> {
 
@@ -82,20 +126,12 @@ class Modal extends React.PureComponent<Props> {
 
       return (
         <ModalContainer>
-          <ModalContent padding={s4}>
-            <ModalHeader>
-              {headerTitleElement}
-              <Flex justify="flex-end">
-                <CloseModalButton
-                  text="+"
-                  onClick={this.handleCancelButtonClick}
-                />
-              </Flex>
-            </ModalHeader>
-            <Base marginTop={s4}>
-              {children}
-            </Base>
-          </ModalContent>
+          <EnhancedContent
+            onCloseButtonClick={this.handleCancelButtonClick}
+            headerTitleElement={headerTitleElement}
+          >
+            {children}
+          </EnhancedContent>
         </ModalContainer>
       );
   }
@@ -105,7 +141,8 @@ class Modal extends React.PureComponent<Props> {
   }
 }
 
-export default compose(
+export default compose<React.ComponentType<IModalProps>>(
+  onClickOutside,
   connect<IStateProps, {}, IModalProps, IRootState>(
     (state, props) => ({
       isOpen: getIsOpen(state, props),
