@@ -6,6 +6,7 @@ import globalEventReducer, { GlobalEventState } from 'app/components/global-even
 import modalReducer, { ModalState } from 'app/components/modal/reducer';
 import overviewReducer, { IOverviewState } from 'app/overview/reducer';
 import fileUploadReducer, { FileUploadState } from 'app/components/file-upload/reducer';
+import confirmDialogReducer, { ConfirmDialogState } from 'app/components/confirm-dialog/reducer';
 
 export interface IRootState {
   form: FormStateMap;
@@ -14,6 +15,7 @@ export interface IRootState {
   modal: ModalState;
   overview: IOverviewState;
   fileUpload: typeof FileUploadState;
+  confirmDialog: ConfirmDialogState;
 }
 
 export default combineReducers<IRootState>({
@@ -23,4 +25,5 @@ export default combineReducers<IRootState>({
   modal: modalReducer,
   overview: overviewReducer,
   fileUpload: fileUploadReducer,
+  confirmDialog: confirmDialogReducer,
 });

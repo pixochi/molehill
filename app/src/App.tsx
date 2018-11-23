@@ -12,6 +12,7 @@ import Routes from './routes';
 import ErrorBoundary from './components/error-boundary/error-boundary';
 import Portal from './components/portal/portal';
 import GlobalEvent from './components/global-event/global-event';
+import ConfirmDialog from './components/confirm-dialog/confirm-dialog';
 
 class App extends Component {
   public render() {
@@ -24,6 +25,9 @@ class App extends Component {
                   <GlobalCSS theme={theme} />
                   <Portal id="global-event">
                     <GlobalEvent />
+                  </Portal>
+                  <Portal id="confirm-dialog">
+                    <ConfirmDialog />
                   </Portal>
                   <Routes />
               </>

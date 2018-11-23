@@ -8,12 +8,14 @@ const StyledContainer = styled(Flex)<IContainer>`
   box-shadow:  ${props => props.withShadow ? `0 2px 4px ${props.theme.shadowStrong}` : 'unset'};
   padding:  ${props => props.noPadding ? 0 : `16px`};
   height: ${props => props.height ? `${props.height}px` : 'auto'};
+  border-radius: ${props => props.rounded ? '7px' : 0};
 `;
 
 interface IContainer {
   height?: number;
   withShadow?: boolean;
   noPadding?: boolean;
+  rounded?: boolean;
 }
 
 type Props = IFlexProps & IBaseLayoutProps & IContainer & HTMLAttributes<any>;
