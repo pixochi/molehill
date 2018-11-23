@@ -16,6 +16,8 @@ const getBackgroundColor = (theme: ITheme, appearance?: keyof typeof IButtonAppe
       return theme.info;
     case 'neutral':
       return theme.textDisabled;
+    case 'warning':
+      return theme.errorDark;
     default:
       return 'transparent';
   }
@@ -26,6 +28,7 @@ const getTextColor = (theme: ITheme, appearance?: keyof typeof IButtonAppearance
     case 'submit':
     case 'info':
     case 'neutral':
+    case 'warning':
       return theme.invertedText;
     default:
       return theme.text;
@@ -118,6 +121,7 @@ const StyledSpinner = styled(Spinner).attrs<IButtonProps>({
 
 enum IButtonAppearance {
   submit = 'submit',
+  warning = 'warning',
   info = 'info',
   neutral = 'neutral',
 }

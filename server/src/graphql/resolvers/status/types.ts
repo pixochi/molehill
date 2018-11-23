@@ -41,6 +41,36 @@ export class StatusInput implements Partial<StatusEntity> {
   useCurrentLocation?: boolean;
 }
 
+@InputType()
+export class EditStatusInput implements Partial<StatusEntity> {
+  @Field(() => ID)
+  id: string;
+
+  @Field()
+  title: string;
+
+  @Field({nullable: true})
+  description?: string;
+
+  @Field(type => LocationInput, {nullable: true})
+  location?: LocationInput;
+
+  @Field()
+  country: string;
+
+  @Field()
+  city: string;
+
+  @Field()
+  zipCode: string;
+
+  @Field()
+  street: string;
+
+  @Field({nullable: true})
+  useCurrentLocation?: boolean;
+}
+
 @ArgsType()
 export class StatusesInRadiusArgs {
   @Field(type => Float)

@@ -67,6 +67,32 @@ export const addStatusMutation = gql`
   }
 `;
 
+export const editStatusMutation = gql`
+  mutation EditStatus($status: EditStatusInput!) {
+    editStatus(status: $status) {
+      id
+      location {
+        type
+        coordinates
+      }
+      country
+      city
+      zipCode
+      street
+      title
+      description
+    }
+  }
+`;
+
+export const deletetatusMutation = gql`
+  mutation DeleteStatus($statusId: String!) {
+    deleteStatus(statusId: $statusId) {
+      id
+    }
+  }
+`;
+
 export const addStatusLikeMutation = gql`
   mutation AddStatusLike($like: StatusLikeInput!) {
     addStatusLike(like: $like) {

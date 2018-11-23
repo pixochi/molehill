@@ -36,6 +36,7 @@ import Comments from './comments';
 import { addStatusLikeMutation, statusesInRadius, removeStatusLikeMutation } from '../graphql';
 import { getRadiusInMeters } from '../selectors';
 import { getLat, getLng } from '../map/selectors';
+import { deleteStatus } from './actions';
 
 const GOOGLE_MAPS_API = 'https://www.google.com/maps/dir/?api=1&';
 
@@ -105,7 +106,7 @@ class StatusItem extends React.Component<Props, {canAddLike: boolean}> {
       },
       {
         title: 'Delete',
-        onClick: () => console.log('delete!'),
+        onClick: () => deleteStatus.dispatch(props.status.id),
       },
     ];
   }

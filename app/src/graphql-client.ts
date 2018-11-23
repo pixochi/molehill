@@ -4,6 +4,8 @@ import { onError } from 'apollo-link-error';
 import { ApolloLink } from 'apollo-link';
 import {createUploadLink} from 'apollo-upload-client';
 
+import { updateError } from './components/global-event/actions';
+
 const cache = new InMemoryCache();
 
 const client = new ApolloClient({
@@ -19,6 +21,7 @@ const client = new ApolloClient({
       if (networkError) {
         console.log(`[Network error]: ${networkError}`);
       }
+      updateError.dispatch('Something went wrong');
     }),
     createUploadLink({
       uri: 'http://localhost:4000/graphql',

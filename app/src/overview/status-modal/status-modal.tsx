@@ -18,11 +18,12 @@ import {
   StatusesInRadius,
   StatusesInRadiusVariables,
   UserById,
+  AddStatusVariables,
 } from 'app/generated/graphql';
 
 import AddStatusForm, { IInitialValues } from './status-form';
 
-import { addStatusMutation, statusesInRadius } from '../graphql';
+import { addStatusMutation, statusesInRadius, editStatusMutation } from '../graphql';
 import { getRadiusInMeters } from '../selectors';
 import { getEditingStatusId, getStatusModalHeader } from './selectors';
 
@@ -46,6 +47,7 @@ class AddStatus extends React.Component<Props, IInitialValues> {
   constructor(props: Props) {
     super(props);
     this.handleAddStatus = this.handleAddStatus.bind(this);
+    this.handleEditStatus = this.handleEditStatus.bind(this);
     this.getStatusInitialValues = this.getStatusInitialValues.bind(this);
     this.state = {
       initialValues: null,
@@ -63,15 +65,19 @@ class AddStatus extends React.Component<Props, IInitialValues> {
 
   public render() {
     const {
-      sMutation,
+      addStatusMutation,
       header,
     } = this.props;
+
+    const {
+      initialValues,
+    } = this.state;
 
     return (
       <Modal id={ModalIds.status} headerTitle={header}>
         <AddStatusForm
-          loading={sMutation.loading}
-          onSubmit={this.handleAddStatus}
+          loading={initialValues ? editStatusMutation.loading : addStatusMutation.loading}
+          onSubmit={initialValues ? this.handleEditStatus : this.handleAddStatus}
           initialValues={this.state.initialValues}
         />
       </Modal>
@@ -80,7 +86,7 @@ class AddStatus extends React.Component<Props, IInitialValues> {
 
   private handleAddStatus(values: StatusInput) {
     const {
-      sMutation,
+      addStatusMutation,
       userId,
       userLat,
       userLng,
@@ -99,7 +105,7 @@ class AddStatus extends React.Component<Props, IInitialValues> {
       ], // TODO: remove RANDOMIZER and check if userCoordinates are available
     } : null;
 
-    return sMutation.mutate({
+    return addStatusMutation.mutate({
       variables: {
         status: {
           ...formValues,
@@ -154,6 +160,45 @@ class AddStatus extends React.Component<Props, IInitialValues> {
         updateSuccess.dispatch('New status successfully added.');
       }
     }).catch((e: any) => updateError.dispatch('Failed to add a new status.'));
+  }
+
+  private handleEditStatus(values: StatusInput) {
+    const {
+      editStatusMutation,
+      editingStatusId,
+      userLat,
+      userLng,
+    } = this.props;
+
+    const {useCurrentLocation, ...formValues} = values;
+    // Used for not having all statuses at the very same point
+    const RANDOMIZER = Math.random() / Math.floor(Math.random() * 100) * (Math.random() > 0.5 ? 1 : -1);
+    const statusLocation = useCurrentLocation ? {
+      type: 'Point',
+      coordinates: [
+        Number(userLat) + RANDOMIZER,
+        Number(userLng) + RANDOMIZER,
+      ], // TODO: remove RANDOMIZER and check if userCoordinates are available
+    } : null;
+
+    return editStatusMutation.mutate({
+      variables: {
+        status: {
+          ...formValues,
+          useCurrentLocation,
+          location: statusLocation,
+          id: editingStatusId,
+        },
+      },
+    }).then((response: any) => {
+      if (response) {
+        closeModal.dispatch(ModalIds.status);
+        if (!response.data) {
+          throw new Error();
+        }
+        updateSuccess.dispatch('Status successfully updated.');
+      }
+    }).catch((e: any) => updateError.dispatch('Failed to edit the status.'));
   }
 
   private getStatusInitialValues() {
@@ -217,6 +262,8 @@ export default compose<React.ComponentType<IAddStatusProps>>(
       },
     }),
   }),
-  graphql(addStatusMutation),
-  withStateMutation(),
+  graphql<AddStatus, AddStatusVariables>(addStatusMutation, {name: 'addStatusMutation'}),
+  withStateMutation({name: 'addStatusMutation'}),
+  graphql(editStatusMutation, {name: 'editStatusMutation'}),
+  withStateMutation({name: 'editStatusMutation'}),
 )(AddStatus);

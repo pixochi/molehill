@@ -55,10 +55,10 @@ export default class Status {
   user: User;
 
   @Field(() => Comment)
-  @OneToMany(type => Comment, comment => comment.status)
-  comments: User;
+  @OneToMany(type => Comment, comment => comment.status, { onDelete: 'CASCADE' })
+  comments: Comment[];
 
   @Field(() => StatusLike)
-  @OneToMany(type => StatusLike, statusLike => statusLike.status)
+  @OneToMany(type => StatusLike, statusLike => statusLike.status, { onDelete: 'CASCADE' })
   statusLikes: StatusLike[];
 }

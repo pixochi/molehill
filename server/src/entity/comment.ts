@@ -24,6 +24,6 @@ export default class Comment {
   user: User;
 
   @Field(() => Status)
-  @ManyToOne(type => Status, status => status.comments)
+  @ManyToOne(type => Status, status => status.comments, { onDelete: 'CASCADE' })
   status: Status;
 }

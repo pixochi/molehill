@@ -1,4 +1,4 @@
 import { DataProps } from 'react-apollo';
-import { StatusesInRadius } from 'app/generated/graphql';
+import { StatusesInRadius, StatusesInRadiusVariables } from 'app/generated/graphql';
 
-export type StatusesInRadiusData = DataProps<StatusesInRadius>;
+export type StatusesInRadiusData = DataProps<StatusesInRadius, StatusesInRadiusVariables>;

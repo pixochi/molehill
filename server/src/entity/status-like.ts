@@ -21,7 +21,7 @@ export default class StatusLike {
   userId: string;
 
   @Field(() => Status)
-  @ManyToOne(type => Status, status => status.statusLikes)
+  @ManyToOne(type => Status, status => status.statusLikes, { onDelete: 'CASCADE' })
   status: User;
 
   @Column('int', {nullable: true}) // TODO: remove nullable
