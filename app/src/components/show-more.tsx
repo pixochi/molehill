@@ -1,15 +1,16 @@
 import React, { ComponentClass } from 'react';
 
-import { Body } from './styleguide/text';
 import styled from './styleguide';
 
-const ShowMoreContainer = styled.div`
+import { Body } from './styleguide/text';
+import { Flex } from './styleguide/layout';
+
+const ShowMoreContainer = styled(Flex)`
   & > * {
     display: inline;
 
     &:nth-child(2) {
       color: ${props => props.theme.info};
-      margin-left: 8px;
       cursor: pointer;
     }
   }
@@ -57,7 +58,7 @@ class ShowMore extends React.PureComponent<Props & DefaultProps, IState> {
       text && text.slice(0, maxChars).concat(text.length >= maxChars ? '...' : '');
 
     return (
-      <ShowMoreContainer>
+      <ShowMoreContainer direction="column">
         <TextComponent break>{textShown}</TextComponent>
         {text && text.length > maxChars && (
           !this.state.expanded ? (

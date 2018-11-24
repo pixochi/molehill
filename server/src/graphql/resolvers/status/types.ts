@@ -90,7 +90,7 @@ export class StatusesInRadiusArgs {
 }
 
 @ObjectType()
-export class StatusesInRadiusWithCount {
+export class StatusesWithCount {
   @Field(type => [StatusEntity])
   statuses: StatusEntity[];
 

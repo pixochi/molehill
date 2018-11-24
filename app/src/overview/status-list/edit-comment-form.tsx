@@ -27,7 +27,7 @@ class EditCommentForm extends React.PureComponent<Props> {
 
     return (
       <Form onSubmit={handleSubmit}>
-          <FormField name="body" rows="1" component={FormTextArea} onKeyDown={this.handleKeyDown}/>
+          <FormField name="body" rows="2" component={FormTextArea} onKeyDown={this.handleKeyDown}/>
       </Form>
     );
   }

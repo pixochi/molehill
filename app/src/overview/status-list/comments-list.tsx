@@ -33,19 +33,6 @@ const SpinnerContainer = styled(Base)`
   right: -32px;
 `;
 
-const Comment = styled(Flex)<{canLoadMore: boolean}>`
-  margin-top: 8px;
-
-  &:first-child {
-    margin-top: ${props => props.canLoadMore ? 0 : '8px'};
-  }
-
-  &:not(:last-child) {
-    border-bottom: 1px solid ${props => props.theme.border.default};
-    padding-bottom: 8px;
-  }
-`;
-
 const CommentsInfo = styled(Flex)`
   position: relative;
 `;
@@ -63,6 +50,26 @@ const LoadMore = styled(Body)`
 const StyledMenuButton = styled(MenuButton)`
   margin-left: auto;
   padding: 0 8px;
+  opacity: 0;
+`;
+
+const Comment = styled(Flex)<{canLoadMore: boolean}>`
+  margin-top: 8px;
+
+  &:first-child {
+    margin-top: ${props => props.canLoadMore ? 0 : '8px'};
+  }
+
+  &:not(:last-child) {
+    border-bottom: 1px solid ${props => props.theme.border.default};
+    padding-bottom: 8px;
+  }
+
+  &:hover {
+    ${StyledMenuButton} {
+      opacity: 1;
+    }
+  }
 `;
 
 interface ICommentsList {

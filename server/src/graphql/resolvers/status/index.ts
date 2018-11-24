@@ -13,7 +13,7 @@ import StatusEntity from 'src/entity/status';
 import UserEntity from 'src/entity/user';
 import { buildUrlQuery } from 'src/graphql/helpers/url-query-builder';
 
-import { StatusInput, EditStatusInput, StatusesInRadiusArgs, StatusesInRadiusWithCount } from './types';
+import { StatusInput, EditStatusInput, StatusesInRadiusArgs, StatusesWithCount } from './types';
 import { GEOCODER_API, BIG_INT_LIMIT } from '../constants';
 
 @Resolver((of) => StatusEntity)
@@ -39,8 +39,8 @@ export default class StatusResolver {
     return await this.statusRepository.find();
   }
 
-  @Query((returns) => StatusesInRadiusWithCount)
-  async statusesInRadius(@Args() { radius, latitude, longitude, limit, cursor }: StatusesInRadiusArgs): Promise<StatusesInRadiusWithCount> {
+  @Query((returns) => StatusesWithCount)
+  async statusesInRadius(@Args() { radius, latitude, longitude, limit, cursor }: StatusesInRadiusArgs): Promise<StatusesWithCount> {
 
     const statusesWithUser = await this.statusRepository
       .createQueryBuilder('status')
@@ -62,18 +62,22 @@ export default class StatusResolver {
       };
   }
 
-  @Query((returns) => [StatusEntity])
-  async statusByUser(@Arg('userId') userId: string): Promise<StatusEntity[]> {
-    return await this.statusRepository.find(
-      {
-        relations: ['user'],
-        where: {
-          user: {
-            id: userId,
-          }
-        }
-      },
-    );
+  @Query((returns) => StatusesWithCount)
+  async statusesByUser(@Arg('userId') userId: string): Promise<StatusesWithCount> {
+    const statusesWithUser = await this.statusRepository
+      .createQueryBuilder('status')
+      .where({user: {
+        id: userId,
+      }})
+      .leftJoinAndSelect('status.user', 'user')
+      .leftJoinAndSelect('status.statusLikes', 'likes')
+      .orderBy('status.createdAt', 'DESC')
+      .getManyAndCount();
+
+      return {
+        statuses: statusesWithUser[0],
+        count: statusesWithUser[1],
+      };
   }
 
   @Mutation(returns => StatusEntity)

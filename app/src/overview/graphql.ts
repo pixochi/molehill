@@ -13,6 +13,32 @@ export const allStatuses = gql`
   }
 `;
 
+export const statusFragment = gql`
+  fragment StatusFragment on Status {
+    id
+    createdAt
+    location {
+      type
+      coordinates
+    }
+    country
+    city
+    zipCode
+    street
+    title
+    description
+    user {
+      id
+      username
+      image
+    }
+    statusLikes {
+      id
+      userId
+    }
+  }
+`;
+
 export const statusesInRadius = gql`
   query StatusesInRadius(
     $radius: Float!, $latitude: Float!, $longitude: Float!, $skip: Boolean!, $cursor: String, $limit: Int
@@ -21,31 +47,12 @@ export const statusesInRadius = gql`
     @connection(key: "statusCursor", filter: ["radius", "latitude", "longitude"])
     @skip(if: $skip) {
       statuses {
-        id
-        createdAt
-        location {
-          type
-          coordinates
-        }
-        country
-        city
-        zipCode
-        street
-        title
-        description
-        user {
-          id
-          username
-          image
-        }
-        statusLikes {
-          id
-          userId
-        }
+        ...StatusFragment
       }
       count
     }
   }
+  ${statusFragment}
 `;
 
 export const addStatusMutation = gql`

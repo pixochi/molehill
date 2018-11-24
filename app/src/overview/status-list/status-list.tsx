@@ -109,7 +109,7 @@ class StatusList extends React.Component<Props> {
             ))
           ) : (
             <Container>
-              <Body disabled>No statuses found. Be first to share the moment with people near you.</Body>
+              <Body disabled>No statuses found. Share the moment with people near you.</Body>
             </Container>
           )
         )}

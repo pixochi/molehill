@@ -66,9 +66,9 @@ const LikeIcon = styled(Like).attrs<{isLikedByUser: boolean}>({
 })``;
 
 interface IStatusItemProps {
-  isSelected: boolean;
   status: StatusesInRadius_statusesInRadius_statuses;
-  selectStatus: () => void;
+  selectStatus?: () => void;
+  isSelected?: boolean;
   forwardedRef?: RefObject<any>;
   ref?: RefObject<any> | string;
 }

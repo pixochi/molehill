@@ -1,5 +1,7 @@
 import gql from 'graphql-tag';
 
+import { statusFragment } from 'app/overview/graphql';
+
 export const userById = gql`
   query UserById($id: String!) {
     userById(id: $id) {
@@ -9,6 +11,17 @@ export const userById = gql`
       bio
     }
   }
+`;
+
+export const statusesByUser = gql`
+  query StatusesByUser($userId: String!) {
+    statusesByUser(userId: $userId) {
+      statuses {
+        ...StatusFragment
+      }
+    }
+  }
+  ${statusFragment}
 `;
 
 export const uploadProfileImageMutation = gql`

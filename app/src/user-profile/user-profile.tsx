@@ -29,9 +29,19 @@ import { getUserId } from 'app/login/selectos';
 import { openModal } from 'app/components/modal/actions';
 
 import EditProfile from './edit-profile/edit-profile-modal';
+import UserStatuses from './user-statuses/user-statuses';
 
 const EditIcon = styled(Edit)`
   cursor: pointer;
+`;
+
+const UserProfileContainer = styled(Container)`
+  max-width: 900px;
+  margin: 0 auto;
+
+  &:first-child {
+    border-bottom: 1px solid ${props => props.theme.border.default};
+  }
 `;
 
 type RouteProps = RouteComponentProps<{userId: string}>;
@@ -69,49 +79,54 @@ class UserProfile extends React.Component<Props, {image: string}> {
     const isOwnProfile = computedMatch.params.userId === userId;
 
     return (
-      <Container justify="center" withShadow>
-        <Flex direction="column" align="center">
-          <UserImage imgSrc={data.userById.image} imgSize="120"/>
-          {isOwnProfile && (
-            <Flex direction="column" align="center" marginTop={s4}>
-              <FileUpload
-                id={PROFILE_IMAGE_ID}
-                uploadBtnText="New profile image"
-                required
-              />
-              {profileImageFile && (
-                <Base marginTop={s4} fullWidth>
-                  <Button
-                    appearance="submit"
-                    loading={sMutation.loading}
-                    text="Upload"
-                    onClick={this.handleFileUpload}
-                    fullWidth
-                  />
+      <UserProfileContainer withShadow direction="column">
+        <Flex justify="center">
+          <Flex direction="column" align="center">
+            <UserImage imgSrc={data.userById.image} imgSize="120"/>
+            {isOwnProfile && (
+              <Flex direction="column" align="center" marginTop={s4}>
+                <FileUpload
+                  id={PROFILE_IMAGE_ID}
+                  uploadBtnText="New profile image"
+                  required
+                />
+                {profileImageFile && (
+                  <Base marginTop={s4} fullWidth>
+                    <Button
+                      appearance="submit"
+                      loading={sMutation.loading}
+                      text="Upload"
+                      onClick={this.handleFileUpload}
+                      fullWidth
+                    />
+                  </Base>
+                )}
+              </Flex>
+            )}
+          </Flex>
+          <Flex direction="column" marginLeft={s6} marginTop={s8}>
+            <Title inline>
+              {data.userById.username}
+            </Title>
+            <Flex align="center" marginTop={s2}>
+              <Body disabled>
+                {data.userById.bio ? data.userById.bio : (
+                  isOwnProfile && 'Tell something about yourself...'
+                )}
+              </Body>
+              {isOwnProfile && (
+                <Base marginLeft={s2}>
+                  <EditIcon width={20} height={20} onClick={() => openModal.dispatch(ModalIds.editUserProfile)} />
+                  <EditProfile userId={userId} />
                 </Base>
               )}
             </Flex>
-          )}
-        </Flex>
-        <Flex direction="column" marginLeft={s6} marginTop={s8}>
-          <Title inline>
-            {data.userById.username}
-          </Title>
-          <Flex align="center" marginTop={s2}>
-            <Body disabled>
-              {data.userById.bio ? data.userById.bio : (
-                isOwnProfile && 'Tell something about yourself...'
-              )}
-            </Body>
-            {isOwnProfile && (
-              <Base marginLeft={s2}>
-                <EditIcon width={20} height={20} onClick={() => openModal.dispatch(ModalIds.editUserProfile)} />
-                <EditProfile userId={userId} />
-              </Base>
-            )}
           </Flex>
         </Flex>
-      </Container>
+        <Flex marginTop={s8} justify="center">
+          <UserStatuses/>
+        </Flex>
+      </UserProfileContainer>
     );
   }
 
