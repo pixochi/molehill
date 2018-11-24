@@ -14,6 +14,15 @@ export class CommentInput implements Partial<CommentEntity> {
   body: string;
 }
 
+@InputType()
+export class EditCommentInput implements Partial<CommentEntity> {
+  @Field(() => ID)
+  commentId: string;
+
+  @Field()
+  body: string;
+}
+
 @ArgsType()
 export class StatusCommentsArgs {
   @Field()

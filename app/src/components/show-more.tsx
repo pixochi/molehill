@@ -52,7 +52,9 @@ class ShowMore extends React.PureComponent<Props & DefaultProps, IState> {
       maxChars,
     } = this.props;
 
-    const textShown = this.state.expanded ? text : text && text.slice(0, maxChars).concat('...');
+    const textShown = this.state.expanded ?
+      text :
+      text && text.slice(0, maxChars).concat(text.length >= maxChars ? '...' : '');
 
     return (
       <ShowMoreContainer>

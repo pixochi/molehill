@@ -76,7 +76,7 @@ class MenuButton extends React.Component<IMenuButtonProps, IMenuButtonState> {
     this.state = {
       isOpen: props.isOpen as boolean,
     };
-    this.toggleOpenState = this.toggleOpenState.bind(this);
+    this.shouldBeOpen = this.shouldBeOpen.bind(this);
     this.handleClickOutside = this.handleClickOutside.bind(this);
   }
 
@@ -86,7 +86,7 @@ class MenuButton extends React.Component<IMenuButtonProps, IMenuButtonState> {
     } = this.props;
     return (
       <MenuButtonContainer {...this.props}>
-        <ButtonContent onClick={this.toggleOpenState}>...</ButtonContent>
+        <ButtonContent onClick={() => this.shouldBeOpen(true)}>...</ButtonContent>
         {this.state.isOpen && (
           <OptionsContainer>
             {options.map(option => (
@@ -94,7 +94,10 @@ class MenuButton extends React.Component<IMenuButtonProps, IMenuButtonState> {
                 key={option.title}
                 paddingVertical={s3}
                 paddingHorizontal={s4}
-                onClick={option.onClick}
+                onClick={() => {
+                  option.onClick();
+                  this.shouldBeOpen(false);
+                }}
               >
                 <Body>{option.title}</Body>
               </Option>
@@ -105,8 +108,8 @@ class MenuButton extends React.Component<IMenuButtonProps, IMenuButtonState> {
     );
   }
 
-  private toggleOpenState() {
-    this.setState({isOpen: !this.state.isOpen});
+  private shouldBeOpen(open: boolean) {
+    this.setState({isOpen: open});
   }
 
   private handleClickOutside = (evt: Event) => {

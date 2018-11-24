@@ -10,9 +10,18 @@ export const addCommentMutation = gql`
 `;
 
 export const deleteCommentMutation = gql`
-  mutation deleteComment($id: String!) {
+  mutation DeleteComment($id: String!) {
     deleteComment(id: $id) {
       id
+    }
+  }
+`;
+
+export const editCommentMutation = gql`
+  mutation EditComment($comment: EditCommentInput!) {
+    editComment(comment: $comment) {
+      id
+      body
     }
   }
 `;

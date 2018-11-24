@@ -1,9 +1,9 @@
 import React from 'react';
 import { compose } from 'redux';
-import { graphql, DataProps } from 'react-apollo';
+import { graphql, DataProps, MutateProps } from 'react-apollo';
 import { Link } from 'react-router-dom';
 
-import { StatusComments } from 'app/generated/graphql';
+import { StatusComments, EditComment, EditCommentVariables } from 'app/generated/graphql';
 import { s2, s4, s5, s1 } from 'app/components/styleguide/spacing';
 import styled from 'app/components/styleguide';
 import { formatCreatedAt } from 'app/helpers/time';
@@ -12,11 +12,13 @@ import Spinner from 'app/components/spinner';
 import { Flex, Base } from 'app/components/styleguide/layout';
 import { Body } from 'app/components/styleguide/text';
 
-import { statusComments } from './graphql';
 import UserImage from 'app/components/user-image';
 import ShowMore from 'app/components/show-more';
 import MenuButton from 'app/components/menu-button';
+
+import { statusComments, editCommentMutation } from './graphql';
 import { deleteComment } from './actions';
+import EditCommentForm, { IEditCommentFormProps } from './edit-comment-form';
 
 const COMMENTS_LIMIT = 5;
 
@@ -68,13 +70,21 @@ interface ICommentsList {
   userId: string;
 }
 
-type Props = ICommentsList & DataProps<StatusComments>;
+type Props = ICommentsList & DataProps<StatusComments> & MutateProps<EditComment, EditCommentVariables>;
 
-class CommentsList extends React.Component<Props> {
+interface ICommentsListState {
+  editingCommentId: string | null;
+}
+
+class CommentsList extends React.Component<Props, ICommentsListState> {
 
   constructor(props: Props) {
     super(props);
     this.handleFetchMore = this.handleFetchMore.bind(this);
+    this.handleEditComment = this.handleEditComment.bind(this);
+    this.state = {
+      editingCommentId: null,
+    };
   }
 
   public render() {
@@ -120,14 +130,10 @@ class CommentsList extends React.Component<Props> {
                   {comment.user.id === userId && (
                     <StyledMenuButton
                       options={[
-                        // {
-                        //   title: 'Edit',
-                        //   onClick: () => openModal.dispatch(ModalIds.status, {
-                        //     statusId: props.status.id,
-                        //     header: 'Edit status',
-                        //     submitText: 'Edit',
-                        //   }),
-                        // },
+                        {
+                          title: 'Edit',
+                          onClick: () => this.setState({editingCommentId: comment.id}),
+                        },
                         {
                           title: 'Delete',
                           onClick: () => deleteComment.dispatch(comment.id, statusId),
@@ -136,7 +142,11 @@ class CommentsList extends React.Component<Props> {
                     />
                   )}
                 </Flex>
-                <ShowMore maxChars={80} textComponent={Body} text={comment.body} />
+                {this.state.editingCommentId === comment.id ? (
+                  <EditCommentForm onSubmit={this.handleEditComment(comment.id)} initialValues={{body: comment.body}} />
+                ) : (
+                  <ShowMore maxChars={80} textComponent={Body} text={comment.body} />
+                )}
               </Base>
             </Comment>
           ))}
@@ -178,6 +188,21 @@ class CommentsList extends React.Component<Props> {
       });
     }
   }
+
+  private handleEditComment(commentId: string) {
+    return (values: IEditCommentFormProps) => {
+      this.props.mutate({
+        variables: {
+          comment: {
+            commentId,
+            body: values.body,
+          },
+        },
+      }).then(() => {
+        this.setState({editingCommentId: null});
+      });
+    };
+  }
 }
 
 const CommentsListWithData = compose<React.ComponentType<ICommentsList>>(
@@ -190,6 +215,7 @@ const CommentsListWithData = compose<React.ComponentType<ICommentsList>>(
       notifyOnNetworkStatusChange: true,
     }),
   }),
+  graphql<EditComment, EditCommentVariables>(editCommentMutation),
 )(CommentsList);
 
 export default CommentsListWithData;

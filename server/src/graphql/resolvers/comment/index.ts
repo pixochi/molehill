@@ -12,7 +12,7 @@ import CommentEntity from 'src/entity/comment';
 import UserEntity from 'src/entity/user';
 import StatusEntity from 'src/entity/status';
 
-import { CommentInput, StatusCommentsArgs, StatusCommentsWithCount } from './types';
+import { CommentInput, StatusCommentsArgs, StatusCommentsWithCount, EditCommentInput } from './types';
 import { BIG_INT_LIMIT } from '../constants';
 
 @Resolver((of) => CommentEntity)
@@ -68,4 +68,15 @@ export default class StatusResolver {
       id
     };
   }
+
+  @Mutation(returns => CommentEntity)
+  async editComment(@Arg('comment') comment: EditCommentInput): Promise<Partial<CommentEntity>> {
+    await this.commentRepository.update(comment.commentId, comment);
+
+    return {
+      id: comment.commentId,
+      body: comment.body,
+    };
+  }
+
 }

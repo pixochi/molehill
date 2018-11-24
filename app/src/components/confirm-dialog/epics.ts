@@ -10,6 +10,7 @@ export const confirmDialogObservable: (message: string) => Observable<any> = (me
     confirmDialogChoiceObservable.subscribe((choice) => {
       dismissDialog.dispatch();
       observer.next(choice);
+      observer.complete();
     });
   });
 
