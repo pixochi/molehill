@@ -44,11 +44,12 @@ class Comments extends React.PureComponent<Props> {
     const {
       sMutation,
       statusId,
+      userId,
     } = this.props;
 
     return (
       <>
-        <CommentsList statusId={statusId} />
+        <CommentsList statusId={statusId} userId={userId}/>
         <Base paddingHorizontal={s5}>
           <AddCommentForm loading={sMutation.loading} form={this.formName} onSubmit={this.handleAddComment}/>
         </Base>

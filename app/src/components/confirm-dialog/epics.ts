@@ -19,5 +19,6 @@ export const confirmDialogWarningObservable: (message: string) => Observable<any
     confirmDialogChoiceObservable.subscribe((choice) => {
       dismissDialog.dispatch();
       observer.next(choice);
+      observer.complete();
     });
   });

@@ -59,4 +59,13 @@ export default class StatusResolver {
 
     return savedComment;
   }
+
+  @Mutation(returns => CommentEntity)
+  async deleteComment(@Arg('id') id: string): Promise<Partial<CommentEntity>> {
+    await this.commentRepository.delete(id);
+
+    return {
+      id
+    };
+  }
 }

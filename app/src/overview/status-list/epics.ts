@@ -6,12 +6,18 @@ import { confirmDialogWarningObservable } from 'app/components/confirm-dialog/ep
 import client from 'app/graphql-client';
 import { IReduxAction } from 'app/redux/create-actions';
 import { updateSuccess } from 'app/components/global-event/actions';
-import { StatusesInRadius, StatusesInRadiusVariables } from 'app/generated/graphql';
+import {
+  StatusesInRadius,
+  StatusesInRadiusVariables,
+  StatusComments,
+  StatusCommentsVariables,
+} from 'app/generated/graphql';
 
-import { deleteStatus } from './actions';
+import { deleteStatus, deleteComment } from './actions';
 import { deletetatusMutation, statusesInRadius } from '../graphql';
 import { getRadiusInMeters } from '../selectors';
 import { getLat, getLng } from '../map/selectors';
+import { deleteCommentMutation, statusComments } from './graphql';
 
 const deleteStatusEpic: Epic<IReduxAction> = (action$, state$) => action$.pipe(
   ofType(deleteStatus.type),
@@ -67,6 +73,52 @@ const deleteStatusEpic: Epic<IReduxAction> = (action$, state$) => action$.pipe(
   }),
 );
 
+const deleteStatusCommentEpic: Epic<IReduxAction> = (action$) => action$.pipe(
+  ofType(deleteComment.type),
+  mergeMap(({payload}) => {
+    return confirmDialogWarningObservable('Do you want to delete the comment permanently?').pipe(
+      filter(choice => choice),
+      mergeMap(() => {
+        const {statusId} = payload;
+
+        return from(client.mutate({
+          mutation: deleteCommentMutation,
+          variables: {
+            id: payload.id,
+          },
+          update: (store) => {
+            const commentsData = store.readQuery<StatusComments, StatusCommentsVariables>({
+              query: statusComments,
+              variables: {
+                statusId,
+              },
+            });
+
+            if (commentsData) {
+              store.writeQuery<StatusComments, StatusCommentsVariables>({
+                query: statusComments,
+                variables: {
+                  statusId,
+                },
+                data: {
+                  statusComments: {
+                    ...commentsData.statusComments,
+                    comments: commentsData.statusComments.comments.filter(comment => comment.id !== payload.id),
+                    count: commentsData.statusComments.count - 1,
+                  },
+                },
+              });
+            }
+          },
+        })).pipe(
+          map(() => updateSuccess.action('Comment has been deleted')),
+        );
+      }),
+    );
+  }),
+);
+
 export default combineEpics(
   deleteStatusEpic,
+  deleteStatusCommentEpic,
 );

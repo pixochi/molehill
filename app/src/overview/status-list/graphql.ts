@@ -9,6 +9,14 @@ export const addCommentMutation = gql`
   }
 `;
 
+export const deleteCommentMutation = gql`
+  mutation deleteComment($id: String!) {
+    deleteComment(id: $id) {
+      id
+    }
+  }
+`;
+
 export const statusComments = gql`
   query StatusComments($statusId: String!, $cursor: String, $limit: Int) {
     statusComments(statusId: $statusId, cursor: $cursor, limit: $limit)

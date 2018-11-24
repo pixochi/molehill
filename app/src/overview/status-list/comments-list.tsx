@@ -15,6 +15,8 @@ import { Body } from 'app/components/styleguide/text';
 import { statusComments } from './graphql';
 import UserImage from 'app/components/user-image';
 import ShowMore from 'app/components/show-more';
+import MenuButton from 'app/components/menu-button';
+import { deleteComment } from './actions';
 
 const COMMENTS_LIMIT = 5;
 
@@ -56,8 +58,14 @@ const LoadMore = styled(Body)`
   color: ${props => props.theme.info};
 `;
 
+const StyledMenuButton = styled(MenuButton)`
+  margin-left: auto;
+  padding: 0 8px;
+`;
+
 interface ICommentsList {
   statusId: string;
+  userId: string;
 }
 
 type Props = ICommentsList & DataProps<StatusComments>;
@@ -72,6 +80,8 @@ class CommentsList extends React.Component<Props> {
   public render() {
     const {
       data,
+      userId,
+      statusId,
     } = this.props;
 
     if (!data || !data.statusComments || !data.statusComments.count) {
@@ -101,12 +111,30 @@ class CommentsList extends React.Component<Props> {
               <Link to={`/users/${comment.user.id}`}>
                   <UserImage imgSrc={comment.user.image} imgSize={32}/>
               </Link>
-              <Base marginLeft={s4}>
-                <Flex>
+              <Base marginLeft={s4} fullWidth>
+                <Flex align="center">
                   <Link to={`/users/${comment.user.id}`}>
                     <Body emphasized>{comment.user.username}</Body>
                   </Link>
                   <Body disabled marginLeft={s2}>{formatCreatedAt(comment.createdAt)}</Body>
+                  {comment.user.id === userId && (
+                    <StyledMenuButton
+                      options={[
+                        // {
+                        //   title: 'Edit',
+                        //   onClick: () => openModal.dispatch(ModalIds.status, {
+                        //     statusId: props.status.id,
+                        //     header: 'Edit status',
+                        //     submitText: 'Edit',
+                        //   }),
+                        // },
+                        {
+                          title: 'Delete',
+                          onClick: () => deleteComment.dispatch(comment.id, statusId),
+                        },
+                      ]}
+                    />
+                  )}
                 </Flex>
                 <ShowMore maxChars={80} textComponent={Body} text={comment.body} />
               </Base>

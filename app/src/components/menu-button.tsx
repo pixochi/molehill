@@ -47,6 +47,11 @@ const OptionsContainer = styled(Container).attrs({
 
 const Option = styled(Base)`
   border-bottom: 1px solid ${props => props.theme.border.default};
+
+  &:active {
+    background: ${props => props.theme.backgroundActive};
+    border-bottom: 1px solid ${props => props.theme.backgroundActive};
+  }
 `;
 
 export interface IMenuOption {
