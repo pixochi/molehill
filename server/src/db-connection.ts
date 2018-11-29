@@ -12,9 +12,9 @@ export const initDbConnection = (): Promise<TypeORM.Connection> => (
     type: 'postgres',
     host: 'localhost',
     port: 5432, // default PostgresQL port
-    username: 'node_user',
+    username: 'postgres', // default PostgresQL user
     password: process.env.PGPASSWORD,
-    database: 'molehilldb',
+    database: 'molehilldb', // You need to create this db locally
     synchronize: true,
     logger: 'advanced-console',
     logging: 'all',

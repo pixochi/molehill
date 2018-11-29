@@ -5,10 +5,9 @@ import { graphql } from 'react-apollo';
 import { connect } from 'react-redux';
 
 import { Body } from 'app/components/styleguide/text';
-import { Flex } from 'app/components/styleguide/layout';
 import Spinner from 'app/components/spinner';
 
-import { s5, s2, s4 } from 'app/components/styleguide/spacing';
+import { s2, s4 } from 'app/components/styleguide/spacing';
 import { IRootState } from 'app/redux/root-reducer';
 import { NAVBAR_HEIGHT } from 'app/components/navbar';
 import styled from 'app/components/styleguide';
@@ -92,10 +91,10 @@ class StatusList extends React.Component<Props> {
     return (
       <StyledContainer withShadow noPadding className={className} direction="column">
         {!data || data.loading || stopAutoRefetchStatuses ? (
-          <Flex padding={s5} direction="column" align="center" justify="center">
+          <Container direction="column" align="center" justify="center">
             <Spinner />
             <Body marginTop={s2}>Loading...</Body>
-          </Flex>
+          </Container>
         ) : (
           data.statusesInRadius && data.statusesInRadius.statuses.length ? (
             data.statusesInRadius.statuses.map(status => (
