@@ -8,7 +8,7 @@ import {Body} from 'app/components/styleguide/text';
 
 type ButtonSize = 'big' | 'mini' | 'default';
 
-const getBackgroundColor = (theme: ITheme, appearance?: keyof typeof IButtonAppearance): string => {
+export const getBackgroundColor = (theme: ITheme, appearance?: keyof typeof IButtonAppearance): string => {
   switch (appearance) {
     case 'submit':
       return theme.submit;
@@ -23,7 +23,7 @@ const getBackgroundColor = (theme: ITheme, appearance?: keyof typeof IButtonAppe
   }
 };
 
-const getTextColor = (theme: ITheme, appearance?: keyof typeof IButtonAppearance): string => {
+export const getTextColor = (theme: ITheme, appearance?: keyof typeof IButtonAppearance): string => {
   switch (appearance) {
     case 'submit':
     case 'info':
@@ -35,39 +35,55 @@ const getTextColor = (theme: ITheme, appearance?: keyof typeof IButtonAppearance
   }
 };
 
-const getPadding = (buttonSize?: ButtonSize): string => {
+export const Paddings = {
+  mini: '8px 12px',
+  default: '12px 16px',
+};
+
+export const getPadding = (buttonSize?: ButtonSize): string => {
   switch (buttonSize) {
     case 'mini':
-      return '8px 12px';
+      return Paddings.mini;
     case 'default':
     default:
-      return '12px 16px';
+      return Paddings.default;
   }
 };
 
-const getFontSize = (buttonSize?: ButtonSize): string => {
+export const FontSizes = {
+  mini: '14px',
+  big: '20px',
+  default: '16px',
+};
+
+export const getFontSize = (buttonSize?: ButtonSize): string => {
   switch (buttonSize) {
     case 'mini':
-      return '14px';
+      return FontSizes.mini;
     case 'big':
-      return '20px';
+      return FontSizes.big;
     case 'default':
     default:
-      return '16px';
+      return FontSizes.default;
   }
 };
 
-const getSpinnerPosition = (buttonSize?: ButtonSize): string => {
+export const SpinnerPositions = {
+  mini: 'left: 43%; top: 20%;',
+  default: 'left: 50%; top: 20%;',
+};
+
+export const getSpinnerPosition = (buttonSize?: ButtonSize): string => {
   switch (buttonSize) {
     case 'mini':
-      return 'left: 43%; top: 20%;';
+      return SpinnerPositions.mini;
     case 'default':
     default:
-    return 'left: 50%; top: 20%;';
+    return SpinnerPositions.default;
   }
 };
 
-const StyledButton = styled.button<IButtonProps>`
+export const StyledButton = styled.button<IButtonProps>`
   background-color: ${props => getBackgroundColor(props.theme, props.appearance)};
   padding: ${props => getPadding(props.buttonSize)};
   border-radius: 7px;
@@ -110,7 +126,7 @@ const StyledButton = styled.button<IButtonProps>`
   }
 `;
 
-const StyledSpinner = styled(Spinner).attrs<IButtonProps>({
+export const StyledSpinner = styled(Spinner).attrs<IButtonProps>({
   color: (props: any) => props.theme.invertedText,
 })`
   opacity: 1 !important;

@@ -1,0 +1,70 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Svg should render Svg 1`] = `
+<StyledComponent
+  forwardedComponent={
+    Object {
+      "$$typeof": Symbol(react.forward_ref),
+      "attrs": Array [],
+      "componentStyle": ComponentStyle {
+        "componentId": "sc-bdVaJa",
+        "isStatic": false,
+        "rules": Array [
+          "
+      width: ",
+          [Function],
+          ";
+      min-width: ",
+          [Function],
+          ";
+      height: ",
+          [Function],
+          ";
+      min-height: ",
+          [Function],
+          ";
+    ",
+        ],
+      },
+      "displayName": "styled.svg",
+      "foldedComponentIds": Array [],
+      "render": [Function],
+      "styledComponentId": "sc-bdVaJa",
+      "target": "svg",
+      "toString": [Function],
+      "warnTooManyClasses": [Function],
+      "withComponent": [Function],
+    }
+  }
+  forwardedRef={null}
+/>
+`;
+
+exports[`Svg should render Svg with size 1`] = `
+.c0 {
+  width: 10px;
+  min-width: 10px;
+  height: 10px;
+  min-height: 10px;
+}
+
+<svg
+  className="c0"
+  size={10}
+/>
+`;
+
+exports[`Svg should render Svg with width and height 1`] = `
+.c0 {
+  width: 5px;
+  min-width: 5px;
+  height: 2px;
+  min-height: 2px;
+}
+
+<svg
+  className="c0"
+  height={2}
+  width={5}
+/>
+`;

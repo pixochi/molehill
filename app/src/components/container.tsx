@@ -3,7 +3,7 @@ import React, { HTMLAttributes } from 'react';
 import styled from './styleguide';
 import { Flex, IFlexProps, IBaseLayoutProps } from './styleguide/layout';
 
-const StyledContainer = styled(Flex)<IContainer>`
+export const StyledContainer = styled(Flex)<IContainer>`
   background-color: ${props => props.theme.background};
   box-shadow:  ${props => props.withShadow ? `0 2px 4px ${props.theme.shadowStrong}` : 'unset'};
   padding:  ${props => props.noPadding ? 0 : `16px`};

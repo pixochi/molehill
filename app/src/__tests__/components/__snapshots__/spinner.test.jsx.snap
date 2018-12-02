@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Spinner should render Circle with color 1`] = `
+.c0 {
+  stroke: red;
+  stroke-linecap: round;
+  -webkit-animation: bBYgQX 1.5s ease-in-out infinite;
+  animation: bBYgQX 1.5s ease-in-out infinite;
+  stroke-width: 2px;
+}
+
+<circle
+  className="c0"
+  color="red"
+/>
+`;
+
+exports[`Spinner should render Spinner 1`] = `
+<Fragment>
+  <styled.svg
+    viewBox="0 0 24 24"
+  >
+    <styled.circle
+      cx="12"
+      cy="12 "
+      fill="none"
+      r="11"
+    />
+  </styled.svg>
+</Fragment>
+`;
+
+exports[`Spinner should render SpinnerSVG with margin 1`] = `
+.c0 {
+  -webkit-animation: cZxgpV 2s linear infinite;
+  animation: cZxgpV 2s linear infinite;
+  z-index: 2;
+  width: 20px;
+  height: 20px;
+  margin: 16px;
+}
+
+<svg
+  className="c0"
+/>
+`;

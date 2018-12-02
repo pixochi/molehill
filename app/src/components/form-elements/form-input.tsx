@@ -7,7 +7,7 @@ import {Title} from 'app/components/styleguide/text';
 import genericFormElement from './generic-form-element';
 import store from 'app/redux/store';
 
-const StyledInput = styled.input`
+export const StyledInput = styled.input`
   border-radius: 7px;
   padding: 8px;
   outline: none;
@@ -23,11 +23,11 @@ const StyledInput = styled.input`
   }
 `;
 
-const InputContainer = styled.div`
+export const InputContainer = styled.div`
   position: relative;
 `;
 
-const ClearButton = styled(Title)`
+export const ClearButton = styled(Title)`
   position: absolute;
   right: 8px;
   top: 4px;
@@ -42,7 +42,7 @@ interface IFormInputProps {
 
 type Props = WrappedFieldProps & IFormInputProps;
 
-class FormInput extends React.Component<Props> {
+export class FormInput extends React.Component<Props> {
 
   constructor(props: Props) {
     super(props);

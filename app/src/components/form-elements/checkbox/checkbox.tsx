@@ -15,13 +15,13 @@ const checboxCSS = css`
   border-radius: 50%;
 `;
 
-const CheckboxContainer = styled.div`
+export const CheckboxContainer = styled.div`
   position: relative;
   width: 30px;
   height: 30px;
 `;
 
-const VisualCheckbox = styled.div`
+export const VisualCheckbox = styled.div`
   ${checboxCSS}
 
   z-index: 1;
@@ -30,7 +30,7 @@ const VisualCheckbox = styled.div`
 
 `;
 
-const ActualCheckbox = styled.input.attrs({
+export const ActualCheckbox = styled.input.attrs({
   type: 'checkbox',
 })`
   ${checboxCSS}

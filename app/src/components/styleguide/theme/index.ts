@@ -29,7 +29,7 @@ export interface ITheme {
   inactive: string;
 }
 
-const Theme: ITheme = {
+export const Theme: ITheme = {
   primary: '#14c505',
   primaryDark: '#0a7100',
   secondary: '#edff3a',

@@ -26,7 +26,7 @@ interface IEventContainerProps {
   eventType: GlobaEventType;
 }
 
-const GlobalEventContainer = styled.div<IEventContainerProps>`
+export const GlobalEventContainer = styled.div<IEventContainerProps>`
   position: fixed;
   top: 40px;
   right: 40px;
@@ -44,7 +44,7 @@ const GlobalEventContainer = styled.div<IEventContainerProps>`
   }};
 `;
 
-const GlobalEvent: React.SFC<IStateProps> = (props) => {
+export const GlobalEvent: React.SFC<IStateProps> = (props) => {
   const {
     globalEvent,
   } = props;

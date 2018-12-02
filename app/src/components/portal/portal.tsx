@@ -6,6 +6,9 @@ interface IProps {
 }
 
 const Portal: React.SFC<IProps> = (props) =>
-  ReactDOM.createPortal(props.children, document.getElementById(props.id) as Element);
+  ReactDOM.createPortal(
+    props.children,
+    document.getElementById(props.id) as Element || document.createElement('div'), // for testing purposes
+  );
 
 export default Portal;

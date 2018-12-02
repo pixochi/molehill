@@ -4,7 +4,7 @@ import { GlobaEventType } from './constants';
 
 export const GLOBAL_EVENT_ACTION_TYPE = 'GLOBAL_EVENT';
 
-const makeGlobalEventAction = (eventType: GlobaEventType) =>
+export const makeGlobalEventAction = (eventType: GlobaEventType) =>
   createActions(
     GLOBAL_EVENT_ACTION_TYPE,
     (message: string, sticky?: boolean) => ({message, sticky, type: eventType}),
@@ -24,3 +24,5 @@ export const {
   `${GLOBAL_EVENT_ACTION_TYPE}/DISMISS`,
   () => null,
 );
+
+export {createActions};

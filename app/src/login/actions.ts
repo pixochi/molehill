@@ -1,6 +1,6 @@
 import {createActions} from 'app/redux/create-actions';
 
-const domain = 'ÀUTH';
+const domain = 'AUTH';
 
 export const {
   success: loginSuccess,

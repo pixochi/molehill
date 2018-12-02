@@ -1,4 +1,3 @@
-
 import styled from './styleguide';
 import { SVGAttributes } from 'react';
 

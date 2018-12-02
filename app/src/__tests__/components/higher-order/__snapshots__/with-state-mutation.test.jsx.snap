@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`withStateMutation should render withStateMutation 1`] = `
+<Fragment
+  mutate={[Function]}
+  sMutation={
+    Object {
+      "error": null,
+      "loading": false,
+      "mutate": [Function],
+      "result": null,
+    }
+  }
+/>
+`;

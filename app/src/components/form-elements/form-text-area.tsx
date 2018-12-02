@@ -5,7 +5,7 @@ import styled from 'app/components/styleguide';
 
 import genericFormElement from './generic-form-element';
 
-const StyledTextArea = styled.textarea`
+export const StyledTextArea = styled.textarea`
   border-radius: 7px;
   padding: 8px;
   outline: none;
@@ -23,7 +23,7 @@ const StyledTextArea = styled.textarea`
   }
 `;
 
-const FormTextArea: React.SFC<WrappedFieldProps> = (props) => {
+export const FormTextArea: React.SFC<WrappedFieldProps> = (props) => {
   return (
     <StyledTextArea
       {...props}

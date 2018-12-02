@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, InjectedFormProps, reduxForm } from 'redux-form';
 import { compose } from 'redux';
 
-import { IFormProps } from 'app/components/form-elements/typings';
+import { IFormProps } from 'app/components/form-elements/typings.d.ts';
 import styled from 'app/components/styleguide';
 
 import FormField from 'app/components/form-elements/form-field';

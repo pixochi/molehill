@@ -29,6 +29,8 @@ const store = createStore<IRootState, IReduxAction<any> | AnyAction, {}, {}>(
   ),
 );
 
+export const getStore = () => store;
+
 epicMiddleware.run(rootEpic);
 
 export default store;

@@ -11,7 +11,7 @@ import FormCheckbox from 'app/components/form-elements/checkbox/form-checkbox';
 import Spinner from 'app/components/spinner';
 import { Flex, Base } from 'app/components/styleguide/layout';
 
-import { IFormProps } from 'app/components/form-elements/typings';
+import { IFormProps } from 'app/components/form-elements/typings.d.ts';
 import { IRootState } from 'app/redux/root-reducer';
 import { s2 } from 'app/components/styleguide/spacing';
 

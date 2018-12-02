@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Container should render Container 1`] = `<Styled(Styled(styled.div)) />`;
+
+exports[`Container should render StyledContainer 1`] = `
+.c0 {
+  width: auto;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  background-color: #fefefe;
+  box-shadow: unset;
+  padding: 16px;
+  height: auto;
+  border-radius: 0;
+}
+
+<div
+  className="c0"
+/>
+`;

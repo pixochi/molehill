@@ -33,8 +33,6 @@ const UserStatuses: React.SFC<Props> = (props) => {
     data,
   } = props;
 
-  console.log({data});
-
   if (data.loading) {
     return <Spinner margined centered />;
   }

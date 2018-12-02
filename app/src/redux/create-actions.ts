@@ -59,3 +59,5 @@ export const createActions: CreateActions = (
     aborted: createAction(`${actionType}_ABORTED`, abortedMapper),
   };
 };
+
+export const getCreateActions = () => createActions;

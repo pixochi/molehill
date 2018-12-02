@@ -17,7 +17,7 @@ class ErrorBoundary extends React.Component<{}, IStateProps> {
 
   public componentDidCatch(error: any, info: any) {
     // tslint:disable-next-line:no-console
-    console.log({error, info});
+    console.log('Caught by ErrorBoundary', {error, info});
   }
 
   public render() {

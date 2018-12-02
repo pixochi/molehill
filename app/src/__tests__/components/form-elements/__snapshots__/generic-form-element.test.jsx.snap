@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GenericFormElement should render GenericFormElement 1`] = `
+<Fragment>
+  <FormInput />
+</Fragment>
+`;

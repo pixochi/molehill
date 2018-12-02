@@ -1,0 +1,60 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FormInput should render ClearButton 1`] = `
+.c0 {
+  width: auto;
+  font-weight: 400;
+  opacity: 1;
+  word-break: unset;
+  font-size: 20px;
+  position: absolute;
+  right: 8px;
+  top: 4px;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+<p
+  className="c0"
+/>
+`;
+
+exports[`FormInput should render FormInput 1`] = `
+<styled.div>
+  <styled.input />
+</styled.div>
+`;
+
+exports[`FormInput should render InputContainer 1`] = `
+.c0 {
+  position: relative;
+}
+
+<div
+  className="c0"
+/>
+`;
+
+exports[`FormInput should render StyledInput 1`] = `
+.c0 {
+  border-radius: 7px;
+  padding: 8px;
+  outline: none;
+  border: 1px solid #e6e6e6;
+  font-size: 14px;
+  width: 100%;
+  -webkit-transition: 0.3s all;
+  transition: 0.3s all;
+}
+
+.c0:focus {
+  outline: none;
+  border: 1px solid #bababa;
+  box-shadow: 0 1px 2px rgba(160,160,160,0.35);
+}
+
+<input
+  className="c0"
+/>
+`;

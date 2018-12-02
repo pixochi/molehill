@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FormTextArea should render FormTextArea 1`] = `<styled.textarea />`;
+
+exports[`FormTextArea should render StyledTextArea 1`] = `
+.c0 {
+  border-radius: 7px;
+  padding: 8px;
+  outline: none;
+  border: 1px solid #e6e6e6;
+  font-size: 14px;
+  width: 100%;
+  height: 100px;
+  -webkit-transition: 0.3s all;
+  transition: 0.3s all;
+  resize: vertical;
+}
+
+.c0:focus {
+  outline: none;
+  border: 1px solid #bababa;
+  box-shadow: 0 1px 2px rgba(160,160,160,0.35);
+}
+
+<textarea
+  className="c0"
+/>
+`;

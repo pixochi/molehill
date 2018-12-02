@@ -6,12 +6,12 @@ import Button from 'app/components/button';
 import FormField from 'app/components/form-elements/form-field';
 import FormInput from 'app/components/form-elements/form-input';
 
-import { IFormProps } from 'app/components/form-elements/typings';
+import { IFormProps } from 'app/components/form-elements/typings.d.ts';
 import { LoginInput } from 'app/generated/graphql';
 
 type Props = InjectedFormProps<LoginInput> & IFormProps;
 
-const LoginForm: React.SFC<Props> = props => {
+export const LoginForm: React.SFC<Props> = props => {
   const { handleSubmit, loading } = props;
 
   return (

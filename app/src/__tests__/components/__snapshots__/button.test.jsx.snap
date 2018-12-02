@@ -1,0 +1,134 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Button should render Button 1`] = `
+<styled.button>
+  <Styled(Styled(styled.div)) />
+</styled.button>
+`;
+
+exports[`Button should render Button with text 1`] = `
+<styled.button
+  text="click me!"
+>
+  <Styled(Styled(styled.div))>
+    click me!
+  </Styled(Styled(styled.div))>
+</styled.button>
+`;
+
+exports[`Button should render StyledButton 1`] = `
+<StyledComponent
+  alignWith="left"
+  forwardedComponent={
+    Object {
+      "$$typeof": Symbol(react.forward_ref),
+      "attrs": Array [],
+      "componentStyle": ComponentStyle {
+        "componentId": "sc-iwsKbI",
+        "isStatic": false,
+        "rules": Array [
+          "
+      background-color: ",
+          [Function],
+          ";
+      padding: ",
+          [Function],
+          ";
+      border-radius: 7px;
+      border: none;
+      cursor: pointer;
+      width: ",
+          [Function],
+          ";
+      transition: all .2s;
+      box-shadow: 0 2px 2px ",
+          [Function],
+          ";
+      display: block;
+      position: relative;
+    
+      ",
+          [Function],
+          "
+    
+      &:hover {
+        filter: brightness(98%);
+      }
+    
+      &:active {
+        box-shadow: none;
+        filter: brightness(96%);
+        transform: scale(0.99);
+      }
+    
+      & > * {
+        opacity: ",
+          [Function],
+          ";
+      }
+    
+      & > ",
+          ".sc-dnqmqq",
+          " {
+        color: ",
+          [Function],
+          ";
+        font-size:",
+          [Function],
+          ";
+      }
+    ",
+        ],
+      },
+      "displayName": "styled.button",
+      "foldedComponentIds": Array [],
+      "render": [Function],
+      "styledComponentId": "sc-iwsKbI",
+      "target": "button",
+      "toString": [Function],
+      "warnTooManyClasses": [Function],
+      "withComponent": [Function],
+    }
+  }
+  forwardedRef={null}
+/>
+`;
+
+exports[`Button should render StyledSpinner 1`] = `
+<StyledComponent
+  forwardedComponent={
+    Object {
+      "$$typeof": Symbol(react.forward_ref),
+      "attrs": Array [
+        Object {
+          "color": [Function],
+        },
+      ],
+      "componentStyle": ComponentStyle {
+        "componentId": "sc-gZMcBi",
+        "isStatic": false,
+        "rules": Array [
+          "
+      opacity: 1 !important;
+      position: absolute;
+      z-index: 2;
+      ",
+          [Function],
+          ";
+    ",
+        ],
+      },
+      "displayName": "Styled(Spinner)",
+      "foldedComponentIds": Array [],
+      "render": [Function],
+      "styledComponentId": "sc-gZMcBi",
+      "target": [Function],
+      "toString": [Function],
+      "warnTooManyClasses": [Function],
+      "withComponent": [Function],
+      Symbol(Symbol.hasInstance): [Function],
+    }
+  }
+  forwardedRef={null}
+/>
+`;

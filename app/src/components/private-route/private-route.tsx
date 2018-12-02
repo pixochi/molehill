@@ -16,7 +16,7 @@ interface IPrivateRouteProps extends RouteProps {
 
 type Props = IStateProps & IPrivateRouteProps;
 
-class PrivateRoute extends React.PureComponent<Props> {
+export class PrivateRoute extends React.PureComponent<Props> {
 
   constructor(props: Props) {
     super(props);

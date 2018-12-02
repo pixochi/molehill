@@ -84,7 +84,7 @@ type Props = IStateProps & IStatusItemProps & IWithStateMutationProps<AddStatusL
   & IWithStateMutationProps<RemoveStatusLike, RemoveStatusLikeVariables>
   & DataProps<UserById>;
 
-class StatusItem extends React.Component<Props, {canAddLike: boolean}> {
+export class StatusItem extends React.Component<Props, {canAddLike: boolean}> {
 
   private statusMenuOptions: IMenuOption[];
 

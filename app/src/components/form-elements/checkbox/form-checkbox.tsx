@@ -4,7 +4,7 @@ import { WrappedFieldProps } from 'redux-form';
 import genericFormElement from '../generic-form-element';
 import Checkbox, { ICheckboxProps } from './checkbox';
 
-const FormCheckbox: React.SFC<WrappedFieldProps & ICheckboxProps> = (props) => {
+export const FormCheckbox: React.SFC<WrappedFieldProps & ICheckboxProps> = (props) => {
   return (
     <Checkbox
       {...props}

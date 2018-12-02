@@ -5,7 +5,6 @@ import styled from 'app/components/styleguide';
 
 const FieldContainer = styled.div`
   margin: 8px 0;
-
 `;
 
 type Props = BaseFieldProps & Partial<WrappedFieldProps> &

@@ -29,7 +29,7 @@ interface ISpinnerSVGProps {
   className?: string;
 }
 
-const SpinnerSVG = styled.svg<ISpinnerSVGProps>`
+export const SpinnerSVG = styled.svg<ISpinnerSVGProps>`
   animation: ${rotate} 2s linear infinite;
   z-index: 2;
   width: 20px;
@@ -37,7 +37,7 @@ const SpinnerSVG = styled.svg<ISpinnerSVGProps>`
   margin: ${props => props.margined ? '16px' : 0};
 `;
 
-const Circle = styled.circle`
+export const Circle = styled.circle`
   stroke: ${props => props.color ? props.color : props.theme.text};
   stroke-linecap: round;
   animation: ${dash} 1.5s ease-in-out infinite;

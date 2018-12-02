@@ -26,7 +26,7 @@ interface IStateProps {
 
 type Props = IStateProps & MutateProps & IWithStateMutationProps;
 
-class Login extends React.PureComponent<Props> {
+export class Login extends React.PureComponent<Props> {
 
   constructor(props: Props) {
     super(props);

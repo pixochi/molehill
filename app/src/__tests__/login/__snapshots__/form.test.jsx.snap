@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LoginForm should render LoginForm 1`] = `
+<Form>
+  <FormField
+    component={[Function]}
+    name="email"
+    placeholder="Email address"
+    required={true}
+  />
+  <FormField
+    component={[Function]}
+    name="password"
+    placeholder="Password"
+    required={true}
+    type="password"
+  />
+  <Button
+    appearance="submit"
+    fullWidth={true}
+    text="Log in"
+    type="submit"
+  />
+</Form>
+`;
+
+exports[`LoginForm should render withStateMutation 1`] = `
+<Form>
+  <FormField
+    component={[Function]}
+    name="email"
+    placeholder="Email address"
+    required={true}
+  />
+  <FormField
+    component={[Function]}
+    name="password"
+    placeholder="Password"
+    required={true}
+    type="password"
+  />
+  <Button
+    appearance="submit"
+    fullWidth={true}
+    text="Log in"
+    type="submit"
+  />
+</Form>
+`;
