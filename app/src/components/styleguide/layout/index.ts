@@ -1,4 +1,4 @@
-import { ThemedStyledProps } from 'styled-components';
+import { ThemedOuterStyledProps } from 'styled-components';
 import {
   FlexDirectionProperty,
   StandardLonghandProperties,
@@ -33,7 +33,7 @@ export interface IBaseLayoutProps {
   grow?: StandardLonghandProperties['flexGrow'];
 }
 
-type BasePropsWithTheme<T = {}> = ThemedStyledProps<IBaseLayoutProps & DOMAttributes<any> & T, ITheme>;
+type BasePropsWithTheme<T = {}> = ThemedOuterStyledProps<IBaseLayoutProps & DOMAttributes<any> & T, ITheme>;
 
 export const Base = styled.div<BasePropsWithTheme>`
   margin-top: ${props => props.marginTop || props.marginVertical || props.margin};
