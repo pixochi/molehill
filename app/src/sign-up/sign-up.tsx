@@ -21,7 +21,7 @@ interface IStateProps {
 }
 type Props = MutateProps & IStateProps;
 
-const SignUp = (props: Props) => {
+export const SignUp = (props: Props) => {
 
   if (props.isLoggedIn) {
     return <Redirect to="/overview" />;

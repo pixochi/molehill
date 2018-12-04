@@ -19,10 +19,10 @@ exports[`Button should render Button with text 1`] = `
 exports[`Button should render StyledButton 1`] = `
 <StyledComponent
   alignWith="left"
-  forwardedComponent={
+  forwardedClass={
     Object {
       "$$typeof": Symbol(react.forward_ref),
-      "attrs": Array [],
+      "attrs": undefined,
       "componentStyle": ComponentStyle {
         "componentId": "sc-iwsKbI",
         "isStatic": false,
@@ -81,7 +81,6 @@ exports[`Button should render StyledButton 1`] = `
         ],
       },
       "displayName": "styled.button",
-      "foldedComponentIds": Array [],
       "render": [Function],
       "styledComponentId": "sc-iwsKbI",
       "target": "button",
@@ -96,14 +95,12 @@ exports[`Button should render StyledButton 1`] = `
 
 exports[`Button should render StyledSpinner 1`] = `
 <StyledComponent
-  forwardedComponent={
+  forwardedClass={
     Object {
       "$$typeof": Symbol(react.forward_ref),
-      "attrs": Array [
-        Object {
-          "color": [Function],
-        },
-      ],
+      "attrs": Object {
+        "color": [Function],
+      },
       "componentStyle": ComponentStyle {
         "componentId": "sc-gZMcBi",
         "isStatic": false,
@@ -119,7 +116,6 @@ exports[`Button should render StyledSpinner 1`] = `
         ],
       },
       "displayName": "Styled(Spinner)",
-      "foldedComponentIds": Array [],
       "render": [Function],
       "styledComponentId": "sc-gZMcBi",
       "target": [Function],

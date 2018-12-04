@@ -107,6 +107,23 @@
       "enzyme-to-json/serializer"
     ],
     "verbose": true,
-    "collectCoverage": true
+    "collectCoverage": true,
+    "coveragePathIgnorePatterns": [
+      "node_modules",
+      "<rootDir>/src/graphql-client.ts",
+      "actions.ts",
+      "user-profile",
+      "user-statuses",
+      "status-item",
+      "overview",
+      "file-upload.tsx",
+      "modal.tsx",
+      "radius-filter.tsx",
+      "menu-button.tsx",
+      "show-more.tsx"
+    ],
+    "modulePathIgnorePatterns": [
+      "<rootDir>/src/redux/store.ts"
+    ]
   }
 }

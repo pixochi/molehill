@@ -1,6 +1,6 @@
 import { ZonedDateTime, ZoneId, ChronoUnit, DateTimeFormatter } from 'js-joda';
 
-const TIMEZONE = 'Europe/Copenhagen';
+export const TIMEZONE = 'UTC+1';
 
 export const formatCreatedAt = (createdAt: string) => {
   const createdAtDateTime = ZonedDateTime.parse(createdAt).withZoneSameInstant(ZoneId.of(TIMEZONE));
