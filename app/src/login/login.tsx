@@ -8,7 +8,7 @@ import { getIsLoggedIn } from 'app/components/private-route/selectors';
 import { s4 } from 'app/components/styleguide/spacing';
 import { IRootState } from 'app/redux/root-reducer';
 import withStateMutation, {IWithStateMutationProps} from 'app/components/higher-order/with-state-mutation';
-import { updateError } from 'app/components/global-event/actions';
+// import { updateError } from 'app/components/global-event/actions';
 import { LoginInput } from 'app/generated/graphql';
 
 import ScreenCenter from 'app/components/screen-center';
@@ -67,7 +67,7 @@ export class Login extends React.PureComponent<Props> {
       if (response) {
         loginSuccess.dispatch(response.data.login);
       }
-    }).catch(e => updateError.dispatch('Invalid username/password combination.'));
+    }).catch(e => console.log('Invalid username/password combination.'));
   }
 }
 

@@ -1,9 +1,14 @@
 import { combineReducers } from 'redux';
 import { FormStateMap, reducer as formReducer } from 'redux-form';
 
-import loginReducer, { LoginState } from 'app/login/reducer';
-import globalEventReducer, { GlobalEventState } from 'app/components/global-event/reducer';
-import modalReducer, { ModalState } from 'app/components/modal/reducer';
+import {
+  modalReducer,
+  ModalState,
+  globalEventReducer,
+  GlobalEventState,
+  loginReducer,
+  LoginState,
+} from 'app/redux/internals';
 import overviewReducer, { IOverviewState } from 'app/overview/reducer';
 import fileUploadReducer, { FileUploadState } from 'app/components/file-upload/reducer';
 import confirmDialogReducer, { ConfirmDialogState } from 'app/components/confirm-dialog/reducer';

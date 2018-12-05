@@ -1,10 +1,8 @@
 import {Record} from 'immutable';
 
-import { IReduxAction } from 'app/redux/create-actions';
+import { IReduxAction, openModal, closeModal, IModalData } from 'app/redux/internals';
 
-import * as Actions from './actions';
 import { ModalIds } from './constants';
-import { IModalData } from './actions';
 
 interface IModalState {
     id: ModalIds | null;
@@ -16,14 +14,14 @@ export class ModalState extends Record<IModalState>({
   data: undefined,
 }) {}
 
-const modalReducer = (state = new ModalState(), action: IReduxAction) => {
+export const modalReducer = (state = new ModalState(), action: IReduxAction) => {
   switch (action.type) {
-    case Actions.openModal.type:
+    case openModal.type:
       return state.merge({
         id: action.payload.id,
         data: action.payload.data,
       });
-    case Actions.closeModal.type:
+    case closeModal.type:
       return new ModalState();
     default:
       return state;

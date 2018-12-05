@@ -11,10 +11,10 @@ import {Flex} from '../styleguide/layout';
 
 import {IGlobalEvent} from './reducer';
 import {getGlobalEvent} from './selectors';
-import {dismissEvent} from './actions';
+import {dismissEvent} from 'app/redux/internals';
 import { GlobaEventType } from './constants';
 
-const DismissButton = styled(Title)`
+export const DismissButton = styled(Title)`
   transform: rotate(45deg);
 `;
 

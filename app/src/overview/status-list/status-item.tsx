@@ -29,7 +29,7 @@ import { IRootState } from 'app/redux/root-reducer';
 import { getUserId } from 'app/login/selectos';
 import { userById } from 'app/user-profile/graphql';
 import { formatCreatedAt } from 'app/helpers/time';
-import { openModal } from 'app/components/modal/actions';
+import { openModal } from 'app/redux/internals';
 import { ModalIds } from 'app/components/modal/constants';
 
 import Comments from './comments';

@@ -1,4 +1,4 @@
-import {createActions} from 'app/redux/create-actions';
+import {createActions} from 'app/redux/internals';
 
 const domain = 'SIGN_UP';
 

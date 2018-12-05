@@ -1,8 +1,6 @@
 import {Record} from 'immutable';
 
-import { IReduxAction } from 'app/redux/create-actions';
-
-import * as Actions from './actions';
+import {IReduxAction, loginSuccess, logOutSuccess} from 'app/redux/internals';
 import { Login_login } from 'app/generated/graphql';
 
 export type User = Pick<Login_login, Exclude<keyof Login_login, '__typename'>>;
@@ -12,13 +10,13 @@ export class LoginState extends Record<{
   user: null,
 }) {}
 
-const loginReducer = (state = new LoginState(), action: IReduxAction) => {
+export const loginReducer = (state = new LoginState(), action: IReduxAction) => {
   switch (action.type) {
-    case Actions.loginSuccess.type:
+    case loginSuccess.type:
       return state.merge({
         user: action.payload.user,
       });
-    case Actions.logOutSuccess.type:
+    case logOutSuccess.type:
       return new LoginState();
     default:
       return state;

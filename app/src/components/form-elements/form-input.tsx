@@ -5,7 +5,7 @@ import styled from 'app/components/styleguide';
 import {Title} from 'app/components/styleguide/text';
 
 import genericFormElement from './generic-form-element';
-import store from 'app/redux/store';
+import {store} from 'app/redux/internals';
 
 export const StyledInput = styled.input`
   border-radius: 7px;

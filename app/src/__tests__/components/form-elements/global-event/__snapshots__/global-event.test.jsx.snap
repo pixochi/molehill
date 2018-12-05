@@ -1,0 +1,113 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GlobalEvent should not render GlobalEvent if event doesn't contain message 1`] = `""`;
+
+exports[`GlobalEvent should not render GlobalEvent if event doesn't contain type 1`] = `""`;
+
+exports[`GlobalEvent should render DismissButton 1`] = `
+<StyledComponent
+  forwardedClass={
+    Object {
+      "$$typeof": Symbol(react.forward_ref),
+      "attrs": Object {
+        "as": "p",
+      },
+      "componentStyle": ComponentStyle {
+        "componentId": "sc-kpOJdX",
+        "isStatic": false,
+        "rules": Array [
+          "
+      margin-top: ",
+          [Function],
+          ";
+      margin-bottom: ",
+          [Function],
+          ";
+      margin-left: ",
+          [Function],
+          ";
+      margin-right: ",
+          [Function],
+          ";
+    
+      padding-top: ",
+          [Function],
+          ";
+      padding-bottom: ",
+          [Function],
+          ";
+      padding-left: ",
+          [Function],
+          ";
+      padding-right: ",
+          [Function],
+          ";
+    
+      flex-grow: ",
+          [Function],
+          ";
+      width: ",
+          [Function],
+          ";
+    
+      cursor: ",
+          [Function],
+          ";
+    ",
+          "
+      text-align: ",
+          [Function],
+          ";
+      color: ",
+          [Function],
+          ";
+      font-weight: ",
+          [Function],
+          ";
+      opacity: ",
+          [Function],
+          ";
+      word-break: ",
+          [Function],
+          ";
+    
+      ",
+          [Function],
+          "
+    ",
+          "
+      font-size: 20px;
+    ",
+          "
+      transform: rotate(45deg);
+    ",
+        ],
+      },
+      "displayName": "Styled(Styled(Styled(styled.div)))",
+      "render": [Function],
+      "styledComponentId": "sc-kpOJdX",
+      "target": "div",
+      "toString": [Function],
+      "warnTooManyClasses": [Function],
+      "withComponent": [Function],
+    }
+  }
+  forwardedRef={null}
+/>
+`;
+
+exports[`GlobalEvent should render GlobalEvent 1`] = `
+<styled.div
+  eventType="SUCCESS"
+>
+  <Styled(styled.div)
+    align="center"
+  >
+    <Styled(Styled(styled.div))
+      inverted={true}
+    >
+      Mock Global Event
+    </Styled(Styled(styled.div))>
+  </Styled(styled.div)>
+</styled.div>
+`;

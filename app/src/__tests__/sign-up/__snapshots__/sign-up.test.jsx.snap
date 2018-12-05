@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Sign Up should render SignUp 1`] = `
+<ScreenCenter>
+  <Styled(Styled(styled.div))
+    textAlign="center"
+  >
+    Molehill
+  </Styled(Styled(styled.div))>
+  <styled.div
+    marginTop="8px"
+  >
+    <Styled(Styled(styled.div))
+      textAlign="center"
+    >
+      Sign up to see what people around you are up to
+    </Styled(Styled(styled.div))>
+  </styled.div>
+  <styled.div
+    marginTop="16px"
+  >
+    <ReduxForm
+      onSubmit={[Function]}
+    />
+  </styled.div>
+  <Styled(Styled(styled.div))
+    marginTop="16px"
+    textAlign="center"
+  >
+    Do you have an account already? 
+    <Link
+      replace={false}
+      to="/"
+    >
+      Log in
+    </Link>
+  </Styled(Styled(styled.div))>
+</ScreenCenter>
+`;

@@ -1,4 +1,4 @@
-import {createActions} from 'app/redux/create-actions';
+import {createActions} from 'app/redux/internals';
 
 import { GlobaEventType } from './constants';
 
@@ -24,5 +24,3 @@ export const {
   `${GLOBAL_EVENT_ACTION_TYPE}/DISMISS`,
   () => null,
 );
-
-export {createActions};

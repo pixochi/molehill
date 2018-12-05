@@ -1,8 +1,8 @@
 import {Record} from 'immutable';
 
-import { IReduxAction } from 'app/redux/create-actions';
+import { IReduxAction } from 'app/redux/internals';
 
-import * as Actions from './actions';
+import {updateError, updateSuccess} from 'app/redux/internals';
 import { GlobaEventType } from './constants';
 
 export interface IGlobalEvent {
@@ -17,20 +17,20 @@ export class GlobalEventState extends Record<IGlobalEvent>({
   sticky: false,
 }) {}
 
-const loginReducer = (state = new GlobalEventState(), action: IReduxAction) => {
+export const globalEventReducer = (state = new GlobalEventState(), action: IReduxAction) => {
   switch (action.type) {
-    case Actions.updateError.type:
-    case Actions.updateSuccess.type:
+    case updateError.type:
+    case updateSuccess.type:
       return state.merge({
         message: action.payload.message,
         type: action.payload.type,
         sticky: action.payload.sticky,
       });
-    case Actions.dismissEvent.type:
-      return new GlobalEventState();
+    // case Actions.dismissEvent.type:
+    //   return new GlobalEventState();
     default:
       return state;
   }
 };
 
-export default loginReducer;
+export default globalEventReducer;

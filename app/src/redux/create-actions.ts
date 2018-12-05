@@ -1,4 +1,4 @@
-import store from 'app/redux/store';
+import {store} from 'app/redux/internals';
 
 export interface IReduxAction<T = any> {
   type: string;

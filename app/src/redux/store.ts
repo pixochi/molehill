@@ -14,7 +14,7 @@ const epicMiddleware = createEpicMiddleware();
 
 const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const store = createStore<IRootState, IReduxAction<any> | AnyAction, {}, {}>(
+export const store = createStore<IRootState, IReduxAction<any> | AnyAction, {}, {}>(
   connectRouter(history)(rootReducer),
   {
     login: new LoginState({
