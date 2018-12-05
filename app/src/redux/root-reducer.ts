@@ -8,9 +8,10 @@ import {
   GlobalEventState,
   loginReducer,
   LoginState,
+  fileUploadReducer,
+  FileUploadState,
 } from 'app/redux/internals';
 import overviewReducer, { IOverviewState } from 'app/overview/reducer';
-import fileUploadReducer, { FileUploadState } from 'app/components/file-upload/reducer';
 import confirmDialogReducer, { ConfirmDialogState } from 'app/components/confirm-dialog/reducer';
 
 export interface IRootState {

@@ -10,3 +10,6 @@ export * from 'app/components/modal/reducer';
 
 export * from 'app/login/actions';
 export * from 'app/login/reducer';
+
+export * from 'app/components/file-upload/reducer';
+export * from 'app/components/file-upload/actions';

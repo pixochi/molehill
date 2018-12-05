@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SignUpForm should render SignUpForm 1`] = `
+<Form>
+  <FormField
+    component={[Function]}
+    name="email"
+    placeholder="Email address"
+    required={true}
+    type="email"
+    validate={[Function]}
+  />
+  <FormField
+    component={[Function]}
+    name="username"
+    placeholder="Username"
+    required={true}
+    validate={
+      Array [
+        [Function],
+        [Function],
+      ]
+    }
+  />
+  <FormField
+    component={[Function]}
+    name="password"
+    placeholder="Password"
+    required={true}
+    type="password"
+  />
+  <FormField
+    component={[Function]}
+    name="passwordRepeat"
+    placeholder="Repeat password"
+    required={true}
+    type="password"
+  />
+  <Button
+    appearance="submit"
+    fullWidth={true}
+    text="Sign up"
+    type="submit"
+  />
+</Form>
+`;

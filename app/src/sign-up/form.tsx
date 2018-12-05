@@ -18,7 +18,7 @@ export interface ISignUpFormData extends SignUpInput {
 
 type Props = InjectedFormProps<ISignUpFormData>;
 
-const SignUpForm: React.SFC<Props> = props => {
+export const SignUpForm: React.SFC<Props> = props => {
   const { handleSubmit } = props;
 
   return (
@@ -45,7 +45,7 @@ const SignUpForm: React.SFC<Props> = props => {
   );
 };
 
-const validate = (values: ISignUpFormData) => {
+export const validate = (values: ISignUpFormData) => {
   const errors: Partial<ISignUpFormData> = {};
 
   if (values.password !== values.passwordRepeat) {

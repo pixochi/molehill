@@ -2,7 +2,6 @@ import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 
-import { IRootState } from 'app/redux/root-reducer';
 import { s4 } from '../styleguide/spacing';
 
 import styled from '../styleguide';
@@ -10,7 +9,7 @@ import Button from '../button';
 import {Body} from 'app/components/styleguide/text';
 import { Flex } from '../styleguide/layout';
 
-import { addFile } from './actions';
+import { addFile, IRootState } from 'app/redux/internals';
 import { getFileById } from './selectors';
 
 const ActualInput = styled.input`

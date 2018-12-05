@@ -1,6 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Sign Up should render SignUp 1`] = `
+exports[`Sign Up should render Redirect if user is not logged in 1`] = `
+<Redirect
+  push={false}
+  to="/overview"
+/>
+`;
+
+exports[`Sign Up should render SignUp if user is logged in 1`] = `
 <ScreenCenter>
   <Styled(Styled(styled.div))
     textAlign="center"
