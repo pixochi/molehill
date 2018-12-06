@@ -84,7 +84,12 @@ type Props = IStateProps & IStatusItemProps & IWithStateMutationProps<AddStatusL
   & IWithStateMutationProps<RemoveStatusLike, RemoveStatusLikeVariables>
   & DataProps<UserById>;
 
-export class StatusItem extends React.Component<Props, {canAddLike: boolean}> {
+interface IStatusItemState {
+  canAddLike: boolean;
+  likeIdByLoggedInUser: string;
+}
+
+export class StatusItem extends React.Component<Props, IStatusItemState> {
 
   private statusMenuOptions: IMenuOption[];
 
@@ -92,8 +97,10 @@ export class StatusItem extends React.Component<Props, {canAddLike: boolean}> {
     super(props);
     this.handleAddStatusLike = this.handleAddStatusLike.bind(this);
     this.handleRemoveStatusLike = this.handleRemoveStatusLike.bind(this);
+    const likeByLoggedInUser = props.status.statusLikes.find(like => like.userId === props.userId);
     this.state = {
-      canAddLike: !Boolean(props.status.statusLikes.find(like => like.userId === props.userId)),
+      canAddLike: !Boolean(likeByLoggedInUser),
+      likeIdByLoggedInUser: likeByLoggedInUser ? likeByLoggedInUser.id : '',
     };
     this.statusMenuOptions = [
       {
@@ -119,6 +126,10 @@ export class StatusItem extends React.Component<Props, {canAddLike: boolean}> {
       selectStatus,
       userId,
     } = this.props;
+
+    const totalNumberOfLikes = status.statusLikes.reduce((acc, like) => {
+      return acc + like.count;
+    }, 0);
 
     return (
       <StatusContainer
@@ -168,10 +179,12 @@ export class StatusItem extends React.Component<Props, {canAddLike: boolean}> {
           marginTop={s2}
           align="center"
           clickable
-          onClick={this.state.canAddLike ? this.handleAddStatusLike : this.handleRemoveStatusLike}
         >
-          <LikeIcon isLikedByUser={!this.state.canAddLike} />
-          <Body marginLeft={s2}>{status.statusLikes.length}</Body>
+          <LikeIcon
+            isLikedByUser={!this.state.canAddLike}
+            onClick={this.state.canAddLike ? this.handleAddStatusLike : this.handleAddStatusLike}
+          />
+          <Body marginLeft={s2}>{totalNumberOfLikes}</Body>
         </Flex>
       </StatusContent>
         <Comments statusId={status.id} />
@@ -196,6 +209,7 @@ export class StatusItem extends React.Component<Props, {canAddLike: boolean}> {
           like: {
             statusId: status.id,
             userId: data.userById!.id,
+            id: this.state.likeIdByLoggedInUser,
           },
         },
         // update locally cached statuses data
@@ -211,17 +225,31 @@ export class StatusItem extends React.Component<Props, {canAddLike: boolean}> {
           });
 
           if (statusesData && addStatusLikeResult.data) {
+            this.setState({likeIdByLoggedInUser: addStatusLikeResult.data!.addStatusLike.id});
             const likedStatusIndex = statusesData.statusesInRadius.statuses.findIndex(({id}) => id === status.id);
 
             if (likedStatusIndex !== -1) {
               const likedStatus = statusesData.statusesInRadius.statuses[likedStatusIndex];
+              const existingLikeIndex = likedStatus.statusLikes.findIndex(
+                like => like.id === addStatusLikeResult.data!.addStatusLike.id,
+              );
+
               const updatedLikedStatus = {
                 ...likedStatus,
-                statusLikes: [
+                statusLikes: existingLikeIndex !== -1 ?
+                  [
+                    ...likedStatus.statusLikes.slice(0, existingLikeIndex),
+                    {
+                      ...likedStatus.statusLikes[existingLikeIndex],
+                      count: likedStatus.statusLikes[existingLikeIndex].count + 1,
+                    },
+                    ...likedStatus.statusLikes.slice(existingLikeIndex + 1),
+                  ] : [
                   ...likedStatus.statusLikes,
                   {
                     ...addStatusLikeResult.data.addStatusLike,
                     userId,
+                    count: 1,
                   },
                 ],
               };
@@ -265,10 +293,7 @@ export class StatusItem extends React.Component<Props, {canAddLike: boolean}> {
     this.setState({canAddLike: true}, () => {
       removeStatusLikeMutation.mutate({
         variables: {
-          like: {
-            statusId: status.id,
-            userId,
-          },
+          id: this.state.likeIdByLoggedInUser as string,
         },
         // update locally cached statuses data
         update: (store, removeStatusLikeResult) => {

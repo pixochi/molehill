@@ -35,6 +35,7 @@ export const statusFragment = gql`
     statusLikes {
       id
       userId
+      count
     }
   }
 `;
@@ -109,8 +110,8 @@ export const addStatusLikeMutation = gql`
 `;
 
 export const removeStatusLikeMutation = gql`
-  mutation RemoveStatusLike($like: StatusLikeInput!) {
-    removeStatusLike(like: $like) {
+  mutation RemoveStatusLike($id: String!) {
+    removeStatusLike(id: $id) {
       statusId
     }
   }

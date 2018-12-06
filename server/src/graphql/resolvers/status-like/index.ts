@@ -23,20 +23,33 @@ export default class StatusResolver {
     const user = new UserEntity();
     user.id = like.userId;
 
-    const savedLike = await this.statusLikesRepository.save({
-      user,
-      statusId: like.statusId,
-    });
+    if (like.id) {
+      await this.statusLikesRepository.increment({
+        id: like.id,
+      }, 'count', 1);
 
-    return {
-      ...savedLike,
-      user
-    };
+      return {
+        ...like,
+        user
+      };
+    }
+    else {
+      const savedLike = await this.statusLikesRepository.save({
+        user,
+        statusId: like.statusId,
+      });
+
+      return {
+        ...savedLike,
+        user
+      };
+    }
+
   }
 
   @Mutation(returns => StatusLikeEntity)
-  async removeStatusLike(@Arg('like') like: StatusLikeInput): Promise<Partial<StatusLikeEntity>> {
-    await this.statusLikesRepository.delete(like);
-    return like;
+  async removeStatusLike(@Arg('id') id: string): Promise<Partial<StatusLikeEntity>> {
+    await this.statusLikesRepository.delete(id);
+    return {id};
   }
 }
