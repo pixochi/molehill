@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import { WrappedFieldProps, change } from 'redux-form';
 
 import styled from 'app/components/styleguide';
-import {Title} from 'app/components/styleguide/text';
+import {store} from 'app/redux/internals';
+import { s1 } from '../styleguide/spacing';
+
+import {Body, Title} from 'app/components/styleguide/text';
 
 import genericFormElement from './generic-form-element';
-import {store} from 'app/redux/internals';
 
 export const StyledInput = styled.input`
   border-radius: 7px;
@@ -36,23 +38,38 @@ export const ClearButton = styled(Title)`
 
 interface IFormInputProps {
   name: string;
+  value?: string;
+  maxLength?: number;
   formName?: string;
   clearable?: boolean;
 }
 
 type Props = WrappedFieldProps & IFormInputProps;
 
-export class FormInput extends React.Component<Props> {
+export class FormInput extends React.Component<Props, {currentInputValue: string}> {
 
   constructor(props: Props) {
     super(props);
     this.clearInput = this.clearInput.bind(this);
+    this.handleInputValueChange = this.handleInputValueChange.bind(this);
+    this.state = {
+      currentInputValue: props.value || '',
+    };
+  }
+
+  public componentWillReceiveProps(nextProps: Props) {
+    if (nextProps.value !== this.props.value) {
+      this.setState({
+        currentInputValue: nextProps.value || '',
+      });
+    }
   }
 
   public render() {
     const {
       formName,
       clearable,
+      maxLength,
       ...rest
     } = this.props;
 
@@ -60,9 +77,15 @@ export class FormInput extends React.Component<Props> {
       <InputContainer>
         <StyledInput
           {...rest}
+          onChange={this.handleInputValueChange}
+          value={this.state.currentInputValue}
+          maxLength={maxLength}
         />
         {Boolean(formName && clearable) && (
           <ClearButton clickable onClick={this.clearInput}>+</ClearButton>
+        )}
+        {Boolean(maxLength) && (
+          <Body disabled marginTop={s1}>{this.state.currentInputValue.length}/{maxLength}</Body>
         )}
       </InputContainer>
     );
@@ -77,7 +100,12 @@ export class FormInput extends React.Component<Props> {
     if (formName) {
       store.dispatch(change(formName, name, ''));
     }
+  }
 
+  private handleInputValueChange(event: ChangeEvent<HTMLInputElement>) {
+    this.setState({
+      currentInputValue: event.target.value,
+    });
   }
 }
 

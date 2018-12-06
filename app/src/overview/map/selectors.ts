@@ -54,7 +54,7 @@ export const getStreet = createSelector(
   (address) => {
     if (address) {
       if (address.houseNumber) {
-        return `${address.road} ${address.houseNumber}`;
+        return `${address.road || 'unknown'} ${address.houseNumber}`;
       }
       return address.road;
     }

@@ -24,3 +24,5 @@ export const getStatusModalSubmitText = createSelector(
   getStatusModalData,
   (data) => data && data.submitText,
 );
+
+export const getNewStatusSelectedPosition = (state: IRootState) => state.overview.newStatus.selectedNewStatusLocation;

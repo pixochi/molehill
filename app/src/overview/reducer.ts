@@ -4,6 +4,7 @@ import { combineReducers } from 'redux';
 import { IReduxAction } from 'app/redux/create-actions';
 
 import locationReducer, { LocationState } from './map/reducer';
+import newStatusReducer, { NewStatusState } from './status-modal/reducer';
 import * as Actions from './actions';
 import { RADIUS_DEFAULT } from './constants';
 
@@ -22,6 +23,7 @@ export class StatusState extends Record<IStatusState>({
 export interface IOverviewState {
   location: LocationState;
   status: StatusState;
+  newStatus: NewStatusState;
 }
 
 const statusReducer = (state = new StatusState(), action: IReduxAction) => {
@@ -47,4 +49,5 @@ const statusReducer = (state = new StatusState(), action: IReduxAction) => {
 export default combineReducers({
   location: locationReducer,
   status: statusReducer,
+  newStatus: newStatusReducer,
 });

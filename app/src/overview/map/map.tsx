@@ -10,11 +10,11 @@ import { IRootState } from 'app/redux/root-reducer';
 import { statusesInRadius } from 'app/overview/graphql';
 
 import { Title, Body } from 'app/components/styleguide/text';
+import UserIcon from 'app/components/user-leaflet-icon';
 
 import { getPermissionAllowed, getStopAutoRefetchStatuses } from './selectors';
 import { setLocation, blockLocation } from './actions';
 import LocationErrorInfo from './location-error-info';
-import UserIcon from './user-leaflet-icon';
 import { StatusesInRadiusData } from '../types';
 import { LeafletMouseEvent } from 'leaflet';
 import { selectStatus } from '../actions';

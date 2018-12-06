@@ -2,7 +2,7 @@ import {Record} from 'immutable';
 
 import { IReduxAction } from 'app/redux/internals';
 
-import {updateError, updateSuccess} from 'app/redux/internals';
+import {updateError, updateSuccess, dismissEvent} from 'app/redux/internals';
 import { GlobaEventType } from './constants';
 
 export interface IGlobalEvent {
@@ -26,8 +26,8 @@ export const globalEventReducer = (state = new GlobalEventState(), action: IRedu
         type: action.payload.type,
         sticky: action.payload.sticky,
       });
-    // case Actions.dismissEvent.type:
-    //   return new GlobalEventState();
+    case dismissEvent.type:
+      return new GlobalEventState();
     default:
       return state;
   }
