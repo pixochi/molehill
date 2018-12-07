@@ -37,7 +37,7 @@ const UserStatuses: React.SFC<Props> = (props) => {
     return <Spinner margined centered />;
   }
 
-  if (data.statusesByUser && !data.statusesByUser!.statuses.length) {
+  if ((data.statusesByUser && !data.statusesByUser.statuses.length) || !data.statusesByUser) {
     return (
       <Container>
         <Body>No statuses yet</Body>
@@ -48,7 +48,7 @@ const UserStatuses: React.SFC<Props> = (props) => {
   return (
     <UserStatusesContainer noPadding>
       <Flex direction="column" fullWidth>
-        {data.statusesByUser!.statuses.map((status) => (
+        {data.statusesByUser.statuses.map((status) => (
           <StatusItem key={status.id} status={status} />
         ))}
 

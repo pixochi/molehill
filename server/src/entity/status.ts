@@ -6,6 +6,7 @@ import { LocationInput } from 'src/graphql/resolvers/status/types';
 import User from './user';
 import Comment from './comment';
 import StatusLike from './status-like';
+import StatusCategory from './status-category';
 
 @Entity()
 @ObjectType()
@@ -53,6 +54,10 @@ export default class Status {
   @Field(() => User)
   @ManyToOne(type => User, user => user.statuses)
   user: User;
+
+  @Field(() => StatusCategory)
+  @ManyToOne(type => StatusCategory, category => category.status)
+  category: StatusCategory;
 
   @Field(() => Comment)
   @OneToMany(type => Comment, comment => comment.status, { onDelete: 'CASCADE' })

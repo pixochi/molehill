@@ -13,6 +13,15 @@ export const allStatuses = gql`
   }
 `;
 
+export const allCategories = gql`
+  query AllCategories {
+    allCategories {
+      id
+      name
+    }
+  }
+`;
+
 export const statusFragment = gql`
   fragment StatusFragment on Status {
     id
@@ -36,6 +45,10 @@ export const statusFragment = gql`
       id
       userId
       count
+    }
+    category {
+      id
+      name
     }
   }
 `;
@@ -71,6 +84,10 @@ export const addStatusMutation = gql`
       title
       description
       createdAt
+      category {
+        id
+        name
+      }
     }
   }
 `;

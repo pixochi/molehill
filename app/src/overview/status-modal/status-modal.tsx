@@ -228,7 +228,7 @@ class AddStatus extends React.Component<Props, IInitialValues> {
         );
 
         if (selectedStatus) {
-          const {title, description, country, street, city, zipCode} = selectedStatus;
+          const {title, description, country, street, city, zipCode, category} = selectedStatus;
           return {
             title,
             description,
@@ -236,6 +236,7 @@ class AddStatus extends React.Component<Props, IInitialValues> {
             street,
             city,
             zipCode,
+            categoryId: category.id,
           };
         }
         return null;

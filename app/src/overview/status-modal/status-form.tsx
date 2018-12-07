@@ -2,6 +2,7 @@ import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { Form, InjectedFormProps, reduxForm } from 'redux-form';
+import { graphql, DataProps } from 'react-apollo';
 import { Map as LeafletMap, TileLayer, Marker, Tooltip } from 'react-leaflet';
 import { LeafletMouseEvent, LatLngLiteral } from 'leaflet';
 
@@ -14,16 +15,18 @@ import Spinner from 'app/components/spinner';
 import { Flex, Base } from 'app/components/styleguide/layout';
 import { Body } from 'app/components/styleguide/text';
 import UserIcon from 'app/components/user-leaflet-icon';
+import FormSelect from 'app/components/form-elements/form-select';
 
 import { IFormProps } from 'app/components/form-elements/typings.d.ts';
 import { IRootState } from 'app/redux/root-reducer';
 import { s2 } from 'app/components/styleguide/spacing';
 import styled from 'app/components/styleguide';
+import { StatusInput, AllCategories } from 'app/generated/graphql';
 
 import { getCountry, getStreet, getCity, getZipCode, getIsFetchingAddress, getLat, getLng } from '../map/selectors';
-import { StatusInput } from 'app/generated/graphql';
 import { getStatusModalSubmitText, getNewStatusSelectedPosition } from './selectors';
 import { setNewStatusLocation } from './actions';
+import { allCategories } from '../graphql';
 
 export const STATUS_FORM = 'STATUS_FORM';
 export const USE_CURRENT_LOCATION_FIELD  = 'useCurrentLocation';
@@ -50,7 +53,7 @@ type StateProps = IInitialValues & IStateProps;
 
 type AddStatusFormProps = InjectedFormProps<StatusInput> & IFormProps & IInitialValues;
 
-type Props = StateProps & AddStatusFormProps;
+type Props = StateProps & AddStatusFormProps & DataProps<AllCategories>;
 
 class AddStatusForm extends React.PureComponent<Props, {selectedPosition?: LatLngLiteral}> {
 
@@ -81,11 +84,19 @@ class AddStatusForm extends React.PureComponent<Props, {selectedPosition?: LatLn
       userLat,
       userLng,
       selectedPosition,
+      data,
     } = this.props;
+
+    const categoryOptions = data.allCategories ?
+      data.allCategories.map(category => ({
+        value: category.id,
+        label: category.name,
+      })) : [];
 
     return (
       <Form onSubmit={handleSubmit}>
           <FormField required name="title" component={FormInput} placeholder="Title" maxLength={64} />
+          <FormField required name="categoryId" component={FormSelect} options={categoryOptions} />
           <FormField name="description" component={FormTextArea} placeholder="Description" />
           <Flex align="center">
             <FormField
@@ -181,4 +192,5 @@ export default compose<React.ComponentType<IFormProps & IInitialValues>>(
     enableReinitialize: true,
     keepDirtyOnReinitialize: true,
   }),
+  graphql(allCategories),
 )(AddStatusForm);

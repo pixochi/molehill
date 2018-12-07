@@ -10,6 +10,7 @@ import { InjectRepository } from 'typeorm-typedi-extensions';
 import axios from 'axios';
 
 import StatusEntity from 'src/entity/status';
+import StatusCategoryEntity from 'src/entity/status-category';
 import UserEntity from 'src/entity/user';
 import { buildUrlQuery } from 'src/graphql/helpers/url-query-builder';
 
@@ -21,6 +22,7 @@ export default class StatusResolver {
 
   constructor(
     @InjectRepository(StatusEntity) private readonly statusRepository: Repository<StatusEntity>,
+    @InjectRepository(StatusCategoryEntity) private readonly statusCategoryRepository: Repository<StatusCategoryEntity>,
   ) {}
   @Query((returns) => StatusEntity)
   async status(@Arg('id') statusId: string): Promise<StatusEntity> {
@@ -46,6 +48,7 @@ export default class StatusResolver {
       .createQueryBuilder('status')
       .leftJoinAndSelect('status.user', 'user')
       .leftJoinAndSelect('status.statusLikes', 'likes')
+      .leftJoinAndSelect('status.category', 'category')
       .where('ST_Distance_Sphere(location, ST_MakePoint(:latitude,:longitude)) <= :radius', {
         radius,
         latitude,
@@ -71,6 +74,7 @@ export default class StatusResolver {
       }})
       .leftJoinAndSelect('status.user', 'user')
       .leftJoinAndSelect('status.statusLikes', 'likes')
+      .leftJoinAndSelect('status.category', 'category')
       .orderBy('status.createdAt', 'DESC')
       .getManyAndCount();
 
@@ -80,11 +84,21 @@ export default class StatusResolver {
       };
   }
 
+  @Query((returns) => [StatusCategoryEntity])
+  async allCategories(): Promise<StatusCategoryEntity[]> {
+    const categories = await this.statusCategoryRepository.find();
+
+      return categories;
+  }
+
   @Mutation(returns => StatusEntity)
   async addStatus(@Arg('status') newStatus: StatusInput): Promise<Partial<StatusEntity>> {
 
     const user = new UserEntity();
     user.id = newStatus.userId;
+
+    const category = await this.statusCategoryRepository.findOne(newStatus.categoryId);
+
     let statusLocation = newStatus.location;
 
     if (!newStatus.useCurrentLocation) {
@@ -112,6 +126,7 @@ export default class StatusResolver {
       ...newStatus,
       location: statusLocation,
       user,
+      category,
     });
 
     return savedStatus;

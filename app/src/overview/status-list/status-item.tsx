@@ -158,6 +158,7 @@ export class StatusItem extends React.Component<Props, IStatusItemState> {
           target="_blank"
           href={buildNavigationLink(status.location.coordinates)}
         >
+          <Body disabled>{status.category.name}</Body>
           <Body disabled>{`${status.city} ${status.zipCode}, ${status.street}`}</Body>
         </a>
         <Link to={`/users/${status.user.id}`}>

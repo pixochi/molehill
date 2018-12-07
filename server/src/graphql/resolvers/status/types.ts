@@ -37,6 +37,9 @@ export class StatusInput implements Partial<StatusEntity> {
   @Field()
   street: string;
 
+  @Field()
+  categoryId: string;
+
   @Field({nullable: true})
   useCurrentLocation?: boolean;
 }
