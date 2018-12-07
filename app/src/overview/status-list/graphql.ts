@@ -44,3 +44,16 @@ export const statusComments = gql`
     }
   }
 `;
+
+export const likesByUsersQuery = gql`
+  query likesByUsers($statusId: String!) {
+    likesByUsers(statusId: $statusId){
+      users {
+        id
+        username
+        image
+        likeCount
+      }
+    }
+  }
+`;

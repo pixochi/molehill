@@ -21,6 +21,8 @@ import { selectStatus } from '../actions';
 import StatusItem from './status-item';
 import { StatusesInRadiusVariables } from 'app/generated/graphql';
 import Container from 'app/components/container';
+import LikesModal from './status-likes/likes-modal';
+import { getLikeStatusId } from '../status-modal/selectors';
 
 const STATUSES_LIMIT = 10;
 
@@ -38,6 +40,7 @@ interface IStateProps {
   selectedStatusId: string;
   radius: number;
   stopAutoRefetchStatuses: boolean;
+  likeStatusId: string;
 }
 
 type Props = StatusesInRadiusData & IStatusListProps & IStateProps;
@@ -84,6 +87,7 @@ class StatusList extends React.Component<Props> {
       className,
       selectedStatusId,
       stopAutoRefetchStatuses,
+      likeStatusId,
     } = this.props;
 
     const canLoadMore = data.statusesInRadius && data.statusesInRadius.count > data.statusesInRadius.statuses.length;
@@ -117,6 +121,7 @@ class StatusList extends React.Component<Props> {
             <Body>Load more</Body>
           </Container>
         )}
+        <LikesModal statusId={likeStatusId} header="People who like it" />
       </StyledContainer>
     );
   }
@@ -172,6 +177,7 @@ export default compose<React.ComponentType<IStatusListProps>>(
       selectedStatusId: getSelectedStatusId(state),
       radius: getRadiusInMeters(state),
       stopAutoRefetchStatuses: getStopAutoRefetchStatuses(state),
+      likeStatusId: getLikeStatusId(state),
     }),
   ),
   graphql<IStatusListProps & IStateProps, StatusesInRadiusData, StatusesInRadiusVariables>(statusesInRadius, {

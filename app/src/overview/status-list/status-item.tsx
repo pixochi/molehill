@@ -184,7 +184,12 @@ export class StatusItem extends React.Component<Props, IStatusItemState> {
             isLikedByUser={!this.state.canAddLike}
             onClick={this.state.canAddLike ? this.handleAddStatusLike : this.handleAddStatusLike}
           />
-          <Body marginLeft={s2}>{totalNumberOfLikes}</Body>
+          <Body
+            marginLeft={s2}
+            onClick={() => openModal.dispatch(ModalIds.statusLikes, {statusId: status.id})}
+          >
+            {totalNumberOfLikes}
+          </Body>
         </Flex>
       </StatusContent>
         <Comments statusId={status.id} />
