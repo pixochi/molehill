@@ -42,8 +42,7 @@ export default class StatusResolver {
   }
 
   @Query((returns) => StatusesWithCount)
-  async statusesInRadius(@Args() { radius, latitude, longitude, limit, cursor }: StatusesInRadiusArgs): Promise<StatusesWithCount> {
-
+  async statusesInRadius(@Args() { radius, latitude, longitude, limit, cursor, categoryIds }: StatusesInRadiusArgs): Promise<StatusesWithCount> {
     const statusesWithUser = await this.statusRepository
       .createQueryBuilder('status')
       .leftJoinAndSelect('status.user', 'user')
@@ -55,6 +54,7 @@ export default class StatusResolver {
         longitude,
       })
       .andWhere(cursor ? `status.id < ${cursor}` : 'TRUE')
+      .andWhere(categoryIds ? `status.category_id IN (${categoryIds.join(',')})` : 'TRUE')
       .take(limit ? limit : BIG_INT_LIMIT)
       .orderBy('status.createdAt', 'DESC')
       .getManyAndCount();

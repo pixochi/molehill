@@ -4,6 +4,7 @@ import {
   StandardLonghandProperties,
   JustifyContentProperty,
   AlignContentProperty,
+  FlexWrapProperty,
 } from 'csstype';
 
 import styled from 'app/components/styleguide';
@@ -56,6 +57,7 @@ export interface IFlexProps extends IBaseLayoutProps {
   direction?: FlexDirectionProperty;
   justify?: JustifyContentProperty;
   align?: AlignContentProperty;
+  wrap?: FlexWrapProperty;
   isInline?: boolean;
 }
 
@@ -64,4 +66,5 @@ export const Flex =  styled(Base)<BasePropsWithTheme<IFlexProps>>`
   flex-direction: ${props => props.direction};
   justify-content: ${props => props.justify};
   align-items: ${props => props.align};
+  flex-wrap: ${props => props.wrap};
 `;

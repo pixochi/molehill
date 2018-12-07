@@ -55,9 +55,11 @@ export const statusFragment = gql`
 
 export const statusesInRadius = gql`
   query StatusesInRadius(
-    $radius: Float!, $latitude: Float!, $longitude: Float!, $skip: Boolean!, $cursor: String, $limit: Int
+    $radius: Float!, $categoryIds: [ID!], $latitude: Float!, $longitude: Float!,
+    $skip: Boolean!, $cursor: String, $limit: Int,
   ) {
-    statusesInRadius(radius: $radius, latitude: $latitude, longitude: $longitude, cursor: $cursor, limit: $limit)
+    statusesInRadius(radius: $radius, categoryIds: $categoryIds, latitude: $latitude, longitude: $longitude,
+    cursor: $cursor, limit: $limit)
     @connection(key: "statusCursor", filter: ["radius", "latitude", "longitude"])
     @skip(if: $skip) {
       statuses {

@@ -8,16 +8,22 @@ import newStatusReducer, { NewStatusState } from './status-modal/reducer';
 import * as Actions from './actions';
 import { RADIUS_DEFAULT } from './constants';
 
+export interface IStatusCategory {
+  [id: string]: boolean;
+}
+
 interface IStatusState {
   selectedId: string;
   radius: number;
   stopAutoRefetchStatuses: boolean;
+  categories: IStatusCategory;
 }
 
 export class StatusState extends Record<IStatusState>({
   selectedId: '',
   radius: RADIUS_DEFAULT, // km
   stopAutoRefetchStatuses: false,
+  categories: {},
 }) { }
 
 export interface IOverviewState {
@@ -40,6 +46,13 @@ const statusReducer = (state = new StatusState(), action: IReduxAction) => {
       case Actions.startAutoRefetchStatuses.type:
         return state.merge({
           stopAutoRefetchStatuses: false,
+        });
+      case Actions.changeSelectedCategories.type:
+        return state.update('categories', (categories) => {
+          return {
+            ...categories,
+            [action.payload.categoryId]: action.payload.value,
+          };
         });
     default:
       return state;

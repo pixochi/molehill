@@ -6,14 +6,14 @@ import Slider, { Handle } from 'rc-slider';
 import Tooltip from 'rc-tooltip';
 
 import { IRootState } from 'app/redux/root-reducer';
-import { s5, s6 } from 'app/components/styleguide/spacing';
 import styled from 'app/components/styleguide';
+import { s3 } from 'app/components/styleguide/spacing';
 
 import { Body } from 'app/components/styleguide/text';
 
-import { getRadius } from './selectors';
-import { changeRadius } from './actions';
-import { RADIUS_MIN, RADIUS_MAX } from './constants';
+import { getRadius } from '../selectors';
+import { changeRadius } from '../actions';
+import { RADIUS_MIN, RADIUS_MAX } from '../constants';
 import Container from 'app/components/container';
 
 const StyledSlider = styled(Slider)`
@@ -68,7 +68,7 @@ const RadiusFilter: React.SFC<IStateProps> = (props) => {
   } = props;
 
   return (
-    <Container paddingVertical={s5} paddingHorizontal={s6} direction="column">
+    <Container noPadding direction="column" grow={1} marginRight={s3}>
       <Body>within {radius}&nbsp;km</Body>
       <StyledSlider
         min={RADIUS_MIN}

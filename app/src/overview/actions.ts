@@ -17,6 +17,13 @@ export const {
 );
 
 export const {
+  action: changeSelectedCategories,
+} = createActions(
+  `${domain}/CHANGE_SELECTED_CATEGORIES`,
+  (categoryId: string, value: boolean) => ({categoryId, value}),
+);
+
+export const {
   action: startAutoRefetchStatuses,
 } = createActions(
   `${domain}/START_AUTO_REFETCH`,

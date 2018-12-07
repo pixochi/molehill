@@ -18,7 +18,7 @@ import LocationErrorInfo from './location-error-info';
 import { StatusesInRadiusData } from '../types';
 import { LeafletMouseEvent } from 'leaflet';
 import { selectStatus } from '../actions';
-import { getSelectedStatusId, getRadiusInMeters } from '../selectors';
+import { getSelectedStatusId, getRadiusInMeters, getSelectedCategoryIds } from '../selectors';
 import { StatusesInRadius } from 'app/generated/graphql';
 
 const StyledMap = styled(LeafletMap)`
@@ -38,6 +38,7 @@ interface IStateProps {
   selectedStatusId: string;
   radius: number;
   stopAutoRefetchStatuses: boolean;
+  selectedCategories?: string[];
 }
 
 type Props = IStatusMapProps & IStateProps & StatusesInRadiusData;
@@ -218,16 +219,19 @@ export default compose<React.ComponentType<IStatusMapProps>>(
     selectedStatusId: getSelectedStatusId(state),
     radius: getRadiusInMeters(state),
     stopAutoRefetchStatuses: getStopAutoRefetchStatuses(state),
+    selectedCategories: getSelectedCategoryIds(state),
   })),
   graphql<IStatusMapProps & IStateProps, StatusesInRadius>(statusesInRadius, {
     options: (props) => ({
       variables: {
         radius: props.radius,
+        categoryIds: props.selectedCategories,
         latitude: props.userLat,
         longitude: props.userLng,
         skip: props.stopAutoRefetchStatuses,
         limit: 3,
       },
+      fetchPolicy: 'network-only',
     }),
     skip: ({userLat, userLng}) => !userLat || !userLng,
   }),

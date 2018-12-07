@@ -63,6 +63,7 @@ export interface ICheckboxProps {
   value: any;
   name?: string;
   label?: string;
+  onClick?: (...args: any[]) => void;
 }
 
 const Checkbox: React.SFC<ICheckboxProps> = (props) => {

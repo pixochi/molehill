@@ -11,7 +11,7 @@ import newStatusEpics from './status-modal/epics';
 import { getHasAddress, getLat, getLng } from './map/selectors';
 import { geocodeReverse } from './graphql';
 import { setAddress, fetchingAddress } from './map/actions';
-import { changeRadius, startAutoRefetchStatuses } from './actions';
+import { changeRadius, startAutoRefetchStatuses, changeSelectedCategories } from './actions';
 import { setNewStatusLocation } from './status-modal/actions';
 
 const getAddressFromCoordinates: Epic<FormAction, any> = (action$, state$) => action$.pipe(
@@ -65,7 +65,15 @@ const getAddressFromMap: Epic<IReduxAction, any> = (action$) => action$.pipe(
 
 const fetchStatusesOnRadiusChange: Epic<IReduxAction, any> = (action$, state$) => action$.pipe(
   ofType(changeRadius.type),
-  debounceTime(900),
+  debounceTime(700),
+  mergeMap(() => {
+    return of(startAutoRefetchStatuses.action());
+  }),
+);
+
+const fetchStatusesOnCategoryChange: Epic<IReduxAction, any> = (action$) => action$.pipe(
+  ofType(changeSelectedCategories.type),
+  debounceTime(700),
   mergeMap(() => {
     return of(startAutoRefetchStatuses.action());
   }),
@@ -74,6 +82,7 @@ const fetchStatusesOnRadiusChange: Epic<IReduxAction, any> = (action$, state$) =
 export default combineEpics(
   getAddressFromCoordinates,
   fetchStatusesOnRadiusChange,
+  fetchStatusesOnCategoryChange,
   newStatusEpics,
   getAddressFromMap,
 );

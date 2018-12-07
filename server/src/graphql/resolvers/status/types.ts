@@ -79,6 +79,9 @@ export class StatusesInRadiusArgs {
   @Field(type => Float)
   radius: number;
 
+  @Field(type => [ID], {nullable: true})
+  categoryIds?: string[];
+
   @Field(type => Float)
   latitude: number;
 

@@ -16,8 +16,8 @@ import { getLat, getLng } from './map/selectors';
 
 import Map from './map/map';
 import StatusList from './status-list/status-list';
-import RadiusFilter from './radius-filter';
 import StatusModal from './status-modal/status-modal';
+import StatusFilter from './status-filter/status-filter';
 
 const StatusesContainer = styled(Flex)`
 `;
@@ -69,7 +69,7 @@ class Overview extends React.PureComponent<Props> {
           <StyledStatusList userLat={userLat} userLng={userLng} />
           <FixedContainer>
             <Flex direction="column">
-              <RadiusFilter />
+              <StatusFilter />
               <StyledMap userLat={userLat} userLng={userLng} />
               <OpenAddStatusButton appearance="submit" text="+ Add" fullWidth onClick={this.handleOpenAddStatus} />
             </Flex>
