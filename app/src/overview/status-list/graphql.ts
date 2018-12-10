@@ -45,6 +45,37 @@ export const statusComments = gql`
   }
 `;
 
+export const addAttendanceMutation = gql`
+  mutation AddAttendance($attendance: AttendanceInput!) {
+    addAttendance(attendance: $attendance) {
+      id
+      createdAt
+    }
+  }
+`;
+
+export const deleteAttendanceMutation = gql`
+  mutation DeleteAttendance($id: ID!) {
+    deleteAttendance(id: $id) {
+      id
+    }
+  }
+`;
+
+export const statusAttendace = gql`
+  query StatusAttendance($statusId: ID!) {
+    statusAttendance(statusId: $statusId){
+      id
+      createdAt
+      user {
+        id
+        username
+        image
+      }
+    }
+  }
+`;
+
 export const likesByUsersQuery = gql`
   query likesByUsers($statusId: String!) {
     likesByUsers(statusId: $statusId){

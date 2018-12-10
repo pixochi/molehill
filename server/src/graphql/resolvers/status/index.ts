@@ -14,7 +14,7 @@ import StatusCategoryEntity from 'src/entity/status-category';
 import UserEntity from 'src/entity/user';
 import { buildUrlQuery } from 'src/graphql/helpers/url-query-builder';
 
-import { StatusInput, EditStatusInput, StatusesInRadiusArgs, StatusesWithCount } from './types';
+import { StatusInput, EditStatusInput, StatusesInRadiusArgs, StatusesWithCount, StatusEntityWithAttendanceCount } from './types';
 import { GEOCODER_API, BIG_INT_LIMIT } from '../constants';
 
 @Resolver((of) => StatusEntity)
@@ -48,6 +48,7 @@ export default class StatusResolver {
       .leftJoinAndSelect('status.user', 'user')
       .leftJoinAndSelect('status.statusLikes', 'likes')
       .leftJoinAndSelect('status.category', 'category')
+      .loadRelationCountAndMap('status.attendance', 'status.attendance')
       .where('ST_Distance_Sphere(location, ST_MakePoint(:latitude,:longitude)) <= :radius', {
         radius,
         latitude,
@@ -60,7 +61,8 @@ export default class StatusResolver {
       .getManyAndCount();
 
       return {
-        statuses: statusesWithUser[0],
+        // type-orm entities can't simply extend other graphql types
+        statuses: statusesWithUser[0]  as unknown as StatusEntityWithAttendanceCount[],
         count: statusesWithUser[1],
       };
   }
@@ -75,11 +77,12 @@ export default class StatusResolver {
       .leftJoinAndSelect('status.user', 'user')
       .leftJoinAndSelect('status.statusLikes', 'likes')
       .leftJoinAndSelect('status.category', 'category')
+      .loadRelationCountAndMap('status.attendance', 'status.attendanceCount')
       .orderBy('status.createdAt', 'DESC')
       .getManyAndCount();
 
       return {
-        statuses: statusesWithUser[0],
+        statuses: statusesWithUser[0] as unknown as StatusEntityWithAttendanceCount[],
         count: statusesWithUser[1],
       };
   }

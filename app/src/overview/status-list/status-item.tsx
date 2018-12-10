@@ -10,6 +10,7 @@ import ShowMore from 'app/components/show-more';
 import UserImage from 'app/components/user-image';
 import Like from 'app/components/icons/like';
 import MenuButton, { IMenuOption } from 'app/components/menu-button';
+import Button from 'app/components/button';
 
 import { s5, s1, s4, s2 } from 'app/components/styleguide/spacing';
 import styled, { css } from 'app/components/styleguide';
@@ -179,18 +180,22 @@ export class StatusItem extends React.Component<Props, IStatusItemState> {
           isInline
           marginTop={s2}
           align="center"
-          clickable
         >
-          <LikeIcon
-            isLikedByUser={!this.state.canAddLike}
-            onClick={this.state.canAddLike ? this.handleAddStatusLike : this.handleAddStatusLike}
-          />
-          <Body
-            marginLeft={s2}
-            onClick={() => openModal.dispatch(ModalIds.statusLikes, {statusId: status.id})}
-          >
-            {totalNumberOfLikes}
-          </Body>
+          <Flex align="center">
+            <LikeIcon
+              isLikedByUser={!this.state.canAddLike}
+              onClick={this.state.canAddLike ? this.handleAddStatusLike : this.handleAddStatusLike}
+            />
+            <Body
+              marginLeft={s2}
+              onClick={() => openModal.dispatch(ModalIds.statusLikes, {statusId: status.id})}
+            >
+              {totalNumberOfLikes}
+            </Body>
+          </Flex>
+          <Flex align="center" marginLeft={s4}>
+            <Button appearance="info" buttonSize="mini" text={`Join: ${(status as any).attendance}`} />
+          </Flex>
         </Flex>
       </StatusContent>
         <Comments statusId={status.id} />
