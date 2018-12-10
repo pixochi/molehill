@@ -4,6 +4,7 @@ import {Entity, PrimaryGeneratedColumn, Column, OneToMany} from 'typeorm';
 import Status from './status';
 import Comment from './comment';
 import StatusLike from './status-like';
+import Attendance from './attendance';
 
 @Entity()
 @ObjectType()
@@ -43,4 +44,8 @@ export default class User {
   @Field(() => StatusLike)
   @OneToMany(type => StatusLike, statusLike => statusLike.user)
   statusLikes: StatusLike[];
+
+  @Field(() => Attendance)
+  @OneToMany(type => Attendance, attendance => attendance.user)
+  attendance: Attendance[];
 }

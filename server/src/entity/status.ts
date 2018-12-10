@@ -7,6 +7,7 @@ import User from './user';
 import Comment from './comment';
 import StatusLike from './status-like';
 import StatusCategory from './status-category';
+import Attendance from './attendance';
 
 @Entity()
 @ObjectType()
@@ -60,10 +61,14 @@ export default class Status {
   category: StatusCategory;
 
   @Field(() => Comment)
-  @OneToMany(type => Comment, comment => comment.status, { onDelete: 'CASCADE' })
+  @OneToMany(type => Comment, comment => comment.status)
   comments: Comment[];
 
   @Field(() => StatusLike)
-  @OneToMany(type => StatusLike, statusLike => statusLike.status, { onDelete: 'CASCADE' })
+  @OneToMany(type => StatusLike, statusLike => statusLike.status)
   statusLikes: StatusLike[];
+
+  @Field(() => Attendance)
+  @OneToMany(type => Attendance, statusAttendance => statusAttendance.status)
+  attendance: Attendance[];
 }
