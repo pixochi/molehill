@@ -158,9 +158,15 @@ export default class StatusResolver {
       };
     }
 
+    const updatedCategory = new StatusCategoryEntity();
+    const statusCategory = await this.statusCategoryRepository.findOne(status.categoryId);
+    updatedCategory.id = statusCategory.id;
+    updatedCategory.name = statusCategory.name;
+
     const updatedStatus = {
       ...status,
       location: statusLocation,
+      category: updatedCategory,
     };
 
     await this.statusRepository.update(status.id, updatedStatus);

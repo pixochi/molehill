@@ -79,7 +79,7 @@ const Checkbox: React.SFC<ICheckboxProps> = (props) => {
   return (
     <Flex align="center">
       <CheckboxContainer>
-        <ActualCheckbox name={name} id={id} value={value} checked={value} {...rest} />
+        <ActualCheckbox name={name} id={id} {...rest} />
         <VisualCheckbox checked={value} />
       </CheckboxContainer>
       {label && (

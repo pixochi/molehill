@@ -49,6 +49,9 @@ export class EditStatusInput implements Partial<StatusEntity> {
   @Field(() => ID)
   id: string;
 
+  @Field(() => ID)
+  categoryId: string;
+
   @Field()
   title: string;
 

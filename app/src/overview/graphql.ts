@@ -60,7 +60,7 @@ export const statusesInRadius = gql`
   ) {
     statusesInRadius(radius: $radius, categoryIds: $categoryIds, latitude: $latitude, longitude: $longitude,
     cursor: $cursor, limit: $limit)
-    @connection(key: "statusCursor", filter: ["radius", "latitude", "longitude"])
+    @connection(key: "statusCursor", filter: ["radius", "latitude", "longitude", "categoryIds"])
     @skip(if: $skip) {
       statuses {
         ...StatusFragment
@@ -98,6 +98,10 @@ export const editStatusMutation = gql`
   mutation EditStatus($status: EditStatusInput!) {
     editStatus(status: $status) {
       id
+      category {
+        id
+        name
+      }
       location {
         type
         coordinates

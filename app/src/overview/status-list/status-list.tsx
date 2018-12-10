@@ -15,7 +15,7 @@ import styled from 'app/components/styleguide';
 import { getStopAutoRefetchStatuses } from '../map/selectors';
 import { statusesInRadius } from '../graphql';
 import { StatusesInRadiusData } from '../types';
-import { getSelectedStatusId, getRadiusInMeters } from '../selectors';
+import { getSelectedStatusId, getRadiusInMeters, getSelectedCategoryIds } from '../selectors';
 import { selectStatus } from '../actions';
 
 import StatusItem from './status-item';
@@ -39,6 +39,7 @@ interface IStatusListProps {
 interface IStateProps {
   selectedStatusId: string;
   radius: number;
+  selectedCategories?: string[];
   stopAutoRefetchStatuses: boolean;
   likeStatusId: string;
 }
@@ -178,16 +179,18 @@ export default compose<React.ComponentType<IStatusListProps>>(
       radius: getRadiusInMeters(state),
       stopAutoRefetchStatuses: getStopAutoRefetchStatuses(state),
       likeStatusId: getLikeStatusId(state),
+      selectedCategories: getSelectedCategoryIds(state),
     }),
   ),
   graphql<IStatusListProps & IStateProps, StatusesInRadiusData, StatusesInRadiusVariables>(statusesInRadius, {
     options: (props) => ({
       variables: {
         radius: props.radius,
+        categoryIds: props.selectedCategories,
         latitude: props.userLat as number,
         longitude: props.userLng as number,
         skip: props.stopAutoRefetchStatuses,
-        limit: 3,
+        limit: 5,
       },
     }),
     skip: ({userLat, userLng}) => !userLat || !userLng,
