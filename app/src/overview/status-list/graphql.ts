@@ -10,7 +10,7 @@ export const addCommentMutation = gql`
 `;
 
 export const deleteCommentMutation = gql`
-  mutation DeleteComment($id: String!) {
+  mutation DeleteComment($id: ID!) {
     deleteComment(id: $id) {
       id
     }
@@ -27,7 +27,7 @@ export const editCommentMutation = gql`
 `;
 
 export const statusComments = gql`
-  query StatusComments($statusId: String!, $cursor: String, $limit: Int) {
+  query StatusComments($statusId: ID!, $cursor: String, $limit: Int) {
     statusComments(statusId: $statusId, cursor: $cursor, limit: $limit)
     @connection(key: "commentCursor", filter: ["statusId"]) {
       comments {
@@ -77,7 +77,7 @@ export const statusAttendace = gql`
 `;
 
 export const likesByUsersQuery = gql`
-  query likesByUsers($statusId: String!) {
+  query likesByUsers($statusId: ID!) {
     likesByUsers(statusId: $statusId){
       users {
         id

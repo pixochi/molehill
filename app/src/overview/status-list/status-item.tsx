@@ -68,6 +68,7 @@ const LikeIcon = styled(Like).attrs<{isLikedByUser: boolean}>({
 
 interface IStatusItemProps {
   status: StatusesInRadius_statusesInRadius_statuses;
+  addAttendance: (statusId: string) => void;
   selectStatus?: () => void;
   isSelected?: boolean;
   forwardedRef?: RefObject<any>;
@@ -126,6 +127,7 @@ export class StatusItem extends React.Component<Props, IStatusItemState> {
       forwardedRef,
       selectStatus,
       userId,
+      addAttendance,
     } = this.props;
 
     const totalNumberOfLikes = status.statusLikes.reduce((acc, like) => {
@@ -157,7 +159,7 @@ export class StatusItem extends React.Component<Props, IStatusItemState> {
       </Flex>
         <a
           target="_blank"
-          href={buildNavigationLink(status.location.coordinates)}
+          href={buildNavigationLink(status.location!.coordinates)}
         >
           <Body disabled>{status.category.name}</Body>
           <Body disabled>{`${status.city} ${status.zipCode}, ${status.street}`}</Body>
@@ -194,7 +196,12 @@ export class StatusItem extends React.Component<Props, IStatusItemState> {
             </Body>
           </Flex>
           <Flex align="center" marginLeft={s4}>
-            <Button appearance="info" buttonSize="mini" text={`Join: ${(status as any).attendance}`} />
+            <Button
+              appearance="info"
+              buttonSize="mini"
+              text={`Join: ${status.attendance || 0}`}
+              onClick={() => addAttendance(status.id)}
+            />
           </Flex>
         </Flex>
       </StatusContent>

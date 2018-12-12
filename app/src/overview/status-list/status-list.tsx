@@ -1,7 +1,7 @@
 import React, { createRef } from 'react';
 import { findDOMNode } from 'react-dom';
 import { compose } from 'redux';
-import { graphql } from 'react-apollo';
+import { graphql, MutateProps } from 'react-apollo';
 import { connect } from 'react-redux';
 
 import { Body } from 'app/components/styleguide/text';
@@ -19,10 +19,12 @@ import { getSelectedStatusId, getRadiusInMeters, getSelectedCategoryIds } from '
 import { selectStatus } from '../actions';
 
 import StatusItem from './status-item';
-import { StatusesInRadiusVariables } from 'app/generated/graphql';
+import { StatusesInRadiusVariables, StatusesInRadius } from 'app/generated/graphql';
 import Container from 'app/components/container';
 import LikesModal from './status-likes/likes-modal';
 import { getLikeStatusId } from '../status-modal/selectors';
+import { addAttendanceMutation } from './graphql';
+import { getUserId } from 'app/login/selectos';
 
 const STATUSES_LIMIT = 10;
 
@@ -42,9 +44,10 @@ interface IStateProps {
   selectedCategories?: string[];
   stopAutoRefetchStatuses: boolean;
   likeStatusId: string;
+  userId: string;
 }
 
-type Props = StatusesInRadiusData & IStatusListProps & IStateProps;
+type Props = StatusesInRadiusData & IStatusListProps & IStateProps & MutateProps;
 
 class StatusList extends React.Component<Props> {
 
@@ -58,6 +61,7 @@ class StatusList extends React.Component<Props> {
     super(props);
     this.selectedItemRef = createRef();
     this.handleFetchMore = this.handleFetchMore.bind(this);
+    this.handleAddAttendance = this.handleAddAttendance.bind(this);
   }
 
   public componentDidUpdate(prevProps: Props) {
@@ -109,6 +113,7 @@ class StatusList extends React.Component<Props> {
                 status={status}
                 ref={status.id === selectedStatusId ? this.selectedItemRef : ''}
                 selectStatus={() => this.handleSelectedStatusChanged(status.id)}
+                addAttendance={this.handleAddAttendance}
               />
             ))
           ) : (
@@ -170,6 +175,70 @@ class StatusList extends React.Component<Props> {
       });
     }
   }
+
+  private handleAddAttendance(statusId: string) {
+    const {
+      mutate,
+      userId,
+      radius,
+      userLat,
+      userLng,
+    } = this.props;
+
+    mutate({
+      variables: {
+          attendance: {
+            statusId,
+            userId,
+          },
+      },
+      update: (store, addAttendanceResult) => {
+        const statusesData = store.readQuery<StatusesInRadius, Partial<StatusesInRadiusVariables>>({
+          query: statusesInRadius,
+          variables: {
+            radius,
+            latitude: userLat as number,
+            longitude: userLng as number,
+            skip: false,
+          },
+        });
+
+        if (statusesData && addAttendanceResult.data) {
+          // this.setState({likeIdByLoggedInUser: addAttendanceResult.data!.addStatusLike.id});
+          const joinedStatusIndex = statusesData.statusesInRadius.statuses.findIndex(({id}) => id === statusId);
+
+          if (joinedStatusIndex !== -1) {
+            const joinedStatus = statusesData.statusesInRadius.statuses[joinedStatusIndex];
+
+            const updatedJoinedStatus = {
+              ...joinedStatus,
+              attendance: joinedStatus.attendance + 1,
+            };
+
+            store.writeQuery<StatusesInRadius, Partial<StatusesInRadiusVariables>>({
+              query: statusesInRadius,
+              variables: {
+                radius,
+                latitude: userLat as number,
+                longitude: userLng as number,
+                skip: false,
+              },
+              data: {
+                statusesInRadius: {
+                  ...statusesData.statusesInRadius,
+                  statuses: [
+                    ...statusesData.statusesInRadius.statuses.slice(0, joinedStatusIndex),
+                    updatedJoinedStatus,
+                    ...statusesData.statusesInRadius.statuses.slice(joinedStatusIndex + 1),
+                  ],
+                },
+              },
+            });
+          }
+        }
+      },
+    });
+  }
 }
 
 export default compose<React.ComponentType<IStatusListProps>>(
@@ -180,6 +249,7 @@ export default compose<React.ComponentType<IStatusListProps>>(
       stopAutoRefetchStatuses: getStopAutoRefetchStatuses(state),
       likeStatusId: getLikeStatusId(state),
       selectedCategories: getSelectedCategoryIds(state),
+      userId: getUserId(state),
     }),
   ),
   graphql<IStatusListProps & IStateProps, StatusesInRadiusData, StatusesInRadiusVariables>(statusesInRadius, {
@@ -195,4 +265,5 @@ export default compose<React.ComponentType<IStatusListProps>>(
     }),
     skip: ({userLat, userLng}) => !userLat || !userLng,
   }),
+  graphql(addAttendanceMutation),
 )(StatusList);

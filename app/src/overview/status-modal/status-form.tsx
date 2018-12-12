@@ -96,7 +96,13 @@ class AddStatusForm extends React.PureComponent<Props, {selectedPosition?: LatLn
     return (
       <Form onSubmit={handleSubmit}>
           <FormField required name="title" component={FormInput} placeholder="Title" maxLength={64} />
-          <FormField required name="categoryId" component={FormSelect} options={categoryOptions} />
+          <FormField
+            required
+            name="categoryId"
+            value={categoryOptions[0].value}
+            component={FormSelect}
+            options={categoryOptions}
+          />
           <FormField name="description" component={FormTextArea} placeholder="Description" />
           <Flex align="center">
             <FormField
@@ -180,6 +186,7 @@ export default compose<React.ComponentType<IFormProps & IInitialValues>>(
       street: getStreet(state),
       city: getCity(state),
       zipCode: getZipCode(state),
+      categoryId: '1',
     },
     isFetchingAddress: getIsFetchingAddress(state),
     submitText: getStatusModalSubmitText(state),
@@ -187,10 +194,10 @@ export default compose<React.ComponentType<IFormProps & IInitialValues>>(
     userLng: getLng(state),
     selectedPosition: getNewStatusSelectedPosition(state),
   })),
+  graphql(allCategories),
   reduxForm({
     form: STATUS_FORM,
     enableReinitialize: true,
     keepDirtyOnReinitialize: true,
   }),
-  graphql(allCategories),
 )(AddStatusForm);

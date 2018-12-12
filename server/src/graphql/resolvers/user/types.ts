@@ -1,4 +1,4 @@
-import { ArgsType, Field } from 'type-graphql';
+import { ArgsType, Field, ID } from 'type-graphql';
 import { GraphQLUpload, Upload } from 'graphql-upload';
 
 @ArgsType()
@@ -6,7 +6,7 @@ export class UploadUserProfileImageArgs {
   @Field(type => GraphQLUpload)
   file: Upload;
 
-  @Field()
+  @Field(() => ID)
   userId: string;
 }
 
@@ -15,6 +15,6 @@ export class UpdateUserBioArgs {
   @Field()
   bio: string;
 
-  @Field()
+  @Field(() => ID)
   userId: string;
 }

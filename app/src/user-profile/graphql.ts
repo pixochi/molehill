@@ -3,7 +3,7 @@ import gql from 'graphql-tag';
 import { statusFragment } from 'app/overview/graphql';
 
 export const userById = gql`
-  query UserById($id: String!) {
+  query UserById($id: ID!) {
     userById(id: $id) {
       id
       username
@@ -14,7 +14,7 @@ export const userById = gql`
 `;
 
 export const statusesByUser = gql`
-  query StatusesByUser($userId: String!) {
+  query StatusesByUser($userId: ID!) {
     statusesByUser(userId: $userId) {
       statuses {
         ...StatusFragment
@@ -25,7 +25,7 @@ export const statusesByUser = gql`
 `;
 
 export const uploadProfileImageMutation = gql`
-  mutation UploadProfileImage($file: Upload!, $userId: String!) {
+  mutation UploadProfileImage($file: Upload!, $userId: ID!) {
     uploadProfileImage(file: $file, userId: $userId) {
       filePath
     }
@@ -33,7 +33,7 @@ export const uploadProfileImageMutation = gql`
 `;
 
 export const updateUserBioMutation = gql`
-  mutation UpdateUserBioMutation($bio: String!, $userId: String!) {
+  mutation UpdateUserBioMutation($bio: String!, $userId: ID!) {
     updateUserBio(bio: $bio, userId: $userId) {
       id
       bio

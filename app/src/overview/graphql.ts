@@ -118,7 +118,7 @@ export const editStatusMutation = gql`
 `;
 
 export const deletetatusMutation = gql`
-  mutation DeleteStatus($statusId: String!) {
+  mutation DeleteStatus($statusId: ID!) {
     deleteStatus(statusId: $statusId) {
       id
     }
@@ -134,7 +134,7 @@ export const addStatusLikeMutation = gql`
 `;
 
 export const removeStatusLikeMutation = gql`
-  mutation RemoveStatusLike($id: String!) {
+  mutation RemoveStatusLike($id: ID!) {
     removeStatusLike(id: $id) {
       statusId
     }

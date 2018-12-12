@@ -41,7 +41,7 @@ export class StatusInput implements Partial<StatusEntity> {
   @Field()
   street: string;
 
-  @Field()
+  @Field(() => ID)
   categoryId: string;
 
   @Field({nullable: true})

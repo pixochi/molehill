@@ -4,6 +4,7 @@ import {
   Arg,
   Mutation,
   Args,
+  ID,
 } from 'type-graphql';
 import { Repository } from 'typeorm';
 import { InjectRepository } from 'typeorm-typedi-extensions';
@@ -25,7 +26,7 @@ export default class StatusResolver {
     @InjectRepository(StatusCategoryEntity) private readonly statusCategoryRepository: Repository<StatusCategoryEntity>,
   ) {}
   @Query((returns) => StatusEntity)
-  async status(@Arg('id') statusId: string): Promise<StatusEntity> {
+  async status(@Arg('id', () => ID) statusId: string): Promise<StatusEntity> {
     return await this.statusRepository.findOne(
       {
         id: statusId,
@@ -68,16 +69,16 @@ export default class StatusResolver {
   }
 
   @Query((returns) => StatusesWithCount)
-  async statusesByUser(@Arg('userId') userId: string): Promise<StatusesWithCount> {
+  async statusesByUser(@Arg('userId', () => ID) userId: string): Promise<StatusesWithCount> {
     const statusesWithUser = await this.statusRepository
       .createQueryBuilder('status')
-      .where({user: {
-        id: userId,
-      }})
       .leftJoinAndSelect('status.user', 'user')
       .leftJoinAndSelect('status.statusLikes', 'likes')
       .leftJoinAndSelect('status.category', 'category')
-      .loadRelationCountAndMap('status.attendance', 'status.attendanceCount')
+      .loadRelationCountAndMap('status.attendance', 'status.attendance')
+      .where({user: {
+        id: userId,
+      }})
       .orderBy('status.createdAt', 'DESC')
       .getManyAndCount();
 

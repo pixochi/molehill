@@ -143,6 +143,7 @@ class AddStatus extends React.Component<Props, IInitialValues> {
                     ...addStatusResult.data.addStatus,
                     statusLikes: [],
                     user: data.userById,
+                    attendance: 0,
                   },
                   ...statusesInRadiusData.statusesInRadius.statuses,
                 ],

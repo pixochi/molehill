@@ -4,6 +4,7 @@ import {
   Mutation,
   Query,
   Args,
+  ID,
 } from 'type-graphql';
 import { Repository } from 'typeorm';
 import { InjectRepository } from 'typeorm-typedi-extensions';
@@ -61,7 +62,7 @@ export default class StatusResolver {
   }
 
   @Mutation(returns => CommentEntity)
-  async deleteComment(@Arg('id') id: string): Promise<Partial<CommentEntity>> {
+  async deleteComment(@Arg('id', () => ID) id: string): Promise<Partial<CommentEntity>> {
     await this.commentRepository.delete(id);
 
     return {

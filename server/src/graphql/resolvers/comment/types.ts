@@ -25,7 +25,7 @@ export class EditCommentInput implements Partial<CommentEntity> {
 
 @ArgsType()
 export class StatusCommentsArgs {
-  @Field()
+  @Field(() => ID)
   statusId: string;
 
   @Field(type => Int, {nullable: true})

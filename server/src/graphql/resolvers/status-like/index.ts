@@ -3,6 +3,7 @@ import {
   Arg,
   Mutation,
   Query,
+  ID,
 } from 'type-graphql';
 import { Repository } from 'typeorm';
 import { InjectRepository } from 'typeorm-typedi-extensions';
@@ -23,7 +24,7 @@ export default class StatusResolver {
   ) {}
 
   @Query((returns) => LikesByUsers)
-  async likesByUsers(@Arg('statusId') statusId: string): Promise<LikesByUsers> {
+  async likesByUsers(@Arg('statusId', () => ID) statusId: string): Promise<LikesByUsers> {
     const statusWithLikes = await this.statusRepository
       .createQueryBuilder('status')
       .where({id: statusId})
@@ -80,7 +81,7 @@ export default class StatusResolver {
   }
 
   @Mutation(returns => StatusLikeEntity)
-  async removeStatusLike(@Arg('id') id: string): Promise<Partial<StatusLikeEntity>> {
+  async removeStatusLike(@Arg('id', () => ID) id: string): Promise<Partial<StatusLikeEntity>> {
     await this.statusLikesRepository.delete(id);
     return {id};
   }

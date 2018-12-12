@@ -1,6 +1,6 @@
 import React from 'react';
 import { compose } from 'redux';
-import { DataProps, graphql } from 'react-apollo';
+import { DataProps, graphql, MutateProps } from 'react-apollo';
 import { connect } from 'react-redux';
 
 import { getUserId } from 'app/login/selectos';
@@ -15,6 +15,7 @@ import StatusItem from 'app/overview/status-list/status-item';
 import { Flex } from 'app/components/styleguide/layout';
 
 import { statusesByUser } from '../graphql';
+import { addAttendanceMutation } from 'app/overview/status-list/graphql';
 
 const UserStatusesContainer = styled(Container)`
   width: 70%;
@@ -25,12 +26,14 @@ interface IStateProps {
   userId: string;
 }
 
-type Props = IStateProps & DataProps<StatusesByUser>;
+type Props = IStateProps & DataProps<StatusesByUser> & MutateProps;
 
 const UserStatuses: React.SFC<Props> = (props) => {
 
   const {
     data,
+    mutate,
+    userId,
   } = props;
 
   if (data.loading) {
@@ -49,7 +52,18 @@ const UserStatuses: React.SFC<Props> = (props) => {
     <UserStatusesContainer noPadding>
       <Flex direction="column" fullWidth>
         {data.statusesByUser.statuses.map((status) => (
-          <StatusItem key={status.id} status={status} />
+          <StatusItem
+            addAttendance={() => mutate({
+              variables: {
+                attendance: {
+                  statusId: status.id,
+                  userId,
+                },
+              },
+            })}
+            key={status.id}
+            status={status}
+          />
         ))}
 
       </Flex>
@@ -69,4 +83,5 @@ export default compose<React.ComponentType>(
       fetchPolicy: 'cache-and-network',
     }),
   }),
+  graphql(addAttendanceMutation),
 )(UserStatuses);

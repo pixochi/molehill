@@ -173,8 +173,8 @@ class StatusMap extends React.Component<Props> {
             key={status.id}
             value={status.id}
             position={{
-              lat: status.location.coordinates[0],
-              lng: status.location.coordinates[1],
+              lat: status.location!.coordinates[0],
+              lng: status.location!.coordinates[1],
             }}
             onClick={this.handleMarkerClicked}
             ref={selectedStatusId === status.id ? this.markerRef as React.RefObject<any> : ''}

@@ -6,6 +6,7 @@ import {
   Field,
   ObjectType,
   Args,
+  ID,
 } from 'type-graphql';
 import { Repository } from 'typeorm';
 import { InjectRepository } from 'typeorm-typedi-extensions';
@@ -34,7 +35,7 @@ export default class UserResolver {
   }
 
   @Query((returns) => UserEntity)
-  async userById(@Arg('id') userId: string): Promise<UserEntity> {
+  async userById(@Arg('id', () => ID) userId: string): Promise<UserEntity> {
     return await this.userRepository.findOne(userId);
   }
 
