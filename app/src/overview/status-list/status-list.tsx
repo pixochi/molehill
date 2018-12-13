@@ -19,12 +19,13 @@ import { getSelectedStatusId, getRadiusInMeters, getSelectedCategoryIds } from '
 import { selectStatus } from '../actions';
 
 import StatusItem from './status-item';
-import { StatusesInRadiusVariables, StatusesInRadius } from 'app/generated/graphql';
+import { StatusesInRadiusVariables } from 'app/generated/graphql';
 import Container from 'app/components/container';
 import LikesModal from './status-likes/likes-modal';
 import { getLikeStatusId } from '../status-modal/selectors';
 import { addAttendanceMutation } from './graphql';
 import { getUserId } from 'app/login/selectos';
+import { joinStatus, leaveStatus } from './actions';
 
 const STATUSES_LIMIT = 10;
 
@@ -62,6 +63,7 @@ class StatusList extends React.Component<Props> {
     this.selectedItemRef = createRef();
     this.handleFetchMore = this.handleFetchMore.bind(this);
     this.handleAddAttendance = this.handleAddAttendance.bind(this);
+    this.handleLeaveAttendance = this.handleLeaveAttendance.bind(this);
   }
 
   public componentDidUpdate(prevProps: Props) {
@@ -114,6 +116,7 @@ class StatusList extends React.Component<Props> {
                 ref={status.id === selectedStatusId ? this.selectedItemRef : ''}
                 selectStatus={() => this.handleSelectedStatusChanged(status.id)}
                 addAttendance={this.handleAddAttendance}
+                leaveAttendance={this.handleLeaveAttendance}
               />
             ))
           ) : (
@@ -177,67 +180,11 @@ class StatusList extends React.Component<Props> {
   }
 
   private handleAddAttendance(statusId: string) {
-    const {
-      mutate,
-      userId,
-      radius,
-      userLat,
-      userLng,
-    } = this.props;
+    joinStatus.dispatch(statusId);
+  }
 
-    mutate({
-      variables: {
-          attendance: {
-            statusId,
-            userId,
-          },
-      },
-      update: (store, addAttendanceResult) => {
-        const statusesData = store.readQuery<StatusesInRadius, Partial<StatusesInRadiusVariables>>({
-          query: statusesInRadius,
-          variables: {
-            radius,
-            latitude: userLat as number,
-            longitude: userLng as number,
-            skip: false,
-          },
-        });
-
-        if (statusesData && addAttendanceResult.data) {
-          // this.setState({likeIdByLoggedInUser: addAttendanceResult.data!.addStatusLike.id});
-          const joinedStatusIndex = statusesData.statusesInRadius.statuses.findIndex(({id}) => id === statusId);
-
-          if (joinedStatusIndex !== -1) {
-            const joinedStatus = statusesData.statusesInRadius.statuses[joinedStatusIndex];
-
-            const updatedJoinedStatus = {
-              ...joinedStatus,
-              attendance: joinedStatus.attendance + 1,
-            };
-
-            store.writeQuery<StatusesInRadius, Partial<StatusesInRadiusVariables>>({
-              query: statusesInRadius,
-              variables: {
-                radius,
-                latitude: userLat as number,
-                longitude: userLng as number,
-                skip: false,
-              },
-              data: {
-                statusesInRadius: {
-                  ...statusesData.statusesInRadius,
-                  statuses: [
-                    ...statusesData.statusesInRadius.statuses.slice(0, joinedStatusIndex),
-                    updatedJoinedStatus,
-                    ...statusesData.statusesInRadius.statuses.slice(joinedStatusIndex + 1),
-                  ],
-                },
-              },
-            });
-          }
-        }
-      },
-    });
+  private handleLeaveAttendance(attendanceId: string, statusId: string) {
+    leaveStatus.dispatch(attendanceId, statusId);
   }
 }
 

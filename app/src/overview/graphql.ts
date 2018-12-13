@@ -23,7 +23,7 @@ export const allCategories = gql`
 `;
 
 export const statusFragment = gql`
-  fragment StatusFragment on StatusEntityWithAttendanceCount {
+  fragment StatusFragment on Status {
     id
     createdAt
     location {
@@ -50,7 +50,12 @@ export const statusFragment = gql`
       id
       name
     }
-    attendance
+    attendance {
+      id
+      user {
+        id
+      }
+    }
   }
 `;
 

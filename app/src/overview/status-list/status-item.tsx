@@ -9,6 +9,7 @@ import { Flex, Base } from 'app/components/styleguide/layout';
 import ShowMore from 'app/components/show-more';
 import UserImage from 'app/components/user-image';
 import Like from 'app/components/icons/like';
+import PersonIcon from 'app/components/icons/person';
 import MenuButton, { IMenuOption } from 'app/components/menu-button';
 import Button from 'app/components/button';
 
@@ -38,12 +39,17 @@ import { addStatusLikeMutation, statusesInRadius, removeStatusLikeMutation } fro
 import { getRadiusInMeters } from '../selectors';
 import { getLat, getLng } from '../map/selectors';
 import { deleteStatus } from './actions';
+import { statusAttendace } from './graphql';
 
 const GOOGLE_MAPS_API = 'https://www.google.com/maps/dir/?api=1&';
 
 const buildNavigationLink = (coordinates: number[]) => {
   return `${GOOGLE_MAPS_API}destination=${coordinates[0]},${coordinates[1]}`;
 };
+
+const StyledPersonIcon = styled(PersonIcon).attrs<{joined: boolean}>({
+  color: (props: any) => props.joined ? props.theme.errorLight : props.theme.secondaryDark,
+})``;
 
 const StatusContainer = styled(Flex)<{selected?: boolean}>`
   background: ${props => props.theme.background};
@@ -64,11 +70,14 @@ const LikeIcon = styled(Like).attrs<{isLikedByUser: boolean}>({
   color: (props: any) => props.isLikedByUser ? props.theme.errorLight : props.theme.secondaryDark,
   width: 24,
   height: 24,
-})``;
+})`
+  cursor: pointer;
+`;
 
 interface IStatusItemProps {
   status: StatusesInRadius_statusesInRadius_statuses;
   addAttendance: (statusId: string) => void;
+  leaveAttendance: (attendaceId: string, statusId: string) => void;
   selectStatus?: () => void;
   isSelected?: boolean;
   forwardedRef?: RefObject<any>;
@@ -128,11 +137,15 @@ export class StatusItem extends React.Component<Props, IStatusItemState> {
       selectStatus,
       userId,
       addAttendance,
+      leaveAttendance,
     } = this.props;
 
     const totalNumberOfLikes = status.statusLikes.reduce((acc, like) => {
       return acc + like.count;
     }, 0);
+
+    const isJoined = Boolean(status.attendance.find(({user}) => user.id === userId));
+    const userAttendanceId = String(isJoined && status.attendance.find(a => a.user.id === userId)!.id);
 
     return (
       <StatusContainer
@@ -189,6 +202,7 @@ export class StatusItem extends React.Component<Props, IStatusItemState> {
               onClick={this.state.canAddLike ? this.handleAddStatusLike : this.handleAddStatusLike}
             />
             <Body
+              clickable
               marginLeft={s2}
               onClick={() => openModal.dispatch(ModalIds.statusLikes, {statusId: status.id})}
             >
@@ -196,12 +210,21 @@ export class StatusItem extends React.Component<Props, IStatusItemState> {
             </Body>
           </Flex>
           <Flex align="center" marginLeft={s4}>
-            <Button
-              appearance="info"
-              buttonSize="mini"
-              text={`Join: ${status.attendance || 0}`}
-              onClick={() => addAttendance(status.id)}
-            />
+            <Flex align="center">
+              <StyledPersonIcon joined={isJoined} />
+              <Body marginLeft={s1}>{status.attendance.length || 0}</Body>
+            </Flex>
+            <Base marginLeft={s5}>
+              <Button
+                appearance="info"
+                buttonSize="mini"
+                text={isJoined ? 'Leave' : 'Join'}
+                onClick={() => isJoined ?
+                  leaveAttendance(userAttendanceId, status.id)
+                  : addAttendance(status.id)
+                }
+              />
+            </Base>
           </Flex>
         </Flex>
       </StatusContent>
@@ -382,6 +405,13 @@ export default compose<React.ComponentType<IStatusItemProps>>(
   withStateMutation({name: 'addStatusLikeMutation'}),
   graphql(removeStatusLikeMutation, {name: 'removeStatusLikeMutation'}),
   withStateMutation({name: 'removeStatusLikeMutation'}),
+  graphql(statusAttendace, {
+    options: (props: IStatusItemProps) => ({
+      variables: {
+        statusId: props.status.id,
+      },
+    }),
+  }),
 )(React.forwardRef((props: any, ref: RefObject<any>) => {
   return <StatusItem {...props} forwardedRef={ref} />;
 }));

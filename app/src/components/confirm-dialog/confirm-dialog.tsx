@@ -40,7 +40,7 @@ const ConfirmDialogContainer = styled.div<{confirmDialogType: ConfirmDialogType}
       if (props.confirmDialogType === ConfirmDialogType.WARNING) {
         return props.theme.errorDark;
       }
-      return props.theme.secondary;
+      return props.theme.submitLight;
     }}
   }
 `;
@@ -69,7 +69,7 @@ const ConfirmDialog: React.SFC<IStateProps> = (props) => {
     <ConfirmDialogContainer confirmDialogType={type}>
       <ContentContainer withShadow rounded noPadding direction="column">
         <Header padding={s4}>
-          <Title inverted={type === ConfirmDialogType.WARNING}>
+          <Title inverted>
             {message}
           </Title>
         </Header>

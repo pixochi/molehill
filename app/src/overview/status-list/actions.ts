@@ -15,3 +15,17 @@ export const {
   `${domain}/DELETE_COMMENT`,
   (id: string, statusId: string) => ({id, statusId}),
 );
+
+export const {
+  action: joinStatus,
+} = createActions(
+  `${domain}/JOIN_STATUS`,
+  (statusId: string) => ({statusId}),
+);
+
+export const {
+  action: leaveStatus,
+} = createActions(
+  `${domain}/LEAVE_STATUS`,
+  (attendanceId: string, statusId: string) => ({attendanceId, statusId}),
+);

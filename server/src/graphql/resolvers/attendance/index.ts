@@ -27,7 +27,6 @@ export default class AttendanceResolver {
     const attendanceUsers = await this.attendanceRepository
       .createQueryBuilder('attendance')
       .leftJoinAndSelect('attendance.user', 'user')
-      .leftJoinAndSelect('attendance.status', 'status')
       .where({
         status: {
           id: statusId

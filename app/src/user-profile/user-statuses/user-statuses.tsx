@@ -7,6 +7,7 @@ import { getUserId } from 'app/login/selectos';
 import { IRootState } from 'app/redux/root-reducer';
 import { StatusesByUser, StatusesByUserVariables } from 'app/generated/graphql';
 import styled from 'app/components/styleguide';
+import { joinStatus, leaveStatus } from 'app/overview/status-list/actions';
 
 import Container from 'app/components/container';
 import Spinner from 'app/components/spinner';
@@ -15,7 +16,6 @@ import StatusItem from 'app/overview/status-list/status-item';
 import { Flex } from 'app/components/styleguide/layout';
 
 import { statusesByUser } from '../graphql';
-import { addAttendanceMutation } from 'app/overview/status-list/graphql';
 
 const UserStatusesContainer = styled(Container)`
   width: 70%;
@@ -32,8 +32,6 @@ const UserStatuses: React.SFC<Props> = (props) => {
 
   const {
     data,
-    mutate,
-    userId,
   } = props;
 
   if (data.loading) {
@@ -53,14 +51,8 @@ const UserStatuses: React.SFC<Props> = (props) => {
       <Flex direction="column" fullWidth>
         {data.statusesByUser.statuses.map((status) => (
           <StatusItem
-            addAttendance={() => mutate({
-              variables: {
-                attendance: {
-                  statusId: status.id,
-                  userId,
-                },
-              },
-            })}
+            addAttendance={(statusId) => joinStatus.dispatch(statusId)}
+            leaveAttendance={(attendanceId, statusId) => leaveStatus.dispatch(attendanceId, statusId)}
             key={status.id}
             status={status}
           />
@@ -83,5 +75,4 @@ export default compose<React.ComponentType>(
       fetchPolicy: 'cache-and-network',
     }),
   }),
-  graphql(addAttendanceMutation),
 )(UserStatuses);

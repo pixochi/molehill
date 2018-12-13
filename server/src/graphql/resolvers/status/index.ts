@@ -15,7 +15,7 @@ import StatusCategoryEntity from 'src/entity/status-category';
 import UserEntity from 'src/entity/user';
 import { buildUrlQuery } from 'src/graphql/helpers/url-query-builder';
 
-import { StatusInput, EditStatusInput, StatusesInRadiusArgs, StatusesWithCount, StatusEntityWithAttendanceCount } from './types';
+import { StatusInput, EditStatusInput, StatusesInRadiusArgs, StatusesWithCount } from './types';
 import { GEOCODER_API, BIG_INT_LIMIT } from '../constants';
 
 @Resolver((of) => StatusEntity)
@@ -49,7 +49,7 @@ export default class StatusResolver {
       .leftJoinAndSelect('status.user', 'user')
       .leftJoinAndSelect('status.statusLikes', 'likes')
       .leftJoinAndSelect('status.category', 'category')
-      .loadRelationCountAndMap('status.attendance', 'status.attendance')
+      .leftJoinAndSelect('status.attendance', 'attendance')
       .where('ST_Distance_Sphere(location, ST_MakePoint(:latitude,:longitude)) <= :radius', {
         radius,
         latitude,
@@ -62,8 +62,16 @@ export default class StatusResolver {
       .getManyAndCount();
 
       return {
-        // type-orm entities can't simply extend other graphql types
-        statuses: statusesWithUser[0]  as unknown as StatusEntityWithAttendanceCount[],
+        statuses: statusesWithUser[0].map(status => ({
+          ...status,
+          attendance: status.attendance.map(attendance => ({
+            ...attendance,
+            user: {
+              ...attendance.user,
+              id: attendance.userId,
+            }
+          })),
+        })),
         count: statusesWithUser[1],
       };
   }
@@ -75,7 +83,7 @@ export default class StatusResolver {
       .leftJoinAndSelect('status.user', 'user')
       .leftJoinAndSelect('status.statusLikes', 'likes')
       .leftJoinAndSelect('status.category', 'category')
-      .loadRelationCountAndMap('status.attendance', 'status.attendance')
+      .leftJoinAndSelect('status.attendance', 'attendance')
       .where({user: {
         id: userId,
       }})
@@ -83,7 +91,16 @@ export default class StatusResolver {
       .getManyAndCount();
 
       return {
-        statuses: statusesWithUser[0] as unknown as StatusEntityWithAttendanceCount[],
+        statuses: statusesWithUser[0].map(status => ({
+          ...status,
+          attendance: status.attendance.map(attendance => ({
+            ...attendance,
+            user: {
+              ...attendance.user,
+              id: attendance.userId,
+            }
+          })),
+        })),
         count: statusesWithUser[1],
       };
   }
@@ -179,7 +196,7 @@ export default class StatusResolver {
   }
 
   @Mutation(returns => StatusEntity)
-  async deleteStatus(@Arg('statusId') statusId: string): Promise<Partial<StatusEntity>> {
+  async deleteStatus(@Arg('statusId', () => ID) statusId: string): Promise<Partial<StatusEntity>> {
 
     await this.statusRepository.delete(statusId);
 

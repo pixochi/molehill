@@ -19,6 +19,10 @@ export default class Attendance {
   @Column({nullable: true})
   private: boolean;
 
+  @Field(() => ID, {nullable: true})
+  @Column()
+  userId: string;
+
   @Field(() => User)
   @ManyToOne(type => User, user => user.attendance)
   user: User;

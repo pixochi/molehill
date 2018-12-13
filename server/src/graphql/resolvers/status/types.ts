@@ -1,9 +1,6 @@
 import { ObjectType, InputType, Field, ID, Float, ArgsType, Int } from 'type-graphql';
 
 import StatusEntity from 'src/entity/status';
-import UserEntity from 'src/entity/user';
-import CategoryEntity from 'src/entity/status-category';
-import StatusLike from 'src/entity/status-like';
 
 @ObjectType()
 @InputType('LocationIn')
@@ -102,56 +99,10 @@ export class StatusesInRadiusArgs {
   cursor: string;
 }
 
-// for some reason can't just extend StatusEntity
-@ObjectType()
-export class StatusEntityWithAttendanceCount {
-  @Field(() => ID)
-  id: string;
-
-  @Field(() => UserEntity)
-  user: UserEntity;
-
-  @Field(() => CategoryEntity)
-  category: CategoryEntity;
-
-  @Field(() => [StatusLike])
-  statusLikes: StatusLike[];
-
-  @Field()
-  title: string;
-
-  @Field({nullable: true})
-  description?: string;
-
-  @Field(type => LocationInput, {nullable: true})
-  location?: LocationInput;
-
-  @Field()
-  country: string;
-
-  @Field()
-  city: string;
-
-  @Field()
-  zipCode: string;
-
-  @Field()
-  street: string;
-
-  @Field()
-  createdAt: Date;
-
-  @Field({nullable: true})
-  useCurrentLocation?: boolean;
-
-  @Field(type => Int)
-  attendance: number;
-}
-
 @ObjectType()
 export class StatusesWithCount {
-  @Field(type => [StatusEntityWithAttendanceCount])
-  statuses: StatusEntityWithAttendanceCount[];
+  @Field(type => [StatusEntity])
+  statuses: StatusEntity[];
 
   @Field(type => Int)
   count: number;
