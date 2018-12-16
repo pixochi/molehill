@@ -242,7 +242,6 @@ export class StatusItem extends React.Component<Props, IStatusItemState> {
     const {
       status,
       addStatusLikeMutation,
-      data,
       radiusInMeters,
       userLat,
       userLng,
