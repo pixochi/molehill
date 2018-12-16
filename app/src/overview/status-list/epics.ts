@@ -61,6 +61,7 @@ const deleteStatusEpic: Epic<IReduxAction> = (action$, state$) => action$.pipe(
                     ...statusesData.statusesInRadius,
                     statuses: statusesData.statusesInRadius.statuses.filter(
                       status => status.id !== deleteStatusResult.data!.deleteStatus.id),
+                    count: statusesData.statusesInRadius.count - 1,
                   },
                 },
               });

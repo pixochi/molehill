@@ -88,3 +88,13 @@ export const likesByUsersQuery = gql`
     }
   }
 `;
+
+export const statusAttendanceUsersQuery = gql`
+  query usersById($ids: [ID!]!) {
+    usersById(ids: $ids){
+        id
+        username
+        image
+    }
+  }
+`;

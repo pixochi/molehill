@@ -146,6 +146,7 @@ export class StatusItem extends React.Component<Props, IStatusItemState> {
 
     const isJoined = Boolean(status.attendance.find(({user}) => user.id === userId));
     const userAttendanceId = String(isJoined && status.attendance.find(a => a.user.id === userId)!.id);
+    const attendingUserIds = status.attendance.map(a => a.user.id);
 
     return (
       <StatusContainer
@@ -210,7 +211,11 @@ export class StatusItem extends React.Component<Props, IStatusItemState> {
             </Body>
           </Flex>
           <Flex align="center" marginLeft={s4}>
-            <Flex align="center">
+            <Flex
+              clickable
+              align="center"
+              onClick={() => openModal.dispatch(ModalIds.statusAttendance, {userIds: attendingUserIds})}
+            >
               <StyledPersonIcon joined={isJoined} />
               <Body marginLeft={s1}>{status.attendance.length || 0}</Body>
             </Flex>
@@ -249,7 +254,7 @@ export class StatusItem extends React.Component<Props, IStatusItemState> {
         variables: {
           like: {
             statusId: status.id,
-            userId: data.userById!.id,
+            userId,
             id: this.state.likeIdByLoggedInUser,
           },
         },

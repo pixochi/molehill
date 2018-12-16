@@ -6,6 +6,9 @@ import { connect } from 'react-redux';
 
 import { Body } from 'app/components/styleguide/text';
 import Spinner from 'app/components/spinner';
+import AttendanceModal from './status-attendance/attendance-modal';
+import Container from 'app/components/container';
+import LikesModal from './status-likes/likes-modal';
 
 import { s2, s4 } from 'app/components/styleguide/spacing';
 import { IRootState } from 'app/redux/root-reducer';
@@ -20,8 +23,6 @@ import { selectStatus } from '../actions';
 
 import StatusItem from './status-item';
 import { StatusesInRadiusVariables } from 'app/generated/graphql';
-import Container from 'app/components/container';
-import LikesModal from './status-likes/likes-modal';
 import { getLikeStatusId } from '../status-modal/selectors';
 import { addAttendanceMutation } from './graphql';
 import { getUserId } from 'app/login/selectos';
@@ -131,6 +132,7 @@ class StatusList extends React.Component<Props> {
           </Container>
         )}
         <LikesModal statusId={likeStatusId} header="People who like it" />
+        <AttendanceModal header="People coming" />
       </StyledContainer>
     );
   }

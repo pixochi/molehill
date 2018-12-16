@@ -39,6 +39,17 @@ export default class UserResolver {
     return await this.userRepository.findOne(userId);
   }
 
+  @Query((returns) => [UserEntity])
+  async usersById(@Arg('ids', () => [ID]) userIds: string[]): Promise<UserEntity[]> {
+    const users = await this.userRepository
+    .createQueryBuilder('user')
+    .whereInIds(userIds)
+    .select(['user.id', 'user.username', 'user.image'])
+    .getMany();
+
+    return users;
+  }
+
   @Mutation((returns) => UserEntity)
   async login(@Arg('loginInput') loginInput: LoginInput): Promise<UserEntity | undefined> {
     const foundUser = await this.userRepository.findOne({
