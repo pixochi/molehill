@@ -63,7 +63,7 @@ const getAddressFromMap: Epic<IReduxAction, any> = (action$) => action$.pipe(
   ignoreElements(),
 );
 
-const fetchStatusesOnRadiusChange: Epic<IReduxAction, any> = (action$, state$) => action$.pipe(
+const fetchStatusesOnRadiusChange: Epic<IReduxAction, any> = (action$) => action$.pipe(
   ofType(changeRadius.type),
   debounceTime(700),
   mergeMap(() => {

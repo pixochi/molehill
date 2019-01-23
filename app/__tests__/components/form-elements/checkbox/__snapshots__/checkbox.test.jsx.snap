@@ -14,17 +14,6 @@ exports[`Checkbox should render ActualCheckbox 1`] = `
   height: 30px;
 }
 
-.c0:checked ~ .c1:after {
-  content: '';
-  display: block;
-  width: 16px;
-  height: 16px;
-  background: #5994df;
-  border-radius: 50%;
-  margin: 0 auto;
-  margin-top: 5px;
-}
-
 <input
   className="c0"
   type="checkbox"

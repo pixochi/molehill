@@ -14,9 +14,13 @@ describe('Container', () => {
   });
 
   it('should render StyledContainer', () => {
-    const wrapper = renderer.create(<StyledContainer theme={Theme} />).toJSON();
+    const wrapper = renderer.create(
+      <StyledContainer theme={Theme} />
+    ).toJSON();
     expect(wrapper).toMatchSnapshot();
-    expect(wrapper).toHaveStyleRule('background-color', Theme.background);
+    expect(wrapper).toHaveStyleRule(
+      'background-color', Theme.background,
+    );
   });
 
 });

@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import App from '../app';
+import App from '../src/app';
 
 describe('App', () => {
   it(' should render the app without crashing', () => {

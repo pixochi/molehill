@@ -22,19 +22,19 @@ export default class Status {
   title: string;
 
   @Field()
-  @Column()
+  @Column({length: 64})
   country: string;
 
   @Field()
-  @Column()
+  @Column({length: 64})
   city: string;
 
   @Field()
-  @Column()
+  @Column({length: 16})
   zipCode: string;
 
   @Field()
-  @Column()
+  @Column({length: 128})
   street: string;
 
   @Field({nullable: true})
@@ -49,7 +49,7 @@ export default class Status {
   location: Point;
 
   @Field()
-  @CreateDateColumn({type: 'timestamp'})
+  @CreateDateColumn({type: 'timestamp with time zone'})
   createdAt: Date;
 
   @Field(() => User)

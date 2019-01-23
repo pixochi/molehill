@@ -12,7 +12,7 @@ export default class Attendance {
   id: string;
 
   @Field()
-  @CreateDateColumn({type: 'timestamp'})
+  @CreateDateColumn({type: 'timestamp with time zone'})
   createdAt: Date;
 
   @Field({nullable: true})

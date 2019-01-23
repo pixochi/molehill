@@ -11,7 +11,7 @@ describe('Form validation helpers', () => {
     expect(isValidEmail).toBe('Invalid email address');
   });
 
-  it('should recognize valid email address', () => {
+  it('should recognize a valid email address', () => {
     const validEmail = 'valid@email.com';
     const isValidEmail = email(validEmail);
 

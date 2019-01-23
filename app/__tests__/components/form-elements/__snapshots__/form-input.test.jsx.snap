@@ -22,7 +22,10 @@ exports[`FormInput should render ClearButton 1`] = `
 
 exports[`FormInput should render FormInput 1`] = `
 <styled.div>
-  <styled.input />
+  <styled.input
+    onChange={[Function]}
+    value=""
+  />
 </styled.div>
 `;
 

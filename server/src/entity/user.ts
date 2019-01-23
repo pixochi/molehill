@@ -14,11 +14,11 @@ export default class User {
   id: string;
 
   @Field()
-  @Column({unique: true})
+  @Column({unique: true, length: 64})
   username: string;
 
   @Field()
-  @Column({unique: true})
+  @Column({unique: true, length: 64})
   email: string;
 
   @Field()
@@ -26,7 +26,7 @@ export default class User {
   password: string;
 
   @Field({nullable: true})
-  @Column({nullable: true})
+  @Column({nullable: true, length: 128})
   image: string;
 
   @Field({nullable: true})

@@ -11,7 +11,7 @@ export default class StatusCategory {
   id: string;
 
   @Field()
-  @Column({unique: true})
+  @Column({unique: true, length: 64})
   name: string;
 
   @Field(() => Status)

@@ -73,7 +73,7 @@
   },
   "jest": {
     "roots": [
-      "<rootDir>/src"
+      "<rootDir>"
     ],
     "transform": {
       "^.+\\.(t|j)sx?$": "ts-jest"
@@ -100,8 +100,8 @@
     "setupFiles": [
       "isomorphic-fetch",
       "raf/polyfill",
-      "./src/__tests__/__mocks__/local-storage",
-      "./src/__tests__/setup-tests"
+      "./__tests__/__mocks__/local-storage",
+      "./__tests__/setup-tests"
     ],
     "snapshotSerializers": [
       "enzyme-to-json/serializer"
@@ -110,19 +110,6 @@
     "collectCoverage": true,
     "coveragePathIgnorePatterns": [
       "node_modules",
-      "<rootDir>/src/graphql-client.ts",
-      "actions.ts",
-      "user-profile",
-      "user-statuses",
-      "status-item",
-      "overview",
-      "file-upload.tsx",
-      "modal.tsx",
-      "radius-filter.tsx",
-      "menu-button.tsx",
-      "show-more.tsx",
-      "edit.tsx",
-      "like.tsx"
     ],
     "modulePathIgnorePatterns": [
       "<rootDir>/src/redux/store.ts"

@@ -62,7 +62,6 @@ class StatusMap extends React.Component<Props> {
     this.geolocationErrorCallback = this.geolocationErrorCallback.bind(this);
     this.getLocation = () => {
       if (navigator.geolocation) {
-        console.log('getting location');
         return navigator.geolocation.watchPosition(
           this.geolocationSuccessCallback,
           this.geolocationErrorCallback,
@@ -197,12 +196,10 @@ class StatusMap extends React.Component<Props> {
 
   private geolocationSuccessCallback(position: Position) {
     const {latitude, longitude} = position.coords;
-    console.log('location found', {latitude, longitude});
     setLocation.dispatch(latitude, longitude);
   }
 
   private geolocationErrorCallback(position: PositionError) {
-    console.log('location error cb');
     blockLocation.dispatch();
   }
 

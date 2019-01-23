@@ -99,7 +99,7 @@ class AddStatusForm extends React.PureComponent<Props, {selectedPosition?: LatLn
           <FormField
             required
             name="categoryId"
-            value={categoryOptions[0].value}
+            value={categoryOptions.length  ? categoryOptions[0].value : ''}
             component={FormSelect}
             options={categoryOptions}
           />

@@ -28,7 +28,7 @@ describe('Time helpers', () => {
   });
 
   it('should print time in format d/M HH:mm if provided dateTime is in the same year and not today', () => {
-    const thisYearZoneDateTime = ZonedDateTime.now().plusDays(5).toString();
+    const thisYearZoneDateTime = ZonedDateTime.now().plusDays(2).toString();
     const testValue = ZonedDateTime.parse(thisYearZoneDateTime).withZoneSameInstant(ZoneId.of(TIMEZONE));
 
     const expected = testValue.format(DateTimeFormatter.ofPattern('d/M HH:mm'));
